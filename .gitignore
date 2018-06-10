@@ -49,3 +49,11 @@ bower.json
 
 
 # End of https://www.gitignore.io/api/rails
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
+/public/packs
+/public/packs-test
+/node_modules
+yarn-debug.log*
+.yarn-integrity
