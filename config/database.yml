@@ -6,6 +6,7 @@ default: &default
 development:
   <<: *default
   database: flashcard-rails-vue_development
+  url: postgres://postgres@localhost:15432
 
 test:
   <<: *default

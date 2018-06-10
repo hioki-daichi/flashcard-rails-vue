@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  db:
+    container_name: flashcard_rails_vue_postgres
+    build: ./docker/postgresql/10.3-ja
+    ports:
+      - 15432:5432
+    volumes:
+      - postgresql:/var/lib/postgresql/data
+
+volumes:
+  postgresql:
+    driver: local
