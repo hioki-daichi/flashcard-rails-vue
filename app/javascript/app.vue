@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <p>{{ message }}</p>
+    <h2>Books</h2>
+    <ul v-for="book in books">
+      <li>{{ book.title }}</li>
+    </ul>
   </div>
 </template>
 
@@ -8,7 +11,7 @@
 export default {
   data: function () {
     return {
-      message: "Hello Vue!"
+      books: [{ title: 'foo' }, { title: 'bar' }]
     }
   }
 }
