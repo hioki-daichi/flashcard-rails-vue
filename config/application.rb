@@ -17,6 +17,8 @@ module FlashcardRailsVue
     # the framework and any gems in your application.
     config.generators do |g|
       g.test_framework :rspec, controller_specs: false, view_specs: false, helper_specs: false
+      g.assets = false
+      g.helper = false
     end
   end
 end
