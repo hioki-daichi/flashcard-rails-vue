@@ -10,10 +10,15 @@
 <script lang="ts">
 import Vue from 'vue'
 
+interface Book {
+  id: number
+  title: string
+}
+
 export default Vue.extend({
   data: function() {
     return {
-      books: [{ title: "foo" }, { title: "bar" }]
+      books: [{ id: 1, title: "foo" }, { id: 2, title: "bar" }] as Book[]
     };
   }
 });
