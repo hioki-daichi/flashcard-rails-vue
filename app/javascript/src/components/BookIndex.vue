@@ -8,13 +8,15 @@
 </template>
 
 <script lang="ts">
-export default {
+import Vue from 'vue'
+
+export default Vue.extend({
   data: function() {
     return {
       books: [{ title: "foo" }, { title: "bar" }]
     };
   }
-};
+});
 </script>
 
 <style scoped>
