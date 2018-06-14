@@ -8,13 +8,29 @@
 </template>
 
 <script lang="ts">
-export default {
+import Vue from 'vue'
+import axios from 'axios'
+
+interface Book {
+  id: number
+  title: string
+}
+
+export default Vue.extend({
   data: function() {
     return {
-      books: [{ title: "foo" }, { title: "bar" }]
+      books: [] as Book[]
     };
+  },
+  async created() {
+    try {
+      const res = await axios.get("/ajax/books")
+      this.books = res.data
+    } catch (e) {
+      alert(e)
+    }
   }
-};
+});
 </script>
 
 <style scoped>
