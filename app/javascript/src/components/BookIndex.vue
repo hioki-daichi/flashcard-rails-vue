@@ -9,6 +9,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import axios from 'axios'
 
 interface Book {
   id: number
@@ -18,8 +19,16 @@ interface Book {
 export default Vue.extend({
   data: function() {
     return {
-      books: [{ id: 1, title: "foo" }, { id: 2, title: "bar" }] as Book[]
+      books: [] as Book[]
     };
+  },
+  async created() {
+    try {
+      const res = await axios.get("/ajax/books")
+      this.books = res.data
+    } catch (e) {
+      alert(e)
+    }
   }
 });
 </script>
