@@ -7,14 +7,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
-  data: function () {
+  data: function() {
     return {
-      books: [{ title: 'foo' }, { title: 'bar' }]
-    }
+      books: [{ title: "foo" }, { title: "bar" }]
+    };
   }
-}
+};
 </script>
 
 <style scoped>
