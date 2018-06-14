@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div>
     <h2>Books</h2>
     <ul v-for="book in books">
       <li>{{ book.title }}</li>
