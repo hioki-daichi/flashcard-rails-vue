@@ -23,6 +23,7 @@ interface Page {
 }
 
 export default Vue.extend({
+  props: ['bookId'],
   data: function() {
     return {
       pages: [] as Page[]
@@ -30,7 +31,7 @@ export default Vue.extend({
   },
   async created() {
     try {
-      const res = await axios.get("/ajax/books/1/pages"); // XXX Specify proper :book_id
+      const res = await axios.get(`/ajax/books/${this.bookId}/pages`);
       this.pages = res.data;
     } catch (e) {
       alert(e);
