@@ -1,9 +1,13 @@
 <template>
   <div>
     <h2>Books</h2>
-    <ul v-for="book in books">
-      <li>{{ book.title }}</li>
-    </ul>
+    <table>
+      <tbody>
+        <tr v-for="book in books">
+          <td>{{ book.title }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
