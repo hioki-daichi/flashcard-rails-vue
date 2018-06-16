@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  root to: 'homes#welcome'
+
   resources :books, only: [:index] do
     resources :pages, only: [:index]
   end
@@ -8,4 +10,6 @@ Rails.application.routes.draw do
       resources :pages, only: [:index]
     end
   end
+
+  get '*path', to: 'homes#redirect_to_root'
 end
