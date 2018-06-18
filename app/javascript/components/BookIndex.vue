@@ -4,7 +4,7 @@
     <table>
       <tbody>
         <tr v-for="book in books">
-          <td>{{ book.title }}</td>
+          <td><router-link :to="{ name: 'bookPages', params: { bookId: book.id } }">{{ book.title }}</router-link></td>
         </tr>
       </tbody>
     </table>

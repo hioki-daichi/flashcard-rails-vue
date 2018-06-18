@@ -13,6 +13,7 @@ const routes = [
   },
   {
     path: "/books/:bookId/pages",
+    name: "bookPages",
     component: PageIndex,
     props: true
   }
