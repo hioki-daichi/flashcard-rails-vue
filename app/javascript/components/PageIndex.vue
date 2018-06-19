@@ -1,14 +1,10 @@
 <template>
   <div>
     <h2>Pages</h2>
-    <table>
-      <tbody>
-        <tr v-for="page in this.$store.state.pages">
-          <td>{{ page.question }}</td>
-          <td>{{ page.answer }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="flex-grid" v-for="page in this.$store.state.pages">
+      <div class="col">{{ page.question }}</div>
+      <div class="col">{{ page.answer }}</div>
+    </div>
   </div>
 </template>
 
@@ -23,3 +19,12 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style scoped>
+.flex-grid {
+  display: flex;
+}
+.col {
+  flex: 1;
+}
+</style>
