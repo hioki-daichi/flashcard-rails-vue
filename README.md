@@ -1,24 +1,13 @@
-# README
+# flashcard-rails-vue
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A flashcard implementation written in Ruby on Rails and Vue.js.
 
-Things you may want to cover:
+# Developing
 
-* Ruby version
+## Setting up Dev
 
-* System dependencies
+TBD
 
-* Configuration
+# Demo
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+TBD
