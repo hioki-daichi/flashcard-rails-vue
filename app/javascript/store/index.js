@@ -6,14 +6,27 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    books: []
+    books: [],
+    currentBookId: null,
+    pages: []
   },
-  mutations: {},
+  mutations: {
+    setCurrentBookId(state, bookId) {
+      state.currentBookId = bookId;
+    }
+  },
   actions: {
     fetchBooks({ state, commit }) {
       axios.get("/ajax/books").then(res => {
         state.books = res.data;
       }, alert);
+    },
+    fetchPages({ state, commit }) {
+      axios
+        .get("/ajax/books/" + this.state.currentBookId.toString() + "/pages")
+        .then(res => {
+          state.pages = res.data;
+        }, alert);
     }
   }
 });
