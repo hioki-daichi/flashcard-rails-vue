@@ -3,7 +3,7 @@
     <h2>Books</h2>
     <table>
       <tbody>
-        <tr v-for="book in books">
+        <tr v-for="book in this.$store.state.books">
           <td><router-link :to="{ name: 'bookPages', params: { bookId: book.id } }">{{ book.title }}</router-link></td>
         </tr>
       </tbody>
@@ -12,34 +12,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import axios from 'axios'
-
-interface Book {
-  id: number
-  title: string
-}
+import Vue from "vue";
 
 export default Vue.extend({
-  data: function() {
-    return {
-      books: [] as Book[]
-    };
-  },
-  async created() {
-    try {
-      const res = await axios.get("/ajax/books")
-      this.books = res.data
-    } catch (e) {
-      alert(e)
-    }
+  created() {
+    this.$store.dispatch("fetchBooks");
   }
 });
 </script>
-
-<style scoped>
-p {
-  font-size: 2em;
-  text-align: center;
-}
-</style>
