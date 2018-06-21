@@ -14,7 +14,7 @@ import Vue from "vue";
 export default Vue.extend({
   props: ["bookId"],
   created() {
-    this.$store.commit("setCurrentBookId", this.bookId);
+    this.$store.commit("setBookId", this.bookId);
     this.$store.dispatch("fetchPages");
   }
 });
