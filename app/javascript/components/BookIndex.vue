@@ -1,11 +1,9 @@
 <template>
   <div>
     <h2>Books</h2>
-    <ul>
-      <li v-for="book in this.$store.state.books">
-        <router-link :to="{ name: 'bookPages', params: { bookId: book.id } }">{{ book.title }}</router-link>
-      </li>
-    </ul>
+    <div class="flex-grid" v-for="book in this.$store.state.books">
+      <div class="col"><router-link :to="{ name: 'bookPages', params: { bookId: book.id } }">{{ book.title }}</router-link></div>
+    </div>
   </div>
 </template>
 
@@ -18,3 +16,12 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style scoped>
+.flex-grid {
+  display: flex;
+}
+.col {
+  flex: 1;
+}
+</style>
