@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import HeaderComponent from "./components/shared/header.vue";
 import FooterComponent from "./components/shared/footer.vue";
 
@@ -17,6 +17,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-</style>
