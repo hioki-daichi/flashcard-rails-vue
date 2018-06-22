@@ -11,6 +11,10 @@ export default new Vuex.Store({
     newBook: {
       title: ""
     },
+    newPage: {
+      question: "",
+      answer: ""
+    },
     pages: []
   },
   mutations: {
@@ -19,6 +23,12 @@ export default new Vuex.Store({
     },
     updateNewBookTitle(state, value) {
       state.newBook.title = value;
+    },
+    updateNewPageQuestion(state, value) {
+      state.newPage.question = value;
+    },
+    updateNewPageAnswer(state, value) {
+      state.newPage.answer = value;
     }
   },
   actions: {
@@ -33,6 +43,16 @@ export default new Vuex.Store({
     fetchBooks({ state, commit }) {
       axios.get("/ajax/books").then(res => {
         state.books = res.data;
+      }, alert);
+    },
+    createPage({ state, commit }) {
+      const data = new FormData();
+      data.append("question", state.newPage.question);
+      data.append("answer", state.newPage.answer);
+      axios.post(`/ajax/books/${state.bookId}/pages`, data).then(res => {
+        state.pages.push(res.data);
+        state.newPage.question = "";
+        state.newPage.answer = "";
       }, alert);
     },
     fetchPages({ state, commit }) {

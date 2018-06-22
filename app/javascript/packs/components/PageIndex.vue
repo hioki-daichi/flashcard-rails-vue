@@ -1,6 +1,13 @@
 <template>
   <div>
     <h2>Pages</h2>
+    <div class="flex-grid">
+      <div class="col">
+        <textarea placeholder="Question" v-model="question" />
+        <textarea placeholder="Answer" v-model="answer" />
+        <button @click="submit">Submit</button>
+      </div>
+    </div>
     <div class="flex-grid" v-for="page in this.$store.state.pages">
       <div class="col">{{ page.question }}</div>
       <div class="col">{{ page.answer }}</div>
@@ -16,6 +23,29 @@ export default Vue.extend({
   created() {
     this.$store.commit("setBookId", this.bookId);
     this.$store.dispatch("fetchPages");
+  },
+  computed: {
+    question: {
+      get() {
+        return this.$store.state.newPage.question;
+      },
+      set(value) {
+        this.$store.commit("updateNewPageQuestion", value);
+      }
+    },
+    answer: {
+      get() {
+        return this.$store.state.newPage.answer;
+      },
+      set(value) {
+        this.$store.commit("updateNewPageAnswer", value);
+      }
+    }
+  },
+  methods: {
+    submit() {
+      this.$store.dispatch("createPage");
+    }
   }
 });
 </script>
@@ -26,5 +56,9 @@ export default Vue.extend({
 }
 .col {
   flex: 1;
+}
+textarea {
+  min-width: 200px;
+  min-height: 100px;
 }
 </style>
