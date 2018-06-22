@@ -1,4 +1,4 @@
-class Ajax::BooksController < ApplicationController
+class Api::BooksController < ApplicationController
   def create
     title = params[:title]
     book = Book.create!(title: title)

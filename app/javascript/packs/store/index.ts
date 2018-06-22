@@ -35,13 +35,13 @@ export default new Vuex.Store({
     createBook({ state, commit }) {
       const data = new FormData();
       data.append("title", state.newBook.title);
-      axios.post("/ajax/books", data).then(res => {
+      axios.post("/api/books", data).then(res => {
         state.books.unshift(res.data);
         state.newBook.title = "";
       }, alert);
     },
     fetchBooks({ state, commit }) {
-      axios.get("/ajax/books").then(res => {
+      axios.get("/api/books").then(res => {
         state.books = res.data;
       }, alert);
     },
@@ -49,7 +49,7 @@ export default new Vuex.Store({
       const data = new FormData();
       data.append("question", state.newPage.question);
       data.append("answer", state.newPage.answer);
-      axios.post(`/ajax/books/${state.bookId}/pages`, data).then(res => {
+      axios.post(`/api/books/${state.bookId}/pages`, data).then(res => {
         state.pages.push(res.data);
         state.newPage.question = "";
         state.newPage.answer = "";
@@ -57,7 +57,7 @@ export default new Vuex.Store({
     },
     fetchPages({ state, commit }) {
       axios
-        .get("/ajax/books/" + this.state.bookId.toString() + "/pages")
+        .get("/api/books/" + this.state.bookId.toString() + "/pages")
         .then(res => {
           state.pages = res.data;
         }, alert);

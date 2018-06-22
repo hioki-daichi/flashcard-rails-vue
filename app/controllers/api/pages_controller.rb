@@ -1,4 +1,4 @@
-class Ajax::PagesController < ApplicationController
+class Api::PagesController < ApplicationController
   def create
     book_id  = params[:book_id]
     question = params[:question]

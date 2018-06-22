@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     resources :pages, only: [:index]
   end
 
-  namespace :ajax do
+  namespace :api do
     resources :books, only: [:index, :create] do
       resources :pages, only: [:index, :create]
     end
