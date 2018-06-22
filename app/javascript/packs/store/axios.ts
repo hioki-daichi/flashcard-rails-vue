@@ -2,6 +2,11 @@ import axios from "axios";
 
 axios.interceptors.request.use(config => {
   console.log(config);
+
+  axios.defaults.headers.common["X-CSRF-Token"] = document
+    .querySelector('meta[name="csrf-token"]')
+    .getAttribute("content");
+
   return config;
 });
 
