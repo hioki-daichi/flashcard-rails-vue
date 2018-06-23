@@ -11,11 +11,11 @@ export default new Vuex.Store({
     newBook: {
       title: ""
     },
+    pages: [],
     newPage: {
       question: "",
       answer: ""
-    },
-    pages: []
+    }
   },
   mutations: {
     setBookId(state, bookId) {
