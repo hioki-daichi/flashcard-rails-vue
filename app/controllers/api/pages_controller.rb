@@ -16,4 +16,13 @@ class Api::PagesController < ApplicationController
 
     render json: pages
   end
+
+  def destroy
+    book_id = params[:book_id]
+    page_id = params[:id]
+
+    Book.find(book_id).pages.find(page_id).destroy!
+
+    head :no_content
+  end
 end

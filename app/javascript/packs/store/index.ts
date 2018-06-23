@@ -12,6 +12,7 @@ export default new Vuex.Store({
       title: ""
     },
     pages: [],
+    pageId: null,
     newPage: {
       question: "",
       answer: ""
@@ -23,6 +24,9 @@ export default new Vuex.Store({
     },
     updateNewBookTitle(state, value) {
       state.newBook.title = value;
+    },
+    setPageId(state, value) {
+      state.pageId = value;
     },
     updateNewPageQuestion(state, value) {
       state.newPage.question = value;
@@ -68,6 +72,15 @@ export default new Vuex.Store({
         .then(res => {
           state.pages = res.data;
         }, alert);
+    },
+    destroyPage({ state, commit }) {
+      axios
+        .delete(`/api/books/${state.bookId}/pages/${state.pageId}`)
+        .then(res => {
+          state.pages = state.pages.filter(page => {
+            return page.id != state.pageId;
+          });
+        });
     }
   }
 });

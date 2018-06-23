@@ -11,6 +11,7 @@
     <div class="flex-grid" v-for="page in this.$store.state.pages">
       <div class="col">{{ page.question }}</div>
       <div class="col">{{ page.answer }}</div>
+      <button @click="destroy(page)">Delete</button>
     </div>
   </div>
 </template>
@@ -45,6 +46,10 @@ export default Vue.extend({
   methods: {
     submit() {
       this.$store.dispatch("createPage");
+    },
+    destroy(page) {
+      this.$store.commit("setPageId", page.id);
+      this.$store.dispatch("destroyPage");
     }
   }
 });
