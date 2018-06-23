@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   end
 
   namespace :api do
-    resources :books, only: [:index, :create] do
+    resources :books, only: [:index, :create, :destroy] do
       resources :pages, only: [:index, :create]
     end
   end

@@ -45,6 +45,13 @@ export default new Vuex.Store({
         state.books = res.data;
       }, alert);
     },
+    destroyBook({ state, commit }) {
+      axios.delete(`/api/books/${state.bookId}`).then(res => {
+        state.books = state.books.filter(book => {
+          return book.id != state.bookId;
+        });
+      });
+    },
     createPage({ state, commit }) {
       const data = new FormData();
       data.append("question", state.newPage.question);

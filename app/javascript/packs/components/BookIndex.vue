@@ -8,7 +8,10 @@
       </div>
     </div>
     <div class="flex-grid" v-for="book in this.$store.state.books">
-      <div class="col"><router-link :to="{ name: 'bookPages', params: { bookId: book.id } }">{{ book.title }}</router-link></div>
+      <div class="col">
+        <router-link :to="{ name: 'bookPages', params: { bookId: book.id } }">{{ book.title }}</router-link>
+        <button @click="destroy(book)">Delete</button>
+      </div>
     </div>
   </div>
 </template>
@@ -33,6 +36,10 @@ export default Vue.extend({
   methods: {
     submit() {
       this.$store.dispatch("createBook");
+    },
+    destroy(book) {
+      this.$store.commit("setBookId", book.id);
+      this.$store.dispatch("destroyBook");
     }
   }
 });

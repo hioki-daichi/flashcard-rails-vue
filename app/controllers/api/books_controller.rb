@@ -9,4 +9,10 @@ class Api::BooksController < ApplicationController
     books = Book.all
     render json: books
   end
+
+  def destroy
+    book_id = params[:id]
+    Book.find(book_id).destroy!
+    head :no_content
+  end
 end
