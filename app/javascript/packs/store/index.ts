@@ -19,8 +19,8 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    setBookId(state, bookId) {
-      state.bookId = bookId;
+    setBookId(state, value) {
+      state.bookId = value;
     },
     updateNewBookTitle(state, value) {
       state.newBook.title = value;
