@@ -3,7 +3,7 @@
     <h2>Books</h2>
     <div class="flex-grid">
       <div class="col">
-        <input type="text" placeholder="Title" v-model="title" />
+        <input type="text" placeholder="Title" v-model="newBookTitle" />
         <button @click="submit">Submit</button>
       </div>
     </div>
@@ -24,7 +24,7 @@ export default Vue.extend({
     this.$store.dispatch("fetchBooks");
   },
   computed: {
-    title: {
+    newBookTitle: {
       get() {
         return this.$store.state.newBook.title;
       },
