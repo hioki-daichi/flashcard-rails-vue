@@ -1,17 +1,13 @@
 <template>
   <div>
     <h2>Books</h2>
-    <div class="flex-grid">
-      <div class="col">
-        <input type="text" placeholder="Title" v-model="newBookTitle" />
-        <button @click="submit">Submit</button>
-      </div>
+    <div>
+      <input type="text" placeholder="Title" v-model="newBookTitle" />
+      <button @click="submit">Submit</button>
     </div>
-    <div class="flex-grid" v-for="book in this.$store.state.books">
-      <div class="col">
-        <router-link :to="{ name: 'bookPages', params: { bookId: book.id } }">{{ book.title }}</router-link>
-        <button @click="destroy(book)">Delete</button>
-      </div>
+    <div v-for="book in this.$store.state.books">
+      <router-link :to="{ name: 'bookPages', params: { bookId: book.id } }">{{ book.title }}</router-link>
+      <button @click="destroy(book)">Delete</button>
     </div>
   </div>
 </template>
@@ -44,12 +40,3 @@ export default Vue.extend({
   }
 });
 </script>
-
-<style scoped>
-.flex-grid {
-  display: flex;
-}
-.col {
-  flex: 1;
-}
-</style>
