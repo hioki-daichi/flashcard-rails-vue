@@ -17,7 +17,8 @@ export default new Vuex.Store({
     newPage: {
       question: "",
       answer: ""
-    }
+    },
+    updatingPage: null
   },
   mutations: {
     setBookId(state, value) {
@@ -28,6 +29,9 @@ export default new Vuex.Store({
     },
     setUpdatingBook(state, value) {
       state.updatingBook = value;
+    },
+    setUpdatingPage(state, value) {
+      state.updatingPage = value;
     },
     setPageId(state, value) {
       state.pageId = value;
@@ -83,6 +87,26 @@ export default new Vuex.Store({
         state.newPage.question = "";
         state.newPage.answer = "";
       }, alert);
+    },
+    updatePage({ state, commit }) {
+      const data = new FormData();
+      data.append("question", state.updatingPage.question);
+      data.append("answer", state.updatingPage.answer);
+      axios
+        .patch(
+          `/api/books/${state.bookId}/pages/${state.updatingPage.id}`,
+          data
+        )
+        .then(res => {
+          state.pages = state.pages.map(page => {
+            if (page.id == res.data.id) {
+              return res.data;
+            } else {
+              return page;
+            }
+          });
+          state.updatingPage = null;
+        });
     },
     fetchPages({ state, commit }) {
       axios

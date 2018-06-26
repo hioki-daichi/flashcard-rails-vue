@@ -1,8 +1,16 @@
 <template>
   <div class="flex-grid">
-    <div class="col">{{ page.question }}</div>
-    <div class="col">{{ page.answer }}</div>
-    <button @click="destroy">Delete</button>
+    <template v-if="this.editing">
+      <textarea placeholder="Question" v-model="page.question" />
+      <textarea placeholder="Answer" v-model="page.answer" />
+      <button @click="update">Update</button>
+    </template>
+    <template v-else>
+      <div class="col">{{ page.question }}</div>
+      <div class="col">{{ page.answer }}</div>
+      <button @click="edit">Edit</button>
+      <button @click="destroy">Delete</button>
+    </template>
   </div>
 </template>
 
@@ -11,7 +19,20 @@ import Vue from "vue";
 
 export default Vue.extend({
   props: ["page"],
+  data() {
+    return {
+      editing: false
+    };
+  },
   methods: {
+    edit() {
+      this.editing = true;
+    },
+    update() {
+      this.$store.commit("setUpdatingPage", this.page);
+      this.$store.dispatch("updatePage");
+      this.editing = false;
+    },
     destroy() {
       this.$store.commit("setPageId", this.page.id);
       this.$store.dispatch("destroyPage");
