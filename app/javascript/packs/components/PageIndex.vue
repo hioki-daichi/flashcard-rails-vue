@@ -8,18 +8,18 @@
         <button @click="submit">Submit</button>
       </div>
     </div>
-    <div class="flex-grid" v-for="page in this.$store.state.pages">
-      <div class="col">{{ page.question }}</div>
-      <div class="col">{{ page.answer }}</div>
-      <button @click="destroy(page)">Delete</button>
-    </div>
+    <Page v-for="page in this.$store.state.pages" :page="page" :key="page.id"></Page>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
+import Page from "./Page.vue";
 
 export default Vue.extend({
+  components: {
+    Page
+  },
   props: ["bookId"],
   created() {
     this.$store.commit("setBookId", this.bookId);
@@ -54,16 +54,3 @@ export default Vue.extend({
   }
 });
 </script>
-
-<style scoped>
-.flex-grid {
-  display: flex;
-}
-.col {
-  flex: 1;
-}
-textarea {
-  min-width: 200px;
-  min-height: 100px;
-}
-</style>
