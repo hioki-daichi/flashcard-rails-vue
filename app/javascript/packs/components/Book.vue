@@ -32,8 +32,11 @@ export default Vue.extend({
       this.editing = false;
     },
     destroy() {
-      this.$store.commit("setBookId", this.book.id);
-      this.$store.dispatch("destroyBook");
+      const confirmed = window.confirm("Are you sure ?");
+      if (confirmed) {
+        this.$store.commit("setBookId", this.book.id);
+        this.$store.dispatch("destroyBook");
+      }
     }
   }
 });
