@@ -6,8 +6,8 @@
       <button @click="update">Update</button>
     </template>
     <template v-else>
-      <div class="col">{{ page.question }}</div>
-      <div class="col">{{ page.answer }}</div>
+      <pre class="col">{{ page.question }}</pre>
+      <pre class="col">{{ page.answer }}</pre>
       <button @click="edit">Edit</button>
       <button @click="destroy">Delete</button>
     </template>
