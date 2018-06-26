@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   root to: 'homes#welcome'
 
   namespace :api do
-    resources :books, only: [:index, :create, :destroy] do
+    resources :books, only: [:index, :create, :update, :destroy] do
       resources :pages, only: [:index, :create, :destroy]
     end
   end

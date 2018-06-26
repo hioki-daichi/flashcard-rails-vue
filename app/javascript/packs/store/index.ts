@@ -11,6 +11,7 @@ export default new Vuex.Store({
     newBook: {
       title: ""
     },
+    updatingBook: null,
     pages: [],
     pageId: null,
     newPage: {
@@ -24,6 +25,9 @@ export default new Vuex.Store({
     },
     updateNewBookTitle(state, value) {
       state.newBook.title = value;
+    },
+    setUpdatingBook(state, value) {
+      state.updatingBook = value;
     },
     setPageId(state, value) {
       state.pageId = value;
@@ -43,6 +47,20 @@ export default new Vuex.Store({
         state.books.unshift(res.data);
         state.newBook.title = "";
       }, alert);
+    },
+    updateBook({ state, commit }) {
+      const data = new FormData();
+      data.append("title", state.updatingBook.title);
+      axios.patch(`/api/books/${state.updatingBook.id}`, data).then(res => {
+        state.books = state.books.map(book => {
+          if (book.id == res.data.id) {
+            return res.data;
+          } else {
+            return book;
+          }
+        });
+        state.updatingBook = null;
+      });
     },
     fetchBooks({ state, commit }) {
       axios.get("/api/books").then(res => {

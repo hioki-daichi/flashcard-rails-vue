@@ -5,6 +5,16 @@ class Api::BooksController < ApplicationController
     render json: book
   end
 
+  def update
+    book_id = params[:id]
+    title   = params[:title]
+
+    book = Book.find(book_id)
+    book.update!(title: title)
+
+    render json: book
+  end
+
   def index
     books = Book.order(created_at: :desc, id: :desc)
     render json: books
