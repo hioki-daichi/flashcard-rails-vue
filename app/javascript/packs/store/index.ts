@@ -50,7 +50,7 @@ export default new Vuex.Store({
       axios.post("/api/books", data).then(res => {
         state.books.unshift(res.data);
         state.newBook.title = "";
-      }, alert);
+      });
     },
     updateBook({ state, commit }) {
       const data = new FormData();
@@ -69,7 +69,7 @@ export default new Vuex.Store({
     fetchBooks({ state, commit }) {
       axios.get("/api/books").then(res => {
         state.books = res.data;
-      }, alert);
+      });
     },
     destroyBook({ state, commit }) {
       axios.delete(`/api/books/${state.bookId}`).then(res => {
@@ -86,7 +86,7 @@ export default new Vuex.Store({
         state.pages.push(res.data);
         state.newPage.question = "";
         state.newPage.answer = "";
-      }, alert);
+      });
     },
     updatePage({ state, commit }) {
       const data = new FormData();
@@ -113,7 +113,7 @@ export default new Vuex.Store({
         .get("/api/books/" + this.state.bookId.toString() + "/pages")
         .then(res => {
           state.pages = res.data;
-        }, alert);
+        });
     },
     destroyPage({ state, commit }) {
       axios
