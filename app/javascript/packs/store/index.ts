@@ -47,7 +47,7 @@ export default new Vuex.Store({
     createBook({ state, commit }) {
       const data = new FormData();
       data.append("title", state.newBook.title);
-      axios.post("/api/books", data).then(res => {
+      return axios.post("/api/books", data).then(res => {
         state.books.unshift(res.data);
         state.newBook.title = "";
       });
@@ -55,24 +55,26 @@ export default new Vuex.Store({
     updateBook({ state, commit }) {
       const data = new FormData();
       data.append("title", state.updatingBook.title);
-      axios.patch(`/api/books/${state.updatingBook.id}`, data).then(res => {
-        state.books = state.books.map(book => {
-          if (book.id == res.data.id) {
-            return res.data;
-          } else {
-            return book;
-          }
+      return axios
+        .patch(`/api/books/${state.updatingBook.id}`, data)
+        .then(res => {
+          state.books = state.books.map(book => {
+            if (book.id == res.data.id) {
+              return res.data;
+            } else {
+              return book;
+            }
+          });
+          state.updatingBook = null;
         });
-        state.updatingBook = null;
-      });
     },
     fetchBooks({ state, commit }) {
-      axios.get("/api/books").then(res => {
+      return axios.get("/api/books").then(res => {
         state.books = res.data;
       });
     },
     destroyBook({ state, commit }) {
-      axios.delete(`/api/books/${state.bookId}`).then(res => {
+      return axios.delete(`/api/books/${state.bookId}`).then(res => {
         state.books = state.books.filter(book => {
           return book.id != state.bookId;
         });
@@ -82,7 +84,7 @@ export default new Vuex.Store({
       const data = new FormData();
       data.append("question", state.newPage.question);
       data.append("answer", state.newPage.answer);
-      axios.post(`/api/books/${state.bookId}/pages`, data).then(res => {
+      return axios.post(`/api/books/${state.bookId}/pages`, data).then(res => {
         state.pages.push(res.data);
         state.newPage.question = "";
         state.newPage.answer = "";
@@ -92,7 +94,7 @@ export default new Vuex.Store({
       const data = new FormData();
       data.append("question", state.updatingPage.question);
       data.append("answer", state.updatingPage.answer);
-      axios
+      return axios
         .patch(
           `/api/books/${state.bookId}/pages/${state.updatingPage.id}`,
           data
@@ -109,14 +111,14 @@ export default new Vuex.Store({
         });
     },
     fetchPages({ state, commit }) {
-      axios
+      return axios
         .get("/api/books/" + this.state.bookId.toString() + "/pages")
         .then(res => {
           state.pages = res.data;
         });
     },
     destroyPage({ state, commit }) {
-      axios
+      return axios
         .delete(`/api/books/${state.bookId}/pages/${state.pageId}`)
         .then(res => {
           state.pages = state.pages.filter(page => {
