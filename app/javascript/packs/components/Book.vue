@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="this.editing">
+    <div v-if="editing && this.book.id == editing.id">
       <input type="text" v-model="book.title" />
       <button @click="update">Update</button>
     </div>
@@ -17,21 +17,25 @@ import Vue from "vue";
 
 export default Vue.extend({
   props: ["book"],
-  data() {
-    return {
-      editing: false
-    };
+  computed: {
+    editing: {
+      get() {
+        return this.$store.state.editingBook;
+      },
+      set(value) {
+        this.$store.commit("setEditingBook", value);
+      }
+    }
   },
   methods: {
     edit() {
-      this.editing = true;
+      this.editing = this.book;
     },
     update() {
-      this.$store.commit("setUpdatingBook", this.book);
       this.$store
         .dispatch("updateBook")
         .then(res => {
-          this.editing = false;
+          this.editing = null;
         })
         .catch(error => {
           console.warn(error);
