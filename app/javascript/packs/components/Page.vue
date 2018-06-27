@@ -1,6 +1,6 @@
 <template>
   <div class="flex-grid">
-    <template v-if="this.editing">
+    <template v-if="editing && this.page.id == editing.id">
       <textarea placeholder="Question" v-model="page.question" />
       <textarea placeholder="Answer" v-model="page.answer" />
       <button @click="update">Update</button>
@@ -19,21 +19,25 @@ import Vue from "vue";
 
 export default Vue.extend({
   props: ["page"],
-  data() {
-    return {
-      editing: false
-    };
+  computed: {
+    editing: {
+      get() {
+        return this.$store.state.editingPage;
+      },
+      set(value) {
+        this.$store.commit("setEditingPage", value);
+      }
+    }
   },
   methods: {
     edit() {
-      this.editing = true;
+      this.editing = this.page;
     },
     update() {
-      this.$store.commit("setUpdatingPage", this.page);
       this.$store
         .dispatch("updatePage")
         .then(res => {
-          this.editing = false;
+          this.editing = null;
         })
         .catch(error => {
           console.warn(error);
