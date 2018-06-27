@@ -32,7 +32,12 @@ export default Vue.extend({
   },
   methods: {
     submit() {
-      this.$store.dispatch("createBook");
+      this.$store
+        .dispatch("createBook")
+        .then(res => {})
+        .catch(error => {
+          console.warn(error);
+        });
     }
   }
 });

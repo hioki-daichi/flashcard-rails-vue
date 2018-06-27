@@ -30,14 +30,25 @@ export default Vue.extend({
     },
     update() {
       this.$store.commit("setUpdatingPage", this.page);
-      this.$store.dispatch("updatePage");
-      this.editing = false;
+      this.$store
+        .dispatch("updatePage")
+        .then(res => {
+          this.editing = false;
+        })
+        .catch(error => {
+          console.warn(error);
+        });
     },
     destroy() {
       const confirmed = window.confirm("Are you sure ?");
       if (confirmed) {
         this.$store.commit("setPageId", this.page.id);
-        this.$store.dispatch("destroyPage");
+        this.$store
+          .dispatch("destroyPage")
+          .then(res => {})
+          .catch(error => {
+            console.warn(error);
+          });
       }
     }
   }

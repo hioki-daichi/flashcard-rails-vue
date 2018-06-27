@@ -28,14 +28,25 @@ export default Vue.extend({
     },
     update() {
       this.$store.commit("setUpdatingBook", this.book);
-      this.$store.dispatch("updateBook");
-      this.editing = false;
+      this.$store
+        .dispatch("updateBook")
+        .then(res => {
+          this.editing = false;
+        })
+        .catch(error => {
+          console.warn(error);
+        });
     },
     destroy() {
       const confirmed = window.confirm("Are you sure ?");
       if (confirmed) {
         this.$store.commit("setBookId", this.book.id);
-        this.$store.dispatch("destroyBook");
+        this.$store
+          .dispatch("destroyBook")
+          .then(res => {})
+          .catch(error => {
+            console.warn(error);
+          });
       }
     }
   }
