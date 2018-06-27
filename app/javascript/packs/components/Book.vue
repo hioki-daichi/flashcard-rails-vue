@@ -3,6 +3,7 @@
     <div v-if="editing && this.book.id == editing.id">
       <input type="text" v-model="book.title" />
       <button @click="update">Update</button>
+      <button @click="cancel">Cancel</button>
     </div>
     <div v-else>
       <router-link :to="{ name: 'bookPages', params: { bookId: book.id } }">{{ book.title }}</router-link>
@@ -17,6 +18,11 @@ import Vue from "vue";
 
 export default Vue.extend({
   props: ["book"],
+  data() {
+    return {
+      _beforeEditingCache: null
+    };
+  },
   computed: {
     editing: {
       get() {
@@ -29,6 +35,7 @@ export default Vue.extend({
   },
   methods: {
     edit() {
+      this._beforeEditingCache = Object.assign({}, this.book);
       this.editing = this.book;
     },
     update() {
@@ -40,6 +47,10 @@ export default Vue.extend({
         .catch(error => {
           console.warn(error);
         });
+    },
+    cancel() {
+      Object.assign(this.book, this._beforeEditingCache);
+      this.editing = this._beforeEditingCache = null;
     },
     destroy() {
       const confirmed = window.confirm("Are you sure ?");
