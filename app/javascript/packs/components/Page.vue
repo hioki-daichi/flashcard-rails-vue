@@ -4,6 +4,7 @@
       <textarea placeholder="Question" v-model="page.question" />
       <textarea placeholder="Answer" v-model="page.answer" />
       <button @click="update">Update</button>
+      <button @click="cancel">Cancel</button>
     </template>
     <template v-else>
       <pre class="col">{{ page.question }}</pre>
@@ -19,6 +20,11 @@ import Vue from "vue";
 
 export default Vue.extend({
   props: ["page"],
+  data() {
+    return {
+      _beforeEditingCache: null
+    };
+  },
   computed: {
     editing: {
       get() {
@@ -31,6 +37,7 @@ export default Vue.extend({
   },
   methods: {
     edit() {
+      this._beforeEditingCache = Object.assign({}, this.page);
       this.editing = this.page;
     },
     update() {
@@ -42,6 +49,10 @@ export default Vue.extend({
         .catch(error => {
           console.warn(error);
         });
+    },
+    cancel() {
+      Object.assign(this.page, this._beforeEditingCache);
+      this.editing = this._beforeEditingCache = null;
     },
     destroy() {
       const confirmed = window.confirm("Are you sure ?");
