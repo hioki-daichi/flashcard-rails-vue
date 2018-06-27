@@ -46,10 +46,6 @@ export default Vue.extend({
   methods: {
     submit() {
       this.$store.dispatch("createPage");
-    },
-    destroy(page) {
-      this.$store.commit("setPageId", page.id);
-      this.$store.dispatch("destroyPage");
     }
   }
 });
