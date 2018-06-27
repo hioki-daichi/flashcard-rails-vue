@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import Book from "./Book.vue"
+import Book from "./Book.vue";
 
 export default Vue.extend({
   components: {

@@ -34,7 +34,7 @@ export default Vue.extend({
       this.editing = false;
     },
     destroy() {
-      const confirmed = window.confirm("Are you sure ?")
+      const confirmed = window.confirm("Are you sure ?");
       if (confirmed) {
         this.$store.commit("setPageId", this.page.id);
         this.$store.dispatch("destroyPage");
