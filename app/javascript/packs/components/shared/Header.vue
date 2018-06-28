@@ -1,6 +1,6 @@
 <template>
   <header>
-    <router-link to="/">Flashcard</router-link>
+    <router-link to="/" tabindex=-1>Flashcard</router-link>
   </header>
 </template>
 
