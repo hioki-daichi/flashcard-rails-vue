@@ -7,8 +7,8 @@
     </div>
     <div v-else>
       <router-link :to="{ name: 'bookPages', params: { bookId: book.id } }">{{ book.title }}</router-link>
-      <button @click="edit">Edit</button>
-      <button @click="destroy">Delete</button>
+      <button @click="edit" :disabled="editing != null">Edit</button>
+      <button @click="destroy" :disabled="editing != null">Delete</button>
     </div>
   </div>
 </template>

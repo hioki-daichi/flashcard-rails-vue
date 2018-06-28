@@ -9,8 +9,8 @@
     <ul v-else>
       <li><pre>{{ page.question }}</pre></li>
       <li><pre>{{ page.answer }}</pre></li>
-      <li><button @click="edit">Edit</button></li>
-      <li><button @click="destroy">Delete</button></li>
+      <li><button @click="edit" :disabled="editing != null">Edit</button></li>
+      <li><button @click="destroy" :disabled="editing != null">Delete</button></li>
     </ul>
   </div>
 </template>
