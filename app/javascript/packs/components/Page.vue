@@ -1,17 +1,17 @@
 <template>
-  <div class="flex-grid">
-    <template v-if="editing && this.page.id == editing.id">
-      <textarea placeholder="Question" v-model="page.question" />
-      <textarea placeholder="Answer" v-model="page.answer" />
-      <button @click="update">Update</button>
-      <button @click="cancel">Cancel</button>
-    </template>
-    <template v-else>
-      <pre class="col">{{ page.question }}</pre>
-      <pre class="col">{{ page.answer }}</pre>
-      <button @click="edit">Edit</button>
-      <button @click="destroy">Delete</button>
-    </template>
+  <div>
+    <ul v-if="editing && this.page.id == editing.id">
+      <li><textarea placeholder="Question" v-model="page.question" /></li>
+      <li><textarea placeholder="Answer" v-model="page.answer" /></li>
+      <li><button @click="update">Update</button></li>
+      <li><button @click="cancel">Cancel</button></li>
+    </ul>
+    <ul v-else>
+      <li><pre>{{ page.question }}</pre></li>
+      <li><pre>{{ page.answer }}</pre></li>
+      <li><button @click="edit">Edit</button></li>
+      <li><button @click="destroy">Delete</button></li>
+    </ul>
   </div>
 </template>
 
@@ -71,14 +71,16 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.flex-grid {
-  display: flex;
-}
-.col {
-  flex: 1;
+li {
+  display: inline-block;
+  vertical-align: middle;
 }
 textarea {
+  resize: auto;
   min-width: 200px;
   min-height: 100px;
+}
+pre {
+  width: 200px;
 }
 </style>

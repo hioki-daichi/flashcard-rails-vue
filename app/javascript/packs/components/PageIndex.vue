@@ -53,3 +53,10 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style scoped>
+textarea {
+  min-width: 200px;
+  min-height: 100px;
+}
+</style>
