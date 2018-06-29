@@ -1,4 +1,6 @@
-books = Book.create([
+user = User.create(email: 'hiokidaichi@gmail.com')
+
+books = user.books.create([
   { title: 'Title 1' },
   { title: 'Title 2' },
 ])
