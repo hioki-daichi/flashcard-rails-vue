@@ -6,8 +6,8 @@ books = user.books.create([
 ])
 
 books.each do |book|
-  Page.create([
-    { book_id: book.id, question: "Question 1 of #{book.title}", answer: "Answer 1 of #{book.title}" },
-    { book_id: book.id, question: "Question 2 of #{book.title}", answer: "Answer 2 of #{book.title}" },
+  book.pages.create([
+    { question: "Question 1 of #{book.title}", answer: "Answer 1 of #{book.title}" },
+    { question: "Question 2 of #{book.title}", answer: "Answer 2 of #{book.title}" },
   ])
 end
