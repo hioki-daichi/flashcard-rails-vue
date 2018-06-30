@@ -50,6 +50,9 @@ export default new Vuex.Store({
         return book.id != value;
       });
     },
+    setPages(state, value) {
+      state.pages = value;
+    },
     setPageId(state, value) {
       state.pageId = value;
     },
@@ -121,7 +124,7 @@ export default new Vuex.Store({
       return axios
         .get("/api/books/" + this.state.bookId.toString() + "/pages")
         .then(res => {
-          state.pages = res.data;
+          commit("setPages", res.data);
         });
     },
     destroyPage({ state, commit }) {
