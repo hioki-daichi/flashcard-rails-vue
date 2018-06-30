@@ -25,4 +25,11 @@ class Api::BooksController < ApplicationController
     current_user.books.find(book_id).destroy!
     head :no_content
   end
+
+  def export
+    book_id = params[:id]
+    book = current_user.books.find(book_id)
+    csv_data = BookTranslator.to_csv(book)
+    send_data csv_data, type: 'text/csv'
+  end
 end

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Pages</h2>
+    <button @click="exportBook">Export</button>
     <div>
       <textarea placeholder="Question" v-model="question" />
       <textarea placeholder="Answer" v-model="answer" />
@@ -44,6 +44,9 @@ export default Vue.extend({
   methods: {
     submit() {
       this.$store.dispatch("createPage");
+    },
+    exportBook() {
+      this.$store.dispatch("exportBook");
     }
   }
 });

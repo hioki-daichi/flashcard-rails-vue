@@ -133,6 +133,16 @@ export default new Vuex.Store({
         commit("removeBook", state.bookId);
       });
     },
+    exportBook({ state, commit }) {
+      return axios
+        .get(`/api/books/${state.bookId}/export`, { responseType: "blob" })
+        .then(res => {
+          const link = document.createElement("a");
+          link.href = window.URL.createObjectURL(new Blob([res.data]));
+          link.download = `book${state.bookId}.csv`;
+          link.click();
+        });
+    },
     createPage({ state, commit }) {
       const data = new FormData();
       data.append("question", state.newPage.question);

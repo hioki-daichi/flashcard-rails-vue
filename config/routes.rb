@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   namespace :api do
     post :auth, to: 'authentication#authenticate'
     resources :books, only: [:index, :create, :update, :destroy] do
+      member do
+        get :export
+      end
       resources :pages, only: [:index, :create, :update, :destroy]
     end
   end
