@@ -25,6 +25,10 @@ axios.interceptors.response.use(
         alert(error.response.data.errors.join("\n"));
         break;
       }
+      case 401: {
+        alert("Authentication failed.");
+        break;
+      }
       case 404: {
         alert("Resource was not found.");
         break;
