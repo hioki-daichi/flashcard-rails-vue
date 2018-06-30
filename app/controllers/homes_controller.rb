@@ -1,4 +1,6 @@
 class HomesController < ApplicationController
+  skip_before_action :authenticate_request!
+
   def welcome
   end
 
