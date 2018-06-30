@@ -45,6 +45,11 @@ export default new Vuex.Store({
     setEditingBook(state, value) {
       state.editingBook = value;
     },
+    removeBook(state, value) {
+      state.books = state.books.filter(book => {
+        return book.id != value;
+      });
+    },
     setPageId(state, value) {
       state.pageId = value;
     },
@@ -82,10 +87,8 @@ export default new Vuex.Store({
       });
     },
     destroyBook({ state, commit }) {
-      return axios.delete(`/api/books/${state.bookId}`).then(res => {
-        state.books = state.books.filter(book => {
-          return book.id != state.bookId;
-        });
+      return axios.delete(`/api/books/${state.bookId}`).then(_ => {
+        commit("removeBook", state.bookId);
       });
     },
     createPage({ state, commit }) {
