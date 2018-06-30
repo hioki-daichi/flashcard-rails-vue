@@ -53,6 +53,9 @@ export default new Vuex.Store({
     setPages(state, value) {
       state.pages = value;
     },
+    addPage(state, value) {
+      state.pages.push(value);
+    },
     setPageId(state, value) {
       state.pageId = value;
     },
@@ -96,7 +99,7 @@ export default new Vuex.Store({
       data.append("question", state.newPage.question);
       data.append("answer", state.newPage.answer);
       return axios.post(`/api/books/${state.bookId}/pages`, data).then(res => {
-        state.pages.push(res.data);
+        commit("addPage", res.data);
         commit("updateNewPage", { question: "", answer: "" });
       });
     },
