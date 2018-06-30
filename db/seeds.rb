@@ -1,4 +1,4 @@
-user = User.create(email: 'hiokidaichi@gmail.com', password: 'changeme')
+user = User.create(email: 'a', password: 'b')
 
 books = user.books.create([
   { title: 'Title 1' },
