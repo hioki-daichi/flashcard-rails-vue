@@ -29,7 +29,7 @@ export default Vue.extend({
         return this.$store.state.newPage.question;
       },
       set(value) {
-        this.$store.commit("updateNewPageQuestion", value);
+        this.$store.commit("updateNewPage", { question: value });
       }
     },
     answer: {
@@ -37,7 +37,7 @@ export default Vue.extend({
         return this.$store.state.newPage.answer;
       },
       set(value) {
-        this.$store.commit("updateNewPageAnswer", value);
+        this.$store.commit("updateNewPage", { answer: value });
       }
     }
   },
