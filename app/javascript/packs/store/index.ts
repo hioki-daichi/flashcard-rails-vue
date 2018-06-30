@@ -56,6 +56,15 @@ export default new Vuex.Store({
     addPage(state, value) {
       state.pages.push(value);
     },
+    replacePage(state, value) {
+      state.pages = state.pages.map(page => {
+        if (page.id == value.id) {
+          return value;
+        } else {
+          return page;
+        }
+      });
+    },
     setPageId(state, value) {
       state.pageId = value;
     },
@@ -110,13 +119,7 @@ export default new Vuex.Store({
       return axios
         .patch(`/api/books/${state.bookId}/pages/${state.editingPage.id}`, data)
         .then(res => {
-          state.pages = state.pages.map(page => {
-            if (page.id == res.data.id) {
-              return res.data;
-            } else {
-              return page;
-            }
-          });
+          commit("replacePage", res.data);
         });
     },
     fetchPages({ state, commit }) {
