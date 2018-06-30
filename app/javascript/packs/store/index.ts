@@ -73,6 +73,11 @@ export default new Vuex.Store({
     },
     setEditingPage(state, value) {
       state.editingPage = value;
+    },
+    removePage(state, value) {
+      state.pages = state.pages.filter(page => {
+        return page.id != value;
+      });
     }
   },
   actions: {
@@ -133,9 +138,7 @@ export default new Vuex.Store({
       return axios
         .delete(`/api/books/${state.bookId}/pages/${state.pageId}`)
         .then(res => {
-          state.pages = state.pages.filter(page => {
-            return page.id != state.pageId;
-          });
+          commit("removePage", state.pageId);
         });
     }
   }
