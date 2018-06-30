@@ -24,8 +24,8 @@ export default new Vuex.Store({
     setBookId(state, value) {
       state.bookId = value;
     },
-    updateNewBookTitle(state, value) {
-      state.newBook.title = value;
+    updateNewBook(state, value) {
+      state.newBook = Object.assign(state.newBook, value);
     },
     setEditingBook(state, value) {
       state.editingBook = value;
@@ -49,7 +49,7 @@ export default new Vuex.Store({
       data.append("title", state.newBook.title);
       return axios.post("/api/books", data).then(res => {
         state.books.unshift(res.data);
-        state.newBook.title = "";
+        commit("updateNewBook", { title: "" });
       });
     },
     updateBook({ state, commit }) {

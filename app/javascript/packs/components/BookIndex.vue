@@ -26,7 +26,7 @@ export default Vue.extend({
         return this.$store.state.newBook.title;
       },
       set(value) {
-        this.$store.commit("updateNewBookTitle", value);
+        this.$store.commit("updateNewBook", { title: value });
       }
     }
   },
