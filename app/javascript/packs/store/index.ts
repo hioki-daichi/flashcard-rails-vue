@@ -6,7 +6,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    jwt: null,
+    jwt: localStorage.getItem("flashcard:user-token"),
     loginForm: {
       email: null,
       password: null
@@ -28,6 +28,11 @@ export default new Vuex.Store({
   mutations: {
     setJWT(state, value) {
       state.jwt = value;
+      if (value) {
+        localStorage.setItem("flashcard:user-token", value);
+      } else {
+        localStorage.removeItem("flashcard:user-token");
+      }
     },
     updateLoginForm(state, value) {
       state.loginForm = Object.assign(state.loginForm, value);
