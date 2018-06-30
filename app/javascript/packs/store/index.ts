@@ -24,6 +24,15 @@ export default new Vuex.Store({
     addBook(state, value) {
       state.books.unshift(value);
     },
+    replaceBook(state, value) {
+      state.books = state.books.map(book => {
+        if (book.id == value.id) {
+          return value;
+        } else {
+          return book;
+        }
+      });
+    },
     setBookId(state, value) {
       state.bookId = value;
     },
@@ -61,13 +70,7 @@ export default new Vuex.Store({
       return axios
         .patch(`/api/books/${state.editingBook.id}`, data)
         .then(res => {
-          state.books = state.books.map(book => {
-            if (book.id == res.data.id) {
-              return res.data;
-            } else {
-              return book;
-            }
-          });
+          commit("replaceBook", res.data);
         });
     },
     fetchBooks({ state, commit }) {
