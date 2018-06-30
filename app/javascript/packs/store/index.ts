@@ -128,11 +128,9 @@ export default new Vuex.Store({
         });
     },
     fetchPages({ state, commit }) {
-      return axios
-        .get("/api/books/" + this.state.bookId.toString() + "/pages")
-        .then(res => {
-          commit("setPages", res.data);
-        });
+      return axios.get(`/api/books/${state.bookId}/pages`).then(res => {
+        commit("setPages", res.data);
+      });
     },
     destroyPage({ state, commit }) {
       return axios
