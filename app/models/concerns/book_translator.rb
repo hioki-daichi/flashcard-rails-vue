@@ -13,4 +13,10 @@ class BookTranslator
       end
     end
   end
+
+  def self.from_csv(file)
+    pages = CSV.parse(file.read).map { |cols| Page.new(Hash[HEADER.zip(cols)]) }
+    title ="Book_#{Time.current.strftime('%Y%m%d%H%M%S')}"
+    Book.new(title: title, pages: pages)
+  end
 end

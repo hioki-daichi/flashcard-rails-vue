@@ -6,6 +6,9 @@
       <button @click="submit">Submit</button>
     </div>
     <Book v-for="book in this.$store.state.books" :book="book" :key="book.id"></Book>
+    <h3>Import</h3>
+    <input type="file" @change="fileSelected" />
+    <button @click="importBook">Upload</button>
   </div>
 </template>
 
@@ -33,6 +36,12 @@ export default Vue.extend({
   methods: {
     submit() {
       this.$store.dispatch("createBook");
+    },
+    fileSelected(e) {
+      this.$store.commit("setSelectedFile", e.target.files[0]);
+    },
+    importBook() {
+      this.$store.dispatch("importBook");
     }
   }
 });

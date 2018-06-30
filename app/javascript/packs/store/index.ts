@@ -23,7 +23,8 @@ export default new Vuex.Store({
       question: "",
       answer: ""
     },
-    editingPage: null
+    editingPage: null,
+    selectedFile: null
   },
   mutations: {
     setJWT(state, value) {
@@ -94,6 +95,9 @@ export default new Vuex.Store({
       state.pages = state.pages.filter(page => {
         return page.id != value;
       });
+    },
+    setSelectedFile(state, value) {
+      state.selectedFile = value;
     }
   },
   actions: {
@@ -173,6 +177,17 @@ export default new Vuex.Store({
         .delete(`/api/books/${state.bookId}/pages/${state.pageId}`)
         .then(res => {
           commit("removePage", state.pageId);
+        });
+    },
+    importBook({ state, commit }) {
+      const data = new FormData();
+      data.append("file", state.selectedFile);
+      return axios
+        .post("/api/books/import", data, {
+          headers: { "Content-Type": "multipart/form-data" }
+        })
+        .then(res => {
+          commit("addBook", res.data);
         });
     }
   }

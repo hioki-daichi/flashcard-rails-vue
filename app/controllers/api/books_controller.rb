@@ -26,6 +26,14 @@ class Api::BooksController < ApplicationController
     head :no_content
   end
 
+  def import
+    file = params[:file]
+    book = BookTranslator.from_csv(file)
+    book.user = current_user
+    book.save!
+    render json: book
+  end
+
   def export
     book_id = params[:id]
     book = current_user.books.find(book_id)
