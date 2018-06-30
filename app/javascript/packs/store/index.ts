@@ -96,6 +96,7 @@ export default new Vuex.Store({
         .patch(`/api/books/${state.editingBook.id}`, data)
         .then(res => {
           commit("replaceBook", res.data);
+          commit("setEditingBook", null);
         });
     },
     fetchBooks({ state, commit }) {
@@ -125,6 +126,7 @@ export default new Vuex.Store({
         .patch(`/api/books/${state.bookId}/pages/${state.editingPage.id}`, data)
         .then(res => {
           commit("replacePage", res.data);
+          commit("setEditingPage", null);
         });
     },
     fetchPages({ state, commit }) {

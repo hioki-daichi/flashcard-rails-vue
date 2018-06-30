@@ -39,9 +39,7 @@ export default Vue.extend({
       this.editing = this.book;
     },
     update() {
-      this.$store.dispatch("updateBook").then(_ => {
-        this.editing = null;
-      });
+      this.$store.dispatch("updateBook");
     },
     cancel() {
       Object.assign(this.book, this._beforeEditingCache);
