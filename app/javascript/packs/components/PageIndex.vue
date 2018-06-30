@@ -43,12 +43,7 @@ export default Vue.extend({
   },
   methods: {
     submit() {
-      this.$store
-        .dispatch("createPage")
-        .then(res => {})
-        .catch(error => {
-          console.warn(error);
-        });
+      this.$store.dispatch("createPage");
     }
   }
 });

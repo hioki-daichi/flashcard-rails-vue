@@ -39,14 +39,9 @@ export default Vue.extend({
       this.editing = this.book;
     },
     update() {
-      this.$store
-        .dispatch("updateBook")
-        .then(res => {
-          this.editing = null;
-        })
-        .catch(error => {
-          console.warn(error);
-        });
+      this.$store.dispatch("updateBook").then(_ => {
+        this.editing = null;
+      });
     },
     cancel() {
       Object.assign(this.book, this._beforeEditingCache);
@@ -56,12 +51,7 @@ export default Vue.extend({
       const confirmed = window.confirm("Are you sure ?");
       if (confirmed) {
         this.$store.commit("setBookId", this.book.id);
-        this.$store
-          .dispatch("destroyBook")
-          .then(res => {})
-          .catch(error => {
-            console.warn(error);
-          });
+        this.$store.dispatch("destroyBook");
       }
     }
   }
