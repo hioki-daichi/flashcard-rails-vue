@@ -21,6 +21,9 @@ export default new Vuex.Store({
     editingPage: null
   },
   mutations: {
+    addBook(state, value) {
+      state.books.unshift(value);
+    },
     setBookId(state, value) {
       state.bookId = value;
     },
@@ -48,7 +51,7 @@ export default new Vuex.Store({
       const data = new FormData();
       data.append("title", state.newBook.title);
       return axios.post("/api/books", data).then(res => {
-        state.books.unshift(res.data);
+        commit("addBook", res.data);
         commit("updateNewBook", { title: "" });
       });
     },
