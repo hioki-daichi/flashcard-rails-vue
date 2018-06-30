@@ -6,7 +6,7 @@
       <button @click="cancel">Cancel</button>
     </div>
     <div v-else>
-      <router-link :to="{ name: 'bookPages', params: { bookId: book.id } }">{{ book.title }}</router-link>
+      <router-link :to="{ name: 'bookDetail', params: { bookId: book.id } }">{{ book.title }}</router-link>
       <button @click="edit" :disabled="editing != null">Edit</button>
       <button @click="destroy" :disabled="editing != null">Delete</button>
     </div>
