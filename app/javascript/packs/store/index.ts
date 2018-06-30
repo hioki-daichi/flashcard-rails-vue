@@ -21,6 +21,9 @@ export default new Vuex.Store({
     editingPage: null
   },
   mutations: {
+    setBooks(state, value) {
+      state.books = value;
+    },
     addBook(state, value) {
       state.books.unshift(value);
     },
@@ -75,7 +78,7 @@ export default new Vuex.Store({
     },
     fetchBooks({ state, commit }) {
       return axios.get("/api/books").then(res => {
-        state.books = res.data;
+        commit("setBooks", res.data);
       });
     },
     destroyBook({ state, commit }) {
