@@ -1,4 +1,6 @@
 class Api::AuthenticationController < ApplicationController
+  protect_from_forgery with: :null_session # XXX
+
   skip_before_action :authenticate_request!
 
   def authenticate
