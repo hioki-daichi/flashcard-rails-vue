@@ -1,9 +1,16 @@
 import axios from "axios";
+import store from "./index";
 
 axios.interceptors.request.use(config => {
   axios.defaults.headers.common["X-CSRF-Token"] = document
     .querySelector('meta[name="csrf-token"]')
     .getAttribute("content");
+
+  const token = store.state.jwt;
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
 
   return config;
 });

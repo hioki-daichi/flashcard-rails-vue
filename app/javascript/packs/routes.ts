@@ -1,7 +1,9 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import Login from "./components/Login.vue";
 import BookIndex from "./components/BookIndex.vue";
 import PageIndex from "./components/PageIndex.vue";
+import store from "./store/index";
 
 Vue.use(VueRouter);
 
@@ -10,6 +12,13 @@ const router = new VueRouter({
     {
       path: "/",
       redirect: "/books"
+    },
+    {
+      path: "/login",
+      component: Login,
+      meta: {
+        skipAuth: true
+      }
     },
     {
       path: "/books",
@@ -25,7 +34,12 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  next();
+  if (!to.meta.skipAuth && !store.state.jwt) {
+    alert("Login required");
+    next({ path: "/login" });
+  } else {
+    next();
+  }
 });
 
 export default router;
