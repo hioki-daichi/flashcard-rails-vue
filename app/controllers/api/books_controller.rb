@@ -29,9 +29,11 @@ class Api::BooksController < ApplicationController
   def import
     file = params[:file]
     col_sep = params[:col_sep]
-    book = BookTranslator.from_csv(file, col_sep)
-    book.user = current_user
-    book.save!
+    book = nil
+    ActiveRecord::Base.transaction do
+      book = current_user.books.create!(title: "Book_#{Time.current.strftime('%Y%m%d%H%M%S')}")
+      Page.import!(BookTranslator.from_csv(file, col_sep, book))
+    end
     render json: book
   end
 
