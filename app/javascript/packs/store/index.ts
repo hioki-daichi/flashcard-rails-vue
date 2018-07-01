@@ -193,7 +193,7 @@ export default new Vuex.Store({
         return page.id;
       });
       data.append("page_ids", JSON.stringify(pageIds));
-      return axios.patch(`/api/books/${state.bookId}/page_positions`, data);
+      return axios.patch(`/api/books/${state.bookId}/pages/positions`, data);
     },
     importBook({ state, commit }) {
       const data = new FormData();

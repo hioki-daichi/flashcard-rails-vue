@@ -37,4 +37,12 @@ class Api::PagesController < ApplicationController
 
     head :no_content
   end
+
+  def positions
+    book_id = params[:book_id]
+    book = current_user.books.find(book_id)
+    page_ids = JSON.parse(params[:page_ids])
+    PageArranger.arrange!(book, page_ids)
+    head 200
+  end
 end

@@ -11,9 +11,13 @@ Rails.application.routes.draw do
 
       member do
         get :export
-        patch :page_positions
       end
-      resources :pages, only: [:index, :create, :update, :destroy]
+
+      resources :pages, only: [:index, :create, :update, :destroy] do
+        collection do
+          patch :positions
+        end
+      end
     end
   end
 
