@@ -24,7 +24,7 @@ class Api::PagesController < ApplicationController
   def index
     book_id = params[:book_id]
 
-    pages = Book.find(book_id).pages.order(created_at: :asc, id: :asc) # TODO: Handle not found error
+    pages = Book.find(book_id).pages.order(position: :asc, created_at: :asc, id: :asc) # TODO: Handle not found error
 
     render json: pages
   end

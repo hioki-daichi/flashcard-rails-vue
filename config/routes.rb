@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
       member do
         get :export
+        patch :page_positions
       end
       resources :pages, only: [:index, :create, :update, :destroy]
     end

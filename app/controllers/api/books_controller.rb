@@ -40,4 +40,12 @@ class Api::BooksController < ApplicationController
     csv_data = BookTranslator.to_csv(book)
     send_data csv_data, type: 'text/csv'
   end
+
+  def page_positions
+    book_id = params[:id]
+    book = current_user.books.find(book_id)
+    page_ids = JSON.parse(params[:page_ids])
+    PageArranger.arrange!(book, page_ids)
+    head 200
+  end
 end

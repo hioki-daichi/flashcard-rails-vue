@@ -6,17 +6,21 @@
       <textarea placeholder="Answer" v-model="answer" />
       <button @click="submit">Submit</button>
     </div>
-    <Page v-for="page in this.$store.state.pages" :page="page" :key="page.id"></Page>
+    <draggable v-model="pages">
+      <Page v-for="page in pages" :page="page" :key="page.id"></Page>
+    </draggable>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import Page from "./Page.vue";
+import draggable from "vuedraggable";
 
 export default Vue.extend({
   components: {
-    Page
+    Page,
+    draggable
   },
   props: ["bookId"],
   created() {
@@ -24,6 +28,15 @@ export default Vue.extend({
     this.$store.dispatch("fetchPages");
   },
   computed: {
+    pages: {
+      get() {
+        return this.$store.state.pages;
+      },
+      set(value) {
+        this.$store.commit("setPages", value);
+        this.$store.dispatch("updatePagePositions");
+      }
+    },
     question: {
       get() {
         return this.$store.state.newPage.question;
