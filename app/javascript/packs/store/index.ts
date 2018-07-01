@@ -179,6 +179,10 @@ export default new Vuex.Store({
           commit("removePage", state.pageId);
         });
     },
+    updatePagePositions({ state, commit }) {
+      // TODO: Request page positions
+      console.log("Page position updated.");
+    },
     importBook({ state, commit }) {
       const data = new FormData();
       data.append("file", state.selectedFile);
