@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     resources :books, only: [:index, :create, :update, :destroy] do
       collection do
         post :import
+        patch :positions
       end
 
       member do

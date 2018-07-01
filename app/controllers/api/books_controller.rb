@@ -16,7 +16,7 @@ class Api::BooksController < ApplicationController
   end
 
   def index
-    books = current_user.books.order(created_at: :desc, id: :desc)
+    books = current_user.books.order(position: :asc, created_at: :desc, id: :desc)
     render json: books
   end
 
@@ -39,6 +39,12 @@ class Api::BooksController < ApplicationController
     book = current_user.books.find(book_id)
     csv_data = BookTranslator.to_csv(book)
     send_data csv_data, type: 'text/csv'
+  end
+
+  def positions
+    book_ids = JSON.parse(params[:book_ids])
+    BookArranger.arrange!(current_user, book_ids)
+    head 200
   end
 
   def page_positions

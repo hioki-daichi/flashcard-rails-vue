@@ -5,7 +5,9 @@
       <input type="text" placeholder="Title" v-model="newBookTitle" />
       <button @click="submit">Submit</button>
     </div>
-    <Book v-for="book in this.$store.state.books" :book="book" :key="book.id"></Book>
+    <draggable v-model="books">
+      <Book v-for="book in books" :book="book" :key="book.id"></Book>
+    </draggable>
     <h3>Import</h3>
     <input type="file" @change="fileSelected" />
     <button @click="importBook">Upload</button>
@@ -15,15 +17,26 @@
 <script lang="ts">
 import Vue from "vue";
 import Book from "./Book.vue";
+import draggable from "vuedraggable";
 
 export default Vue.extend({
   components: {
-    Book
+    Book,
+    draggable
   },
   created() {
     this.$store.dispatch("fetchBooks");
   },
   computed: {
+    books: {
+      get() {
+        return this.$store.state.books;
+      },
+      set(value) {
+        this.$store.commit("setBooks", value);
+        this.$store.dispatch("updateBookPositions");
+      }
+    },
     newBookTitle: {
       get() {
         return this.$store.state.newBook.title;

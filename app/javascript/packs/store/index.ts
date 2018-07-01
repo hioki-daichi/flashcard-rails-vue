@@ -179,6 +179,14 @@ export default new Vuex.Store({
           commit("removePage", state.pageId);
         });
     },
+    updateBookPositions({ state, commit }) {
+      const data = new FormData();
+      const bookIds = state.books.map(book => {
+        return book.id;
+      });
+      data.append("book_ids", JSON.stringify(bookIds));
+      return axios.patch(`/api/books/positions`, data);
+    },
     updatePagePositions({ state, commit }) {
       const data = new FormData();
       const pageIds = state.pages.map(page => {
