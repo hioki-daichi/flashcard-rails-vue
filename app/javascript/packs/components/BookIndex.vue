@@ -10,6 +10,10 @@
     </draggable>
     <h3>Import</h3>
     <input type="file" @change="fileSelected" />
+    <select v-model="colSep">
+      <option value="comma">,</option>
+      <option value="tab">\t</option>
+    </select>
     <button @click="importBook">Upload</button>
   </div>
 </template>
@@ -43,6 +47,14 @@ export default Vue.extend({
       },
       set(value) {
         this.$store.commit("updateNewBook", { title: value });
+      }
+    },
+    colSep: {
+      get() {
+        return this.$store.state.colSep;
+      },
+      set(value) {
+        this.$store.commit("setColSep", value);
       }
     }
   },

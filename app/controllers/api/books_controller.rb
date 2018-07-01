@@ -28,7 +28,8 @@ class Api::BooksController < ApplicationController
 
   def import
     file = params[:file]
-    book = BookTranslator.from_csv(file)
+    col_sep = params[:col_sep]
+    book = BookTranslator.from_csv(file, col_sep)
     book.user = current_user
     book.save!
     render json: book

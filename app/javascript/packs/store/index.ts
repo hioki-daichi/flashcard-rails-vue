@@ -25,7 +25,8 @@ export default new Vuex.Store({
       answer: ""
     },
     editingPage: null,
-    selectedFile: null
+    selectedFile: null,
+    colSep: "comma"
   },
   mutations: {
     setJWT(state, value) {
@@ -99,6 +100,9 @@ export default new Vuex.Store({
     },
     setSelectedFile(state, value) {
       state.selectedFile = value;
+    },
+    setColSep(state, value) {
+      state.colSep = value;
     }
   },
   actions: {
@@ -201,6 +205,7 @@ export default new Vuex.Store({
     importBook({ state, commit }) {
       const data = new FormData();
       data.append("file", state.selectedFile);
+      data.append("col_sep", state.colSep);
       return axios
         .post("/api/books/import", data, {
           headers: { "Content-Type": "multipart/form-data" }
