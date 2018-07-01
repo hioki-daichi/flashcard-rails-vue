@@ -1,3 +1,3 @@
 class PageSerializer < ActiveModel::Serializer
-  attributes :id, :question, :answer
+  attributes :id, :path, :question, :answer
 end

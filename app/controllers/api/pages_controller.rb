@@ -1,10 +1,11 @@
 class Api::PagesController < ApplicationController
   def create
     book_id  = params[:book_id]
+    path     = params[:path]
     question = params[:question]
     answer   = params[:answer]
 
-    page = Book.find(book_id).pages.create!(question: question, answer: answer)
+    page = Book.find(book_id).pages.create!(path: path, question: question, answer: answer)
 
     render json: page
   end
@@ -12,11 +13,12 @@ class Api::PagesController < ApplicationController
   def update
     book_id  = params[:book_id]
     page_id  = params[:id]
+    path     = params[:path]
     question = params[:question]
     answer   = params[:answer]
 
     page = Book.find(book_id).pages.find(page_id)
-    page.update!(question: question, answer: answer)
+    page.update!(path: path, question: question, answer: answer)
 
     render json: page
   end

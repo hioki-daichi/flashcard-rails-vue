@@ -2,7 +2,7 @@
 require 'csv'
 
 class BookTranslator
-  HEADER = %w(question answer)
+  HEADER = %w(path question answer)
 
   def self.to_csv(book)
     rows = book.pages.order(id: :asc).map { |page| page.attributes.values_at(*HEADER) }

@@ -20,6 +20,7 @@ export default new Vuex.Store({
     pages: [],
     pageId: null,
     newPage: {
+      path: "",
       question: "",
       answer: ""
     },
@@ -149,15 +150,17 @@ export default new Vuex.Store({
     },
     createPage({ state, commit }) {
       const data = new FormData();
+      data.append("path", state.newPage.path);
       data.append("question", state.newPage.question);
       data.append("answer", state.newPage.answer);
       return axios.post(`/api/books/${state.bookId}/pages`, data).then(res => {
         commit("addPage", res.data);
-        commit("updateNewPage", { question: "", answer: "" });
+        commit("updateNewPage", { path: "", question: "", answer: "" });
       });
     },
     updatePage({ state, commit }) {
       const data = new FormData();
+      data.append("path", state.editingPage.path);
       data.append("question", state.editingPage.question);
       data.append("answer", state.editingPage.answer);
       return axios

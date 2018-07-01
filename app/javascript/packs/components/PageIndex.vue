@@ -2,6 +2,7 @@
   <div>
     <button @click="exportBook">Export</button>
     <div>
+      <input type="text" placeholder="Path" v-model="path" />
       <textarea placeholder="Question" v-model="question" />
       <textarea placeholder="Answer" v-model="answer" />
       <button @click="submit">Submit</button>
@@ -35,6 +36,14 @@ export default Vue.extend({
       set(value) {
         this.$store.commit("setPages", value);
         this.$store.dispatch("updatePagePositions");
+      }
+    },
+    path: {
+      get() {
+        return this.$store.state.newPage.path;
+      },
+      set(value) {
+        this.$store.commit("updateNewPage", { path: value });
       }
     },
     question: {

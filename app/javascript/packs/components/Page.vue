@@ -1,12 +1,14 @@
 <template>
   <div>
     <ul v-if="editing && this.page.id == editing.id">
+      <li><input type="text" placeholder="Path" v-model="page.path" /></li>
       <li><textarea placeholder="Question" v-model="page.question" /></li>
       <li><textarea placeholder="Answer" v-model="page.answer" /></li>
       <li><button @click="update">Update</button></li>
       <li><button @click="cancel">Cancel</button></li>
     </ul>
     <ul v-else>
+      <li><pre>{{ page.path }}</pre></li>
       <li><pre>{{ page.question }}</pre></li>
       <li><pre>{{ page.answer }}</pre></li>
       <li><button @click="edit" :disabled="editing != null">Edit</button></li>
