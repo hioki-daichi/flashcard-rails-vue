@@ -9,7 +9,7 @@
       <Book v-for="book in books" :book="book" :key="book.id"></Book>
     </draggable>
     <h3>Import</h3>
-    <input type="file" @change="fileSelected" />
+    <input type="file" @change="fileSelected" ref="fileInput" />
     <select v-model="colSep">
       <option value="comma">,</option>
       <option value="tab">\t</option>
@@ -66,7 +66,9 @@ export default Vue.extend({
       this.$store.commit("setSelectedFile", e.target.files[0]);
     },
     importBook() {
-      this.$store.dispatch("importBook");
+      this.$store.dispatch("importBook").then(_ => {
+        this.$refs.fileInput.value = "";
+      });
     }
   }
 });
