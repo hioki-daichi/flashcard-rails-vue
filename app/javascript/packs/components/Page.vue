@@ -8,6 +8,7 @@
       <li><button @click="cancel">Cancel</button></li>
     </ul>
     <ul v-else>
+      <li class="handle">=</li>
       <li><pre>{{ page.path }}</pre></li>
       <li><pre>{{ page.question }}</pre></li>
       <li><pre>{{ page.answer }}</pre></li>
@@ -72,5 +73,8 @@ textarea {
 }
 pre {
   width: 200px;
+}
+.handle {
+  cursor: move;
 }
 </style>

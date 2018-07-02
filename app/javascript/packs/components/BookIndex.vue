@@ -5,7 +5,7 @@
       <input type="text" placeholder="Title" v-model="newBookTitle" />
       <button @click="submit">Submit</button>
     </div>
-    <draggable v-model="books">
+    <draggable v-model="books" :options="{ handle: '.handle' }">
       <Book v-for="book in books" :book="book" :key="book.id"></Book>
     </draggable>
     <h3>Import</h3>

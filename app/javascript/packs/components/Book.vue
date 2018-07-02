@@ -1,15 +1,16 @@
 <template>
   <div>
-    <div v-if="editing && this.book.id == editing.id">
+    <span class="handle">=</span>
+    <template v-if="editing && this.book.id == editing.id">
       <input type="text" v-model="book.title" />
       <button @click="update">Update</button>
       <button @click="cancel">Cancel</button>
-    </div>
-    <div v-else>
+    </template>
+    <template v-else>
       <router-link :to="{ name: 'bookDetail', params: { bookId: book.id } }">{{ book.title }}</router-link>
       <button @click="edit" :disabled="editing != null">Edit</button>
       <button @click="destroy" :disabled="editing != null">Delete</button>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -55,3 +56,9 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style scoped>
+.handle {
+  cursor: move;
+}
+</style>
