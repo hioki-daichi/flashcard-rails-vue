@@ -28,6 +28,9 @@ export default Vue.extend({
     this.$store.commit("setBookId", this.bookId);
     this.$store.dispatch("fetchPages");
   },
+  destroyed() {
+    this.$store.commit("setPages", []);
+  },
   computed: {
     pages: {
       get() {

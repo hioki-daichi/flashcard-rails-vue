@@ -31,6 +31,9 @@ export default Vue.extend({
   created() {
     this.$store.dispatch("fetchBooks");
   },
+  destroyed() {
+    this.$store.commit("setBooks", []);
+  },
   computed: {
     books: {
       get() {
