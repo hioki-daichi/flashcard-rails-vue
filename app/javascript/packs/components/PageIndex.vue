@@ -7,7 +7,7 @@
       <textarea placeholder="Answer" v-model="answer" />
       <button @click="submit">Submit</button>
     </div>
-    <draggable v-model="pages" :options="{ handle: '.handle' }">
+    <draggable element="table" v-model="pages" :options="{ handle: '.handle' }">
       <Page v-for="page in pages" :page="page" :key="page.id"></Page>
     </draggable>
   </div>

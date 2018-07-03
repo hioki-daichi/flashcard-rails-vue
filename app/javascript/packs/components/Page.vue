@@ -1,21 +1,21 @@
 <template>
-  <div>
-    <ul v-if="editing && this.page.id == editing.id">
-      <li><input type="text" placeholder="Path" v-model="page.path" /></li>
-      <li><textarea placeholder="Question" v-model="page.question" /></li>
-      <li><textarea placeholder="Answer" v-model="page.answer" /></li>
-      <li><button @click="update">Update</button></li>
-      <li><button @click="cancel">Cancel</button></li>
-    </ul>
-    <ul v-else>
-      <li class="handle">=</li>
-      <li><pre>{{ page.path }}</pre></li>
-      <li><pre>{{ page.question }}</pre></li>
-      <li><pre>{{ page.answer }}</pre></li>
-      <li><button @click="edit" :disabled="editing != null">Edit</button></li>
-      <li><button @click="destroy" :disabled="editing != null">Delete</button></li>
-    </ul>
-  </div>
+  <tr>
+    <template v-if="editing && this.page.id == editing.id">
+      <td><input type="text" placeholder="Path" v-model="page.path" /></td>
+      <td><textarea placeholder="Question" v-model="page.question" /></td>
+      <td><textarea placeholder="Answer" v-model="page.answer" /></td>
+      <td><button @click="update">Update</button></td>
+      <td><button @click="cancel">Cancel</button></td>
+    </template>
+    <template v-else>
+      <td class="handle">=</td>
+      <td>{{ page.path }}</td>
+      <td>{{ page.question }}</td>
+      <td>{{ page.answer }}</td>
+      <td><button @click="edit" :disabled="editing != null">Edit</button></td>
+      <td><button @click="destroy" :disabled="editing != null">Delete</button></td>
+    </template>
+  </tr>
 </template>
 
 <script lang="ts">
@@ -76,5 +76,8 @@ pre {
 }
 .handle {
   cursor: move;
+}
+td {
+  white-space: pre-line;
 }
 </style>
