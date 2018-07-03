@@ -6,6 +6,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    loading: false,
     jwt: localStorage.getItem("flashcard:user-token"),
     loginForm: {
       email: null,
@@ -29,6 +30,9 @@ export default new Vuex.Store({
     colSep: "comma"
   },
   mutations: {
+    setLoading(state, value) {
+      state.loading = value;
+    },
     setJWT(state, value) {
       state.jwt = value;
       if (value) {

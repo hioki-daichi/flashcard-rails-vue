@@ -7,19 +7,24 @@ axios.interceptors.request.use(config => {
     .getAttribute("content");
 
   const token = store.state.jwt;
-
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+
+  store.commit("setLoading", true);
 
   return config;
 });
 
 axios.interceptors.response.use(
   response => {
+    store.commit("setLoading", false);
+
     return response;
   },
   error => {
+    store.commit("setLoading", false);
+
     switch (error.response.status) {
       case 400: {
         alert(error.response.data.errors.join("\n"));

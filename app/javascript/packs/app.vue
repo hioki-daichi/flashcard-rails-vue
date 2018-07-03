@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :class="{ loading: this.$store.state.loading }">
     <Header />
     <router-view />
   </div>
@@ -14,3 +14,9 @@ export default {
   }
 };
 </script>
+
+<style>
+.loading {
+  cursor: wait;
+}
+</style>
