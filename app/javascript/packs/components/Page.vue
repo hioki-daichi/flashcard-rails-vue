@@ -4,7 +4,7 @@
       <td><input type="text" placeholder="Path" v-model="page.path" /></td>
       <td><textarea placeholder="Question" v-model="page.question" /></td>
       <td><textarea placeholder="Answer" v-model="page.answer" /></td>
-      <td><button @click="update">Update</button></td>
+      <td><button @click="update" :disabled="!changed">Update</button></td>
       <td><button @click="cancel">Cancel</button></td>
     </template>
     <template v-else>
@@ -35,6 +35,13 @@ export default Vue.extend({
       },
       set(value) {
         this.$store.commit("setEditingPage", value);
+      }
+    },
+    changed: {
+      get() {
+        return Object.keys(this._beforeEditingCache).some(key => {
+          return this._beforeEditingCache[key] != this.editing[key];
+        });
       }
     }
   },

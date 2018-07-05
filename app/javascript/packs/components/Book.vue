@@ -3,7 +3,7 @@
     <span class="handle">=</span>
     <template v-if="editing && this.book.id == editing.id">
       <input type="text" v-model="book.title" />
-      <button @click="update">Update</button>
+      <button @click="update" :disabled="!changed">Update</button>
       <button @click="cancel">Cancel</button>
     </template>
     <template v-else>
@@ -31,6 +31,13 @@ export default Vue.extend({
       },
       set(value) {
         this.$store.commit("setEditingBook", value);
+      }
+    },
+    changed: {
+      get() {
+        return Object.keys(this._beforeEditingCache).some(key => {
+          return this._beforeEditingCache[key] != this.editing[key];
+        });
       }
     }
   },
