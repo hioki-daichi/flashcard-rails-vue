@@ -1,6 +1,14 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import axios from "./axios";
+import {
+  set,
+  assign,
+  replaceById,
+  omitById,
+  unshiftTo,
+  pushTo
+} from "./stateMutator";
 
 Vue.use(Vuex);
 
@@ -31,12 +39,8 @@ export default new Vuex.Store({
     colSep: "comma"
   },
   mutations: {
-    setPreviousUrl(state, value) {
-      state.previousUrl = value;
-    },
-    setLoading(state, value) {
-      state.loading = value;
-    },
+    setPreviousUrl: set("previousUrl"),
+    setLoading: set("loading"),
     setJWT(state, value) {
       state.jwt = value;
       if (value) {
@@ -45,73 +49,23 @@ export default new Vuex.Store({
         localStorage.removeItem("flashcard:user-token");
       }
     },
-    updateLoginForm(state, value) {
-      state.loginForm = Object.assign(state.loginForm, value);
-    },
-    setBooks(state, value) {
-      state.books = value;
-    },
-    addBook(state, value) {
-      state.books.unshift(value);
-    },
-    replaceBook(state, value) {
-      state.books = state.books.map(book => {
-        if (book.id == value.id) {
-          return value;
-        } else {
-          return book;
-        }
-      });
-    },
-    setBookId(state, value) {
-      state.bookId = value;
-    },
-    updateNewBook(state, value) {
-      state.newBook = Object.assign(state.newBook, value);
-    },
-    setEditingBook(state, value) {
-      state.editingBook = value;
-    },
-    removeBook(state, value) {
-      state.books = state.books.filter(book => {
-        return book.id != value;
-      });
-    },
-    setPages(state, value) {
-      state.pages = value;
-    },
-    addPage(state, value) {
-      state.pages.push(value);
-    },
-    replacePage(state, value) {
-      state.pages = state.pages.map(page => {
-        if (page.id == value.id) {
-          return value;
-        } else {
-          return page;
-        }
-      });
-    },
-    setPageId(state, value) {
-      state.pageId = value;
-    },
-    updateNewPage(state, value) {
-      state.newPage = Object.assign(state.newPage, value);
-    },
-    setEditingPage(state, value) {
-      state.editingPage = value;
-    },
-    removePage(state, value) {
-      state.pages = state.pages.filter(page => {
-        return page.id != value;
-      });
-    },
-    setSelectedFile(state, value) {
-      state.selectedFile = value;
-    },
-    setColSep(state, value) {
-      state.colSep = value;
-    }
+    updateLoginForm: assign("loginForm"),
+    setBooks: set("books"),
+    addBook: unshiftTo("books"),
+    replaceBook: replaceById("books"),
+    setBookId: set("bookId"),
+    updateNewBook: assign("newBook"),
+    setEditingBook: set("editingBook"),
+    removeBook: omitById("books"),
+    setPages: set("pages"),
+    addPage: pushTo("pages"),
+    replacePage: replaceById("pages"),
+    setPageId: set("pageId"),
+    updateNewPage: assign("newPage"),
+    setEditingPage: set("editingPage"),
+    removePage: omitById("pages"),
+    setSelectedFile: set("selectedFile"),
+    setColSep: set("colSep")
   },
   actions: {
     authenticate({ state, commit }) {
