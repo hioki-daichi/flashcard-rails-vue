@@ -6,6 +6,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    previousUrl: null,
     loading: false,
     jwt: localStorage.getItem("flashcard:user-token"),
     loginForm: {
@@ -30,6 +31,9 @@ export default new Vuex.Store({
     colSep: "comma"
   },
   mutations: {
+    setPreviousUrl(state, value) {
+      state.previousUrl = value;
+    },
     setLoading(state, value) {
       state.loading = value;
     },

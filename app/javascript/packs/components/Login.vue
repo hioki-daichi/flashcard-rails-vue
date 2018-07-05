@@ -27,6 +27,14 @@ export default Vue.extend({
       set(value) {
         this.$store.commit("updateLoginForm", { password: value });
       }
+    },
+    previousUrl: {
+      get() {
+        return this.$store.state.previousUrl;
+      },
+      set(value) {
+        this.$store.commit("setPreviousUrl", value);
+      }
     }
   },
   methods: {
@@ -34,7 +42,12 @@ export default Vue.extend({
       this.$store.dispatch("authenticate").then(_ => {
         this.email = "";
         this.password = "";
-        router.push("/books");
+        if (this.previousUrl) {
+          router.push(this.previousUrl);
+          this.previousUrl = null;
+        } else {
+          router.push("/books");
+        }
       });
     }
   }
