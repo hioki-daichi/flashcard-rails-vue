@@ -4,10 +4,10 @@ module JsonWebToken
 
   module_function
 
-  def encode(payload)
-    unless payload.is_a?(Hash)
-      raise ArgumentError.new('You must specify Hash instance.')
-    end
+  def encode(user_id:)
+    payload = {
+      user_id: user_id,
+    }
 
     JWT.encode(payload, key, ALG)
   end
