@@ -5,8 +5,12 @@ module JsonWebToken
   module_function
 
   def encode(user_id:)
+    n = Time.now.to_i
+
     payload = {
       user_id: user_id,
+      iat: n,
+      exp: n + 4 * 3600,
     }
 
     JWT.encode(payload, key, ALG)

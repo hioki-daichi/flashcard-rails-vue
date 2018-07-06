@@ -1,5 +1,6 @@
 import axios from "axios";
 import store from "./index";
+import router from "../routes";
 
 axios.interceptors.request.use(config => {
   const token = store.state.jwt;
@@ -32,6 +33,14 @@ axios.interceptors.response.use(
       }
       case 404: {
         alert("Resource was not found.");
+        break;
+      }
+      // token expired
+      case 419: {
+        alert(error.response.data.errors.join("\n"));
+        store.commit("setPreviousUrl", router.currentRoute.path);
+        store.commit("setJWT", null);
+        router.push("/login");
         break;
       }
       default: {

@@ -21,6 +21,9 @@ class ApplicationController < ActionController::Base
 
     begin
       auth_token = JsonWebToken.decode(token)
+    rescue JWT::ExpiredSignature
+      render json: { errors: ['Token expired'] }, status: 419
+      return
     rescue => e
       logger.error(e)
       render json: { errors: ['Token invalid'] }, status: 400
