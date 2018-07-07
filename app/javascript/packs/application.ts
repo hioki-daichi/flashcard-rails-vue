@@ -3,6 +3,8 @@ import store from "./store/index";
 import router from "./routes";
 import App from "./app.vue";
 
+Vue.config.productionTip = false;
+
 document.addEventListener("DOMContentLoaded", () => {
   new Vue({
     el: "#application",
