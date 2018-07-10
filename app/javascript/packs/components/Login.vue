@@ -1,5 +1,5 @@
 <template>
-  <form v-if="!this.$store.state.jwt">
+  <form v-if="!this.$store.state.auth.jwt">
     <input type="text" placeholder="email" v-model="email" />
     <input type="password" placeholder="password" v-model="password" />
     <button @click="submit">Submit</button>
@@ -14,7 +14,7 @@ export default Vue.extend({
   computed: {
     email: {
       get() {
-        return this.$store.state.loginForm.email;
+        return this.$store.state.auth.loginForm.email;
       },
       set(value) {
         this.$store.commit("updateLoginForm", { email: value });
@@ -22,7 +22,7 @@ export default Vue.extend({
     },
     password: {
       get() {
-        return this.$store.state.loginForm.password;
+        return this.$store.state.auth.loginForm.password;
       },
       set(value) {
         this.$store.commit("updateLoginForm", { password: value });

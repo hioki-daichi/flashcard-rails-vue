@@ -23,16 +23,43 @@ const global = {
   }
 };
 
-export default new Vuex.Store({
-  modules: {
-    global
-  },
+const auth = {
   state: {
     jwt: localStorage.getItem("flashcard:user-token"),
     loginForm: {
       email: null,
       password: null
+    }
+  },
+  mutations: {
+    setJWT(state, value) {
+      state.jwt = value;
+      if (value) {
+        localStorage.setItem("flashcard:user-token", value);
+      } else {
+        localStorage.removeItem("flashcard:user-token");
+      }
     },
+    updateLoginForm: assign("loginForm")
+  },
+  actions: {
+    authenticate({ state, commit }) {
+      const data = new FormData();
+      data.append("email", state.loginForm.email);
+      data.append("password", state.loginForm.password);
+      return axios.post("/api/auth", data).then(res => {
+        commit("setJWT", res.data.token);
+      });
+    }
+  }
+};
+
+export default new Vuex.Store({
+  modules: {
+    global,
+    auth
+  },
+  state: {
     books: [],
     bookId: null,
     newBook: {
@@ -51,15 +78,6 @@ export default new Vuex.Store({
     colSep: "comma"
   },
   mutations: {
-    setJWT(state, value) {
-      state.jwt = value;
-      if (value) {
-        localStorage.setItem("flashcard:user-token", value);
-      } else {
-        localStorage.removeItem("flashcard:user-token");
-      }
-    },
-    updateLoginForm: assign("loginForm"),
     setBooks: set("books"),
     addBook: unshiftTo("books"),
     replaceBook: replaceById("books"),
@@ -78,14 +96,6 @@ export default new Vuex.Store({
     setColSep: set("colSep")
   },
   actions: {
-    authenticate({ state, commit }) {
-      const data = new FormData();
-      data.append("email", state.loginForm.email);
-      data.append("password", state.loginForm.password);
-      return axios.post("/api/auth", data).then(res => {
-        commit("setJWT", res.data.token);
-      });
-    },
     createBook({ state, commit }) {
       const data = new FormData();
       data.append("title", state.newBook.title);

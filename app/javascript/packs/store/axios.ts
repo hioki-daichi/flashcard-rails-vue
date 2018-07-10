@@ -3,7 +3,7 @@ import store from "./index";
 import router from "../routes";
 
 axios.interceptors.request.use(config => {
-  const token = store.state.jwt;
+  const token = store.state.auth.jwt;
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }

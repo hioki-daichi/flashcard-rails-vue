@@ -34,7 +34,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (!to.meta.skipAuth && !store.state.jwt) {
+  if (!to.meta.skipAuth && !store.state.auth.jwt) {
     alert("Login required");
     store.commit("setPreviousUrl", to.path);
     next({ path: "/login" });
