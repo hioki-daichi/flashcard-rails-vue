@@ -139,6 +139,7 @@ const book = {
 };
 
 const page = {
+  namespaced: true,
   state: {
     pages: [],
     pageId: null,

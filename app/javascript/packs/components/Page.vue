@@ -34,7 +34,7 @@ export default Vue.extend({
         return this.$store.state.page.editingPage;
       },
       set(value) {
-        this.$store.commit("setEditingPage", value);
+        this.$store.commit("page/setEditingPage", value);
       }
     },
     changed: {
@@ -51,7 +51,7 @@ export default Vue.extend({
       this.editing = this.page;
     },
     update() {
-      this.$store.dispatch("updatePage");
+      this.$store.dispatch("page/updatePage");
     },
     cancel() {
       Object.assign(this.page, this._beforeEditingCache);
@@ -60,8 +60,8 @@ export default Vue.extend({
     destroy() {
       const confirmed = window.confirm("Are you sure ?");
       if (confirmed) {
-        this.$store.commit("setPageId", this.page.id);
-        this.$store.dispatch("destroyPage");
+        this.$store.commit("page/setPageId", this.page.id);
+        this.$store.dispatch("page/destroyPage");
       }
     }
   }
