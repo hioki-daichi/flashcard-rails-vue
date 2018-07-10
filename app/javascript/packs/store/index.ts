@@ -13,6 +13,7 @@ import {
 Vue.use(Vuex);
 
 const global = {
+  namespaced: true,
   state: {
     previousUrl: null,
     loading: false

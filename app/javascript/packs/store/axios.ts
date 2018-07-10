@@ -8,19 +8,19 @@ axios.interceptors.request.use(config => {
     config.headers.Authorization = `Bearer ${token}`;
   }
 
-  store.commit("setLoading", true);
+  store.commit("global/setLoading", true);
 
   return config;
 });
 
 axios.interceptors.response.use(
   response => {
-    store.commit("setLoading", false);
+    store.commit("global/setLoading", false);
 
     return response;
   },
   error => {
-    store.commit("setLoading", false);
+    store.commit("global/setLoading", false);
 
     switch (error.response.status) {
       case 400: {
@@ -38,7 +38,7 @@ axios.interceptors.response.use(
       // token expired
       case 419: {
         alert(error.response.data.errors.join("\n"));
-        store.commit("setPreviousUrl", router.currentRoute.path);
+        store.commit("global/setPreviousUrl", router.currentRoute.path);
         store.commit("auth/setJWT", null);
         router.push("/login");
         break;

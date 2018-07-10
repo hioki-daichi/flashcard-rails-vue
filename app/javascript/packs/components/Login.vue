@@ -33,7 +33,7 @@ export default Vue.extend({
         return this.$store.state.global.previousUrl;
       },
       set(value) {
-        this.$store.commit("setPreviousUrl", value);
+        this.$store.commit("global/setPreviousUrl", value);
       }
     }
   },
