@@ -1,12 +1,12 @@
-export const set = propName => (state, value) => {
+const set = propName => (state, value) => {
   state[propName] = value;
 };
 
-export const assign = propName => (state, value) => {
+const assign = propName => (state, value) => {
   state[propName] = Object.assign(state[propName], value);
 };
 
-export const replaceById = propName => (state, value) => {
+const replaceById = propName => (state, value) => {
   state[propName] = state[propName].map(obj => {
     if (obj.id == value.id) {
       return value;
@@ -16,16 +16,25 @@ export const replaceById = propName => (state, value) => {
   });
 };
 
-export const omitById = propName => (state, value) => {
+const omitById = propName => (state, value) => {
   state[propName] = state[propName].filter(obj => {
     return obj.id != value;
   });
 };
 
-export const unshiftTo = propName => (state, value) => {
+const unshiftTo = propName => (state, value) => {
   state[propName].unshift(value);
 };
 
-export const pushTo = propName => (state, value) => {
+const pushTo = propName => (state, value) => {
   state[propName].push(value);
+};
+
+export default {
+  set,
+  assign,
+  replaceById,
+  omitById,
+  unshiftTo,
+  pushTo
 };
