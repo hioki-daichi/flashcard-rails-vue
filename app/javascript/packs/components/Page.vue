@@ -31,7 +31,7 @@ export default Vue.extend({
   computed: {
     editing: {
       get() {
-        return this.$store.state.editingPage;
+        return this.$store.state.page.editingPage;
       },
       set(value) {
         this.$store.commit("setEditingPage", value);

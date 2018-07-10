@@ -34,7 +34,7 @@ export default Vue.extend({
   computed: {
     pages: {
       get() {
-        return this.$store.state.pages;
+        return this.$store.state.page.pages;
       },
       set(value) {
         this.$store.commit("setPages", value);
@@ -43,7 +43,7 @@ export default Vue.extend({
     },
     path: {
       get() {
-        return this.$store.state.newPage.path;
+        return this.$store.state.page.newPage.path;
       },
       set(value) {
         this.$store.commit("updateNewPage", { path: value });
@@ -51,7 +51,7 @@ export default Vue.extend({
     },
     question: {
       get() {
-        return this.$store.state.newPage.question;
+        return this.$store.state.page.newPage.question;
       },
       set(value) {
         this.$store.commit("updateNewPage", { question: value });
@@ -59,7 +59,7 @@ export default Vue.extend({
     },
     answer: {
       get() {
-        return this.$store.state.newPage.answer;
+        return this.$store.state.page.newPage.answer;
       },
       set(value) {
         this.$store.commit("updateNewPage", { answer: value });

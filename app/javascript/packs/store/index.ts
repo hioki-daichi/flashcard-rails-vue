@@ -138,12 +138,7 @@ const book = {
   }
 };
 
-export default new Vuex.Store({
-  modules: {
-    global,
-    auth,
-    book
-  },
+const page = {
   state: {
     pages: [],
     pageId: null,
@@ -164,26 +159,26 @@ export default new Vuex.Store({
     removePage: omitById("pages")
   },
   actions: {
-    createPage({ state, commit }) {
+    createPage({ state, commit, rootState }) {
       const data = new FormData();
       data.append("path", state.newPage.path);
       data.append("question", state.newPage.question);
       data.append("answer", state.newPage.answer);
       return axios
-        .post(`/api/books/${state.book.bookId}/pages`, data)
+        .post(`/api/books/${rootState.book.bookId}/pages`, data)
         .then(res => {
           commit("addPage", res.data);
           commit("updateNewPage", { path: "", question: "", answer: "" });
         });
     },
-    updatePage({ state, commit }) {
+    updatePage({ state, commit, rootState }) {
       const data = new FormData();
       data.append("path", state.editingPage.path);
       data.append("question", state.editingPage.question);
       data.append("answer", state.editingPage.answer);
       return axios
         .patch(
-          `/api/books/${state.book.bookId}/pages/${state.editingPage.id}`,
+          `/api/books/${rootState.book.bookId}/pages/${state.editingPage.id}`,
           data
         )
         .then(res => {
@@ -191,28 +186,39 @@ export default new Vuex.Store({
           commit("setEditingPage", null);
         });
     },
-    fetchPages({ state, commit }) {
-      return axios.get(`/api/books/${state.book.bookId}/pages`).then(res => {
-        commit("setPages", res.data);
-      });
-    },
-    destroyPage({ state, commit }) {
+    fetchPages({ state, commit, rootState }) {
       return axios
-        .delete(`/api/books/${state.book.bookId}/pages/${state.pageId}`)
+        .get(`/api/books/${rootState.book.bookId}/pages`)
+        .then(res => {
+          commit("setPages", res.data);
+        });
+    },
+    destroyPage({ state, commit, rootState }) {
+      return axios
+        .delete(`/api/books/${rootState.book.bookId}/pages/${state.pageId}`)
         .then(res => {
           commit("removePage", state.pageId);
         });
     },
-    updatePagePositions({ state, commit }) {
+    updatePagePositions({ state, commit, rootState }) {
       const data = new FormData();
       const pageIds = state.pages.map(page => {
         return page.id;
       });
       data.append("page_ids", JSON.stringify(pageIds));
       return axios.patch(
-        `/api/books/${state.book.bookId}/pages/positions`,
+        `/api/books/${rootState.book.bookId}/pages/positions`,
         data
       );
     }
+  }
+};
+
+export default new Vuex.Store({
+  modules: {
+    global,
+    auth,
+    book,
+    page
   }
 });
