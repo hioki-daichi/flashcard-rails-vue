@@ -24,6 +24,7 @@ const global = {
 };
 
 const auth = {
+  namespaced: true,
   state: {
     jwt: localStorage.getItem("flashcard:user-token"),
     loginForm: {

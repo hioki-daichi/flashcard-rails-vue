@@ -14,7 +14,7 @@ import router from "../../routes";
 export default Vue.extend({
   methods: {
     logout() {
-      this.$store.commit("setJWT", null);
+      this.$store.commit("auth/setJWT", null);
       router.push("/login");
     }
   }

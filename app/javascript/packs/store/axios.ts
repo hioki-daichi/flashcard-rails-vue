@@ -39,7 +39,7 @@ axios.interceptors.response.use(
       case 419: {
         alert(error.response.data.errors.join("\n"));
         store.commit("setPreviousUrl", router.currentRoute.path);
-        store.commit("setJWT", null);
+        store.commit("auth/setJWT", null);
         router.push("/login");
         break;
       }

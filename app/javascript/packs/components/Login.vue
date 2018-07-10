@@ -17,7 +17,7 @@ export default Vue.extend({
         return this.$store.state.auth.loginForm.email;
       },
       set(value) {
-        this.$store.commit("updateLoginForm", { email: value });
+        this.$store.commit("auth/updateLoginForm", { email: value });
       }
     },
     password: {
@@ -25,7 +25,7 @@ export default Vue.extend({
         return this.$store.state.auth.loginForm.password;
       },
       set(value) {
-        this.$store.commit("updateLoginForm", { password: value });
+        this.$store.commit("auth/updateLoginForm", { password: value });
       }
     },
     previousUrl: {
@@ -39,7 +39,7 @@ export default Vue.extend({
   },
   methods: {
     submit() {
-      this.$store.dispatch("authenticate").then(_ => {
+      this.$store.dispatch("auth/authenticate").then(_ => {
         this.email = "";
         this.password = "";
         if (this.previousUrl) {
