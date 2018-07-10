@@ -12,10 +12,22 @@ import {
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+const global = {
   state: {
     previousUrl: null,
-    loading: false,
+    loading: false
+  },
+  mutations: {
+    setPreviousUrl: set("previousUrl"),
+    setLoading: set("loading")
+  }
+};
+
+export default new Vuex.Store({
+  modules: {
+    global
+  },
+  state: {
     jwt: localStorage.getItem("flashcard:user-token"),
     loginForm: {
       email: null,
@@ -39,8 +51,6 @@ export default new Vuex.Store({
     colSep: "comma"
   },
   mutations: {
-    setPreviousUrl: set("previousUrl"),
-    setLoading: set("loading"),
     setJWT(state, value) {
       state.jwt = value;
       if (value) {
