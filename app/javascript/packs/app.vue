@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :class="{ loading: this.$store.state.loading }">
+  <div id="app" :class="{ loading: this.$store.state.global.loading }">
     <Header />
     <router-view />
   </div>

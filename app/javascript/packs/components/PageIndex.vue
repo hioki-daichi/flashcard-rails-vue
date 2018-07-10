@@ -25,53 +25,53 @@ export default Vue.extend({
   },
   props: ["bookId"],
   created() {
-    this.$store.commit("setBookId", this.bookId);
-    this.$store.dispatch("fetchPages");
+    this.$store.commit("book/setBookId", this.bookId);
+    this.$store.dispatch("page/fetchPages");
   },
   destroyed() {
-    this.$store.commit("setPages", []);
+    this.$store.commit("page/setPages", []);
   },
   computed: {
     pages: {
       get() {
-        return this.$store.state.pages;
+        return this.$store.state.page.pages;
       },
       set(value) {
-        this.$store.commit("setPages", value);
-        this.$store.dispatch("updatePagePositions");
+        this.$store.commit("page/setPages", value);
+        this.$store.dispatch("page/updatePagePositions");
       }
     },
     path: {
       get() {
-        return this.$store.state.newPage.path;
+        return this.$store.state.page.newPage.path;
       },
       set(value) {
-        this.$store.commit("updateNewPage", { path: value });
+        this.$store.commit("page/updateNewPage", { path: value });
       }
     },
     question: {
       get() {
-        return this.$store.state.newPage.question;
+        return this.$store.state.page.newPage.question;
       },
       set(value) {
-        this.$store.commit("updateNewPage", { question: value });
+        this.$store.commit("page/updateNewPage", { question: value });
       }
     },
     answer: {
       get() {
-        return this.$store.state.newPage.answer;
+        return this.$store.state.page.newPage.answer;
       },
       set(value) {
-        this.$store.commit("updateNewPage", { answer: value });
+        this.$store.commit("page/updateNewPage", { answer: value });
       }
     }
   },
   methods: {
     submit() {
-      this.$store.dispatch("createPage");
+      this.$store.dispatch("page/createPage");
     },
     exportBook() {
-      this.$store.dispatch("exportBook");
+      this.$store.dispatch("book/exportBook");
     }
   }
 });
