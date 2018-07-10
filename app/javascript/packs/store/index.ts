@@ -54,11 +54,7 @@ const auth = {
   }
 };
 
-export default new Vuex.Store({
-  modules: {
-    global,
-    auth
-  },
+const book = {
   state: {
     books: [],
     bookId: null,
@@ -66,14 +62,6 @@ export default new Vuex.Store({
       title: ""
     },
     editingBook: null,
-    pages: [],
-    pageId: null,
-    newPage: {
-      path: "",
-      question: "",
-      answer: ""
-    },
-    editingPage: null,
     selectedFile: null,
     colSep: "comma"
   },
@@ -85,13 +73,6 @@ export default new Vuex.Store({
     updateNewBook: assign("newBook"),
     setEditingBook: set("editingBook"),
     removeBook: omitById("books"),
-    setPages: set("pages"),
-    addPage: pushTo("pages"),
-    replacePage: replaceById("pages"),
-    setPageId: set("pageId"),
-    updateNewPage: assign("newPage"),
-    setEditingPage: set("editingPage"),
-    removePage: omitById("pages"),
     setSelectedFile: set("selectedFile"),
     setColSep: set("colSep")
   },
@@ -124,50 +105,6 @@ export default new Vuex.Store({
         commit("removeBook", state.bookId);
       });
     },
-    exportBook({ state, commit }) {
-      return axios
-        .get(`/api/books/${state.bookId}/export`, { responseType: "blob" })
-        .then(res => {
-          const link = document.createElement("a");
-          link.href = window.URL.createObjectURL(new Blob([res.data]));
-          link.download = `book${state.bookId}.csv`;
-          link.click();
-        });
-    },
-    createPage({ state, commit }) {
-      const data = new FormData();
-      data.append("path", state.newPage.path);
-      data.append("question", state.newPage.question);
-      data.append("answer", state.newPage.answer);
-      return axios.post(`/api/books/${state.bookId}/pages`, data).then(res => {
-        commit("addPage", res.data);
-        commit("updateNewPage", { path: "", question: "", answer: "" });
-      });
-    },
-    updatePage({ state, commit }) {
-      const data = new FormData();
-      data.append("path", state.editingPage.path);
-      data.append("question", state.editingPage.question);
-      data.append("answer", state.editingPage.answer);
-      return axios
-        .patch(`/api/books/${state.bookId}/pages/${state.editingPage.id}`, data)
-        .then(res => {
-          commit("replacePage", res.data);
-          commit("setEditingPage", null);
-        });
-    },
-    fetchPages({ state, commit }) {
-      return axios.get(`/api/books/${state.bookId}/pages`).then(res => {
-        commit("setPages", res.data);
-      });
-    },
-    destroyPage({ state, commit }) {
-      return axios
-        .delete(`/api/books/${state.bookId}/pages/${state.pageId}`)
-        .then(res => {
-          commit("removePage", state.pageId);
-        });
-    },
     updateBookPositions({ state, commit }) {
       const data = new FormData();
       const bookIds = state.books.map(book => {
@@ -175,14 +112,6 @@ export default new Vuex.Store({
       });
       data.append("book_ids", JSON.stringify(bookIds));
       return axios.patch(`/api/books/positions`, data);
-    },
-    updatePagePositions({ state, commit }) {
-      const data = new FormData();
-      const pageIds = state.pages.map(page => {
-        return page.id;
-      });
-      data.append("page_ids", JSON.stringify(pageIds));
-      return axios.patch(`/api/books/${state.bookId}/pages/positions`, data);
     },
     importBook({ state, commit }) {
       const data = new FormData();
@@ -195,6 +124,95 @@ export default new Vuex.Store({
         .then(res => {
           commit("addBook", res.data);
         });
+    },
+    exportBook({ state, commit }) {
+      return axios
+        .get(`/api/books/${state.bookId}/export`, { responseType: "blob" })
+        .then(res => {
+          const link = document.createElement("a");
+          link.href = window.URL.createObjectURL(new Blob([res.data]));
+          link.download = `book${state.bookId}.csv`;
+          link.click();
+        });
+    }
+  }
+};
+
+export default new Vuex.Store({
+  modules: {
+    global,
+    auth,
+    book
+  },
+  state: {
+    pages: [],
+    pageId: null,
+    newPage: {
+      path: "",
+      question: "",
+      answer: ""
+    },
+    editingPage: null
+  },
+  mutations: {
+    setPages: set("pages"),
+    addPage: pushTo("pages"),
+    replacePage: replaceById("pages"),
+    setPageId: set("pageId"),
+    updateNewPage: assign("newPage"),
+    setEditingPage: set("editingPage"),
+    removePage: omitById("pages")
+  },
+  actions: {
+    createPage({ state, commit }) {
+      const data = new FormData();
+      data.append("path", state.newPage.path);
+      data.append("question", state.newPage.question);
+      data.append("answer", state.newPage.answer);
+      return axios
+        .post(`/api/books/${state.book.bookId}/pages`, data)
+        .then(res => {
+          commit("addPage", res.data);
+          commit("updateNewPage", { path: "", question: "", answer: "" });
+        });
+    },
+    updatePage({ state, commit }) {
+      const data = new FormData();
+      data.append("path", state.editingPage.path);
+      data.append("question", state.editingPage.question);
+      data.append("answer", state.editingPage.answer);
+      return axios
+        .patch(
+          `/api/books/${state.book.bookId}/pages/${state.editingPage.id}`,
+          data
+        )
+        .then(res => {
+          commit("replacePage", res.data);
+          commit("setEditingPage", null);
+        });
+    },
+    fetchPages({ state, commit }) {
+      return axios.get(`/api/books/${state.book.bookId}/pages`).then(res => {
+        commit("setPages", res.data);
+      });
+    },
+    destroyPage({ state, commit }) {
+      return axios
+        .delete(`/api/books/${state.book.bookId}/pages/${state.pageId}`)
+        .then(res => {
+          commit("removePage", state.pageId);
+        });
+    },
+    updatePagePositions({ state, commit }) {
+      const data = new FormData();
+      const pageIds = state.pages.map(page => {
+        return page.id;
+      });
+      data.append("page_ids", JSON.stringify(pageIds));
+      return axios.patch(
+        `/api/books/${state.book.bookId}/pages/positions`,
+        data
+      );
     }
   }
 });

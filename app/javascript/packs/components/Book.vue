@@ -27,7 +27,7 @@ export default Vue.extend({
   computed: {
     editing: {
       get() {
-        return this.$store.state.editingBook;
+        return this.$store.state.book.editingBook;
       },
       set(value) {
         this.$store.commit("setEditingBook", value);

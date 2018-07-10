@@ -37,7 +37,7 @@ export default Vue.extend({
   computed: {
     books: {
       get() {
-        return this.$store.state.books;
+        return this.$store.state.book.books;
       },
       set(value) {
         this.$store.commit("setBooks", value);
@@ -46,7 +46,7 @@ export default Vue.extend({
     },
     newBookTitle: {
       get() {
-        return this.$store.state.newBook.title;
+        return this.$store.state.book.newBook.title;
       },
       set(value) {
         this.$store.commit("updateNewBook", { title: value });
@@ -54,7 +54,7 @@ export default Vue.extend({
     },
     colSep: {
       get() {
-        return this.$store.state.colSep;
+        return this.$store.state.book.colSep;
       },
       set(value) {
         this.$store.commit("setColSep", value);
