@@ -25,7 +25,7 @@ export default Vue.extend({
   },
   props: ["bookId"],
   created() {
-    this.$store.commit("setBookId", this.bookId);
+    this.$store.commit("book/setBookId", this.bookId);
     this.$store.dispatch("page/fetchPages");
   },
   destroyed() {
@@ -71,7 +71,7 @@ export default Vue.extend({
       this.$store.dispatch("page/createPage");
     },
     exportBook() {
-      this.$store.dispatch("page/exportBook");
+      this.$store.dispatch("book/exportBook");
     }
   }
 });

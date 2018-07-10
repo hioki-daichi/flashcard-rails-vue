@@ -55,6 +55,7 @@ const auth = {
 };
 
 const book = {
+  namespaced: true,
   state: {
     books: [],
     bookId: null,
