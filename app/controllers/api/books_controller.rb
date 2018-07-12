@@ -1,4 +1,9 @@
 class Api::BooksController < ApplicationController
+  def index
+    books = current_user.books.order(position: :asc, created_at: :desc, id: :desc)
+    render json: books
+  end
+
   def create
     title = params[:title]
     book = current_user.books.create!(title: title)
@@ -13,11 +18,6 @@ class Api::BooksController < ApplicationController
     book.update!(title: title)
 
     render json: book
-  end
-
-  def index
-    books = current_user.books.order(position: :asc, created_at: :desc, id: :desc)
-    render json: books
   end
 
   def destroy
