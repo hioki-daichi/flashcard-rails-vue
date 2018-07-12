@@ -2,8 +2,8 @@ class Api::AuthenticationController < ApplicationController
   skip_before_action :authenticate_request!
 
   def authenticate
-    email    = params[:email]
-    password = params[:password]
+    email    = params.require(:email)
+    password = params.require(:password)
 
     user = User.find_by(email: email)
 
@@ -12,5 +12,7 @@ class Api::AuthenticationController < ApplicationController
     else
       head 401
     end
+  rescue ActionController::ParameterMissing
+    head 401
   end
 end

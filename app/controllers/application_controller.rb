@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+  rescue_from ActionController::ParameterMissing, with: :parameter_missing
 
   attr_reader :current_user
 
@@ -41,5 +42,9 @@ class ApplicationController < ActionController::Base
 
   def record_not_found(e)
     head 404
+  end
+
+  def parameter_missing(e)
+    render json: { errors: [e.message] }, status: 400
   end
 end
