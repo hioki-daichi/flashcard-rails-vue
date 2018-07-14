@@ -14,7 +14,7 @@ RSpec.describe BookTranslator, type: :model do
   describe '.from_csv' do
     subject(:pages) { BookTranslator.from_csv(file, 'comma', book) }
 
-    let(:file) { Rails.root.join('spec', 'fixtures', 'book.csv').open }
+    let(:file) { file_fixture('book.csv').open }
     let!(:book) { create(:book) }
 
     it 'builds pages from CSV file' do
