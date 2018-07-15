@@ -41,7 +41,7 @@ class ApplicationController < ActionController::Base
   end
 
   def record_not_found(e)
-    head 404
+    render json: { errors: ['Resource not found'] }, status: 404
   end
 
   def parameter_missing(e)
