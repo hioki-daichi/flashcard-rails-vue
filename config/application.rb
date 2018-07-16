@@ -20,5 +20,7 @@ module FlashcardRailsVue
       g.assets = false
       g.helper = false
     end
+
+    config.middleware.use Rack::Attack
   end
 end

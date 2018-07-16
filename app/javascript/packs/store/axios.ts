@@ -43,6 +43,10 @@ axios.interceptors.response.use(
         router.push("/login");
         break;
       }
+      // Too Many Requests
+      case 429: {
+        break;
+      }
       default: {
         alert("Unexpected errors occurred.");
       }

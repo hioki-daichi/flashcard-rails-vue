@@ -14,6 +14,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'bcrypt'
 gem 'jwt'
 gem 'activerecord-import'
+gem 'rack-attack'
 
 group :development, :test do
   gem 'byebug'
