@@ -21,6 +21,6 @@
     "eslint-plugin-promise": "latest",
     "eslint-plugin-standard": "latest",
     "webpack-cli": "latest",
-    "webpack-dev-server": "^3.1.4"
+    "webpack-dev-server": "latest"
   }
 }
