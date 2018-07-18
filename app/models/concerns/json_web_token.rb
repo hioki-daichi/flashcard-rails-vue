@@ -10,7 +10,7 @@ module JsonWebToken
     payload = {
       user_id: user_id,
       iat: n,
-      exp: n + 4 * 3600,
+      exp: n + Settings.jwt.exp,
     }
 
     JWT.encode(payload, key, ALG)
