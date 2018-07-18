@@ -23,12 +23,14 @@ export default {
   },
   actions: {
     authenticate({ state, commit }) {
-      const data = new FormData();
-      data.append("email", state.loginForm.email);
-      data.append("password", state.loginForm.password);
-      return axios.post("/api/auth", data).then(res => {
-        commit("setJWT", res.data.token);
-      });
+      return axios
+        .post("/api/auth", {
+          email: state.loginForm.email,
+          password: state.loginForm.password
+        })
+        .then(res => {
+          commit("setJWT", res.data.token);
+        });
     }
   }
 };

@@ -26,18 +26,18 @@ export default {
   },
   actions: {
     createBook({ state, commit }) {
-      const data = new FormData();
-      data.append("title", state.newBook.title);
-      return axios.post("/api/books", data).then(res => {
-        commit("addBook", res.data);
-        commit("updateNewBook", { title: "" });
-      });
+      return axios
+        .post("/api/books", { title: state.newBook.title })
+        .then(res => {
+          commit("addBook", res.data);
+          commit("updateNewBook", { title: "" });
+        });
     },
     updateBook({ state, commit }) {
-      const data = new FormData();
-      data.append("title", state.editingBook.title);
       return axios
-        .patch(`/api/books/${state.editingBook.id}`, data)
+        .patch(`/api/books/${state.editingBook.id}`, {
+          title: state.editingBook.title
+        })
         .then(res => {
           commit("replaceBook", res.data);
           commit("setEditingBook", null);
@@ -54,21 +54,22 @@ export default {
       });
     },
     updateBookPositions({ state, commit }) {
-      const data = new FormData();
       const bookIds = state.books.map(book => {
         return book.id;
       });
-      data.append("book_ids", JSON.stringify(bookIds));
-      return axios.patch(`/api/books/positions`, data);
+      return axios.patch(`/api/books/positions`, {
+        book_ids: JSON.stringify(bookIds)
+      });
     },
     importBook({ state, commit }) {
-      const data = new FormData();
-      data.append("file", state.selectedFile);
-      data.append("col_sep", state.colSep);
       return axios
-        .post("/api/books/import", data, {
-          headers: { "Content-Type": "multipart/form-data" }
-        })
+        .post(
+          "/api/books/import",
+          { file: state.selectedFile, col_sep: state.colSep },
+          {
+            headers: { "Content-Type": "multipart/form-data" }
+          }
+        )
         .then(res => {
           commit("addBook", res.data);
         });

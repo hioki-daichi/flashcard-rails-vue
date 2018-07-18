@@ -24,26 +24,26 @@ export default {
   },
   actions: {
     createPage({ state, commit, rootState }) {
-      const data = new FormData();
-      data.append("path", state.newPage.path);
-      data.append("question", state.newPage.question);
-      data.append("answer", state.newPage.answer);
       return axios
-        .post(`/api/books/${rootState.book.bookId}/pages`, data)
+        .post(`/api/books/${rootState.book.bookId}/pages`, {
+          path: state.newPage.path,
+          question: state.newPage.question,
+          answer: state.newPage.answer
+        })
         .then(res => {
           commit("addPage", res.data);
           commit("updateNewPage", { path: "", question: "", answer: "" });
         });
     },
     updatePage({ state, commit, rootState }) {
-      const data = new FormData();
-      data.append("path", state.editingPage.path);
-      data.append("question", state.editingPage.question);
-      data.append("answer", state.editingPage.answer);
       return axios
         .patch(
           `/api/books/${rootState.book.bookId}/pages/${state.editingPage.id}`,
-          data
+          {
+            path: state.editingPage.path,
+            question: state.editingPage.question,
+            answer: state.editingPage.answer
+          }
         )
         .then(res => {
           commit("replacePage", res.data);
@@ -65,14 +65,12 @@ export default {
         });
     },
     updatePagePositions({ state, commit, rootState }) {
-      const data = new FormData();
       const pageIds = state.pages.map(page => {
         return page.id;
       });
-      data.append("page_ids", JSON.stringify(pageIds));
       return axios.patch(
         `/api/books/${rootState.book.bookId}/pages/positions`,
-        data
+        { page_ids: JSON.stringify(pageIds) }
       );
     }
   }
