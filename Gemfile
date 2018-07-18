@@ -15,6 +15,7 @@ gem 'bcrypt'
 gem 'jwt'
 gem 'activerecord-import'
 gem 'rack-attack'
+gem 'config'
 
 group :development, :test do
   gem 'byebug'
