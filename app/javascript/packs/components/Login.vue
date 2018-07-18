@@ -43,8 +43,9 @@ export default Vue.extend({
         this.email = "";
         this.password = "";
         if (this.previousUrl) {
-          router.push(this.previousUrl);
-          this.previousUrl = null;
+          router.push(this.previousUrl, () => {
+            this.previousUrl = null;
+          });
         } else {
           router.push("/books");
         }
