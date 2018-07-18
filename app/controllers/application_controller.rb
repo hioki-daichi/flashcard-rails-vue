@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class ApplicationController < ActionController::Base
-  protect_from_forgery with: :null_session
+  skip_forgery_protection
 
   rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
