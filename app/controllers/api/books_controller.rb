@@ -1,7 +1,7 @@
 class Api::BooksController < ApplicationController
   # GET /api/books
   def index
-    books = current_user.books.order(position: :asc, created_at: :desc, id: :desc)
+    books = current_user.books.order(row_order: :asc, created_at: :desc, id: :desc)
 
     render json: books
   end

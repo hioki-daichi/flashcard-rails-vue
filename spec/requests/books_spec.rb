@@ -26,12 +26,12 @@ RSpec.describe Api::BooksController, type: :request do
         end
       end
 
-      context 'when there are 3 books with different positions' do
-        let!(:book_1) { create(:book, user: user, position: 1) }
-        let!(:book_2) { create(:book, user: user, position: 2) }
-        let!(:book_3) { create(:book, user: user, position: 0) }
+      context 'when there are 3 books with different row_orders' do
+        let!(:book_1) { create(:book, user: user, row_order: 1) }
+        let!(:book_2) { create(:book, user: user, row_order: 2) }
+        let!(:book_3) { create(:book, user: user, row_order: 0) }
 
-        it 'returns position asc-ordered books' do
+        it 'returns row_order asc-ordered books' do
           get path, headers: headers
           expect(body[0]['id']).to be book_3.id
           expect(body[1]['id']).to be book_1.id
@@ -39,10 +39,10 @@ RSpec.describe Api::BooksController, type: :request do
         end
       end
 
-      context 'when there are 3 books with same position and different created_at' do
-        let!(:book_1) { create(:book, user: user, position: 0) }
-        let!(:book_2) { create(:book, user: user, position: 0) }
-        let!(:book_3) { create(:book, user: user, position: 0) }
+      context 'when there are 3 books with same row_order and different created_at' do
+        let!(:book_1) { create(:book, user: user, row_order: 0) }
+        let!(:book_2) { create(:book, user: user, row_order: 0) }
+        let!(:book_3) { create(:book, user: user, row_order: 0) }
 
         before do
           now = Time.current
@@ -59,10 +59,10 @@ RSpec.describe Api::BooksController, type: :request do
         end
       end
 
-      context 'when there are 3 books with same position and created_at' do
-        let!(:book_1) { create(:book, user: user, position: 0) }
-        let!(:book_2) { create(:book, user: user, position: 0) }
-        let!(:book_3) { create(:book, user: user, position: 0) }
+      context 'when there are 3 books with same row_order and created_at' do
+        let!(:book_1) { create(:book, user: user, row_order: 0) }
+        let!(:book_2) { create(:book, user: user, row_order: 0) }
+        let!(:book_3) { create(:book, user: user, row_order: 0) }
 
         before do
           now = Time.current
@@ -234,15 +234,15 @@ RSpec.describe Api::BooksController, type: :request do
   describe 'PATCH /api/books/positions' do
     let(:path) { '/api/books/positions' }
 
-    let!(:book_1) { create(:book, user: user, position: 0) }
-    let!(:book_2) { create(:book, user: user, position: 1) }
-    let!(:book_3) { create(:book, user: user, position: 2) }
+    let!(:book_1) { create(:book, user: user, row_order: 0) }
+    let!(:book_2) { create(:book, user: user, row_order: 1) }
+    let!(:book_3) { create(:book, user: user, row_order: 2) }
 
-    it 'arranges book positions' do
+    it 'arranges book row_orders' do
       patch path, params: { book_ids: "[#{book_2.id},#{book_3.id},#{book_1.id}]" }, headers: headers
-      expect(book_1.reload.position).to be 2
-      expect(book_2.reload.position).to be 0
-      expect(book_3.reload.position).to be 1
+      expect(book_1.reload.row_order).to be 2
+      expect(book_2.reload.row_order).to be 0
+      expect(book_3.reload.row_order).to be 1
       expect(response).to have_http_status 200
     end
   end
