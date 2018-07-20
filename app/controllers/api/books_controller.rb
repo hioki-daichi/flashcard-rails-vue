@@ -1,7 +1,7 @@
 class Api::BooksController < ApplicationController
   # GET /api/books
   def index
-    books = current_user.books.order(row_order: :asc, created_at: :desc, id: :desc)
+    books = current_user.books.rank(:row_order)
 
     render json: books
   end
@@ -65,11 +65,14 @@ class Api::BooksController < ApplicationController
     send_data csv_data, type: 'text/csv'
   end
 
-  # PATCH /api/books/positions
-  def positions
-    book_ids = JSON.parse(params.require(:book_ids))
+  # PATCH /api/books/:id/sort
+  def sort
+    book_id            = params.require(:id)
+    row_order_position = params.require(:row_order_position)
 
-    BookArranger.arrange!(current_user, book_ids)
+    book = current_user.books.find(book_id)
+
+    book.update!(row_order_position: row_order_position)
 
     head 200
   end

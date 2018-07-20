@@ -38,46 +38,6 @@ RSpec.describe Api::BooksController, type: :request do
           expect(body[2]['id']).to be book_2.id
         end
       end
-
-      context 'when there are 3 books with same row_order and different created_at' do
-        let!(:book_1) { create(:book, user: user, row_order: 0) }
-        let!(:book_2) { create(:book, user: user, row_order: 0) }
-        let!(:book_3) { create(:book, user: user, row_order: 0) }
-
-        before do
-          now = Time.current
-          book_1.update_column(:created_at, now + 1)
-          book_2.update_column(:created_at, now + 3)
-          book_3.update_column(:created_at, now + 2)
-        end
-
-        it 'returns created_at desc-ordered books' do
-          get path, headers: headers
-          expect(body[0]['id']).to be book_2.id
-          expect(body[1]['id']).to be book_3.id
-          expect(body[2]['id']).to be book_1.id
-        end
-      end
-
-      context 'when there are 3 books with same row_order and created_at' do
-        let!(:book_1) { create(:book, user: user, row_order: 0) }
-        let!(:book_2) { create(:book, user: user, row_order: 0) }
-        let!(:book_3) { create(:book, user: user, row_order: 0) }
-
-        before do
-          now = Time.current
-          book_1.update_column(:created_at, now)
-          book_2.update_column(:created_at, now)
-          book_3.update_column(:created_at, now)
-        end
-
-        it 'returns id desc-ordered books' do
-          get path, headers: headers
-          expect(body[0]['id']).to be book_3.id
-          expect(body[1]['id']).to be book_2.id
-          expect(body[2]['id']).to be book_1.id
-        end
-      end
     end
   end
 
@@ -231,19 +191,53 @@ RSpec.describe Api::BooksController, type: :request do
     end
   end
 
-  describe 'PATCH /api/books/positions' do
-    let(:path) { '/api/books/positions' }
+  describe 'PATCH /api/books/:id/sort' do
+    let(:path) { "/api/books/#{book_id}/sort" }
 
     let!(:book_1) { create(:book, user: user, row_order: 0) }
     let!(:book_2) { create(:book, user: user, row_order: 1) }
     let!(:book_3) { create(:book, user: user, row_order: 2) }
 
-    it 'arranges book row_orders' do
-      patch path, params: { book_ids: "[#{book_2.id},#{book_3.id},#{book_1.id}]" }, headers: headers
-      expect(book_1.reload.row_order).to be 2
-      expect(book_2.reload.row_order).to be 0
-      expect(book_3.reload.row_order).to be 1
-      expect(response).to have_http_status 200
+    def book_1_order; book_1.reload.row_order end
+    def book_2_order; book_2.reload.row_order end
+    def book_3_order; book_3.reload.row_order end
+
+    let(:params) { { row_order_position: row_order_position } }
+
+    context 'when 3rd item is dropped at the beginning' do
+      let(:book_id) { book_3.id }
+      let(:row_order_position) { 0 }
+
+      it 'updates to 3 < 1 < 2' do
+        patch path, params: params, headers: headers
+        expect(response).to have_http_status 200
+        expect(book_3_order).to be < book_1_order
+        expect(book_1_order).to be < book_2_order
+      end
+    end
+
+    context 'when 2nd item is dropped at the end' do
+      let(:book_id) { book_2.id }
+      let(:row_order_position) { 2 }
+
+      it 'updates to 1 < 3 < 2' do
+        patch path, params: params, headers: headers
+        expect(response).to have_http_status 200
+        expect(book_1_order).to be < book_3_order
+        expect(book_3_order).to be < book_2_order
+      end
+    end
+
+    context 'when first item is dropped at the end' do
+      let(:book_id) { book_1.id }
+      let(:row_order_position) { 2 }
+
+      it 'updates to 2 < 3 < 1' do
+        patch path, params: params, headers: headers
+        expect(response).to have_http_status 200
+        expect(book_2_order).to be < book_3_order
+        expect(book_3_order).to be < book_1_order
+      end
     end
   end
 end
