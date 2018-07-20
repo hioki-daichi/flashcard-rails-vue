@@ -6,6 +6,7 @@ export default {
   state: {
     pages: [],
     pageId: null,
+    newIndex: null,
     newPage: {
       path: "",
       question: "",
@@ -18,6 +19,7 @@ export default {
     addPage: mutator.pushTo("pages"),
     replacePage: mutator.replaceById("pages"),
     setPageId: mutator.set("pageId"),
+    setNewIndex: mutator.set("newIndex"),
     updateNewPage: mutator.assign("newPage"),
     setEditingPage: mutator.set("editingPage"),
     removePage: mutator.omitById("pages")
@@ -64,13 +66,10 @@ export default {
           commit("removePage", state.pageId);
         });
     },
-    updatePagePositions({ state, commit, rootState }) {
-      const pageIds = state.pages.map(page => {
-        return page.id;
-      });
+    sort({ state, commit, rootState }) {
       return axios.patch(
-        `/api/books/${rootState.book.bookId}/pages/positions`,
-        { page_ids: JSON.stringify(pageIds) }
+        `/api/books/${rootState.book.bookId}/pages/${state.pageId}/sort`,
+        { row_order_position: state.newIndex }
       );
     }
   }

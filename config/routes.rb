@@ -14,8 +14,8 @@ Rails.application.routes.draw do
       end
 
       resources :pages, only: [:index, :create, :update, :destroy] do
-        collection do
-          patch :positions
+        member do
+          patch :sort
         end
       end
     end
