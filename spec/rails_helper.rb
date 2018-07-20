@@ -1,6 +1,8 @@
 if ENV['CI']
   require 'simplecov'
+  require 'codecov'
   SimpleCov.start 'rails'
+  SimpleCov.formatter = SimpleCov::Formatter::Codecov
 end
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
