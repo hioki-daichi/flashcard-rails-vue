@@ -3,7 +3,7 @@ class Api::PagesController < ApplicationController
   def index
     book_id = params.require(:book_id)
 
-    pages = current_user.books.find(book_id).pages.order(position: :asc, created_at: :asc, id: :asc)
+    pages = current_user.books.find(book_id).pages.rank(:row_order)
 
     render json: pages
   end
@@ -48,15 +48,15 @@ class Api::PagesController < ApplicationController
     head 204
   end
 
-  # PATCH /api/books/:book_id/pages/positions
-  def positions
-    book_id = params.require(:book_id)
+  # PATCH /api/books/:book_id/pages/:id/sort
+  def sort
+    book_id            = params.require(:book_id)
+    page_id            = params.require(:id)
+    row_order_position = params.require(:row_order_position)
 
-    book = current_user.books.find(book_id)
+    page = current_user.books.find(book_id).pages.find(page_id)
 
-    page_ids = JSON.parse(params.require(:page_ids))
-
-    PageArranger.arrange!(book, page_ids)
+    page.update!(row_order_position: row_order_position)
 
     head 200
   end

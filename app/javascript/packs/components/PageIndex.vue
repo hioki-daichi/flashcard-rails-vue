@@ -7,7 +7,7 @@
       <textarea placeholder="Answer" v-model="answer" />
       <button @click="submit">Submit</button>
     </div>
-    <draggable element="table" v-model="pages" :options="{ handle: '.handle' }">
+    <draggable element="table" :options="{ handle: '.handle' }" @end="onEnd">
       <Page v-for="page in pages" :page="page" :key="page.id"></Page>
     </draggable>
   </div>
@@ -32,14 +32,8 @@ export default Vue.extend({
     this.$store.commit("page/setPages", []);
   },
   computed: {
-    pages: {
-      get() {
-        return this.$store.state.page.pages;
-      },
-      set(value) {
-        this.$store.commit("page/setPages", value);
-        this.$store.dispatch("page/updatePagePositions");
-      }
+    pages() {
+      return this.$store.state.page.pages;
     },
     path: {
       get() {
@@ -67,6 +61,11 @@ export default Vue.extend({
     }
   },
   methods: {
+    onEnd(e) {
+      this.$store.commit("page/setPageId", this.pages[e.oldIndex].id);
+      this.$store.commit("page/setNewIndex", e.newIndex);
+      this.$store.dispatch("page/sort");
+    },
     submit() {
       this.$store.dispatch("page/createPage");
     },

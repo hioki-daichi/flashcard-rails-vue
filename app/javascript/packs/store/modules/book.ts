@@ -6,6 +6,7 @@ export default {
   state: {
     books: [],
     bookId: null,
+    newIndex: null,
     newBook: {
       title: ""
     },
@@ -18,6 +19,7 @@ export default {
     addBook: mutator.unshiftTo("books"),
     replaceBook: mutator.replaceById("books"),
     setBookId: mutator.set("bookId"),
+    setNewIndex: mutator.set("newIndex"),
     updateNewBook: mutator.assign("newBook"),
     setEditingBook: mutator.set("editingBook"),
     removeBook: mutator.omitById("books"),
@@ -53,12 +55,9 @@ export default {
         commit("removeBook", state.bookId);
       });
     },
-    updateBookPositions({ state, commit }) {
-      const bookIds = state.books.map(book => {
-        return book.id;
-      });
-      return axios.patch(`/api/books/positions`, {
-        book_ids: JSON.stringify(bookIds)
+    sort({ state, commit }) {
+      return axios.patch(`/api/books/${state.bookId}/sort`, {
+        row_order_position: state.newIndex
       });
     },
     importBook({ state, commit }) {

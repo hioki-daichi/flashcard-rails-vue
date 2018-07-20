@@ -5,7 +5,7 @@
       <input type="text" placeholder="Title" v-model="newBookTitle" />
       <button @click="submit">Submit</button>
     </div>
-    <draggable v-model="books" :options="{ handle: '.handle' }">
+    <draggable :options="{ handle: '.handle' }" @end="onEnd">
       <Book v-for="book in books" :book="book" :key="book.id"></Book>
     </draggable>
     <h3>Import</h3>
@@ -35,14 +35,8 @@ export default Vue.extend({
     this.$store.commit("book/setBooks", []);
   },
   computed: {
-    books: {
-      get() {
-        return this.$store.state.book.books;
-      },
-      set(value) {
-        this.$store.commit("book/setBooks", value);
-        this.$store.dispatch("book/updateBookPositions");
-      }
+    books() {
+      return this.$store.state.book.books;
     },
     newBookTitle: {
       get() {
@@ -62,6 +56,11 @@ export default Vue.extend({
     }
   },
   methods: {
+    onEnd(e) {
+      this.$store.commit("book/setBookId", this.books[e.oldIndex].id);
+      this.$store.commit("book/setNewIndex", e.newIndex);
+      this.$store.dispatch("book/sort");
+    },
     submit() {
       this.$store.dispatch("book/createBook");
     },
