@@ -38,12 +38,12 @@ RSpec.describe Api::PagesController, type: :request do
         end
       end
 
-      context 'when there are 3 pages with different positions' do
-        let!(:page_1) { create(:page, book: book, position: 1) }
-        let!(:page_2) { create(:page, book: book, position: 2) }
-        let!(:page_3) { create(:page, book: book, position: 0) }
+      context 'when there are 3 pages with different row_orders' do
+        let!(:page_1) { create(:page, book: book, row_order: 1) }
+        let!(:page_2) { create(:page, book: book, row_order: 2) }
+        let!(:page_3) { create(:page, book: book, row_order: 0) }
 
-        it 'returns position asc-ordered pages' do
+        it 'returns row_order asc-ordered pages' do
           get path, headers: headers
           expect(body[0]['id']).to be page_3.id
           expect(body[1]['id']).to be page_1.id
@@ -51,10 +51,10 @@ RSpec.describe Api::PagesController, type: :request do
         end
       end
 
-      context 'when there are 3 pages with same position and different created_at' do
-        let!(:page_1) { create(:page, book: book, position: 0) }
-        let!(:page_2) { create(:page, book: book, position: 0) }
-        let!(:page_3) { create(:page, book: book, position: 0) }
+      context 'when there are 3 pages with same row_order and different created_at' do
+        let!(:page_1) { create(:page, book: book, row_order: 0) }
+        let!(:page_2) { create(:page, book: book, row_order: 0) }
+        let!(:page_3) { create(:page, book: book, row_order: 0) }
 
         before do
           now = Time.current
@@ -71,10 +71,10 @@ RSpec.describe Api::PagesController, type: :request do
         end
       end
 
-      context 'when there are 3 pages with same position and created_at' do
-        let!(:page_1) { create(:page, book: book, position: 0) }
-        let!(:page_2) { create(:page, book: book, position: 0) }
-        let!(:page_3) { create(:page, book: book, position: 0) }
+      context 'when there are 3 pages with same row_order and created_at' do
+        let!(:page_1) { create(:page, book: book, row_order: 0) }
+        let!(:page_2) { create(:page, book: book, row_order: 0) }
+        let!(:page_3) { create(:page, book: book, row_order: 0) }
 
         before do
           now = Time.current
@@ -227,15 +227,15 @@ RSpec.describe Api::PagesController, type: :request do
   describe 'PATCH /api/books/:book_id/pages/positions' do
     let(:path) { "/api/books/#{book.id}/pages/positions" }
 
-    let!(:page_1) { create(:page, book: book, position: 0) }
-    let!(:page_2) { create(:page, book: book, position: 1) }
-    let!(:page_3) { create(:page, book: book, position: 2) }
+    let!(:page_1) { create(:page, book: book, row_order: 0) }
+    let!(:page_2) { create(:page, book: book, row_order: 1) }
+    let!(:page_3) { create(:page, book: book, row_order: 2) }
 
-    it 'arranges page positions' do
+    it 'arranges page row_orders' do
       patch path, params: { page_ids: "[#{page_2.id},#{page_3.id},#{page_1.id}]" }, headers: headers
-      expect(page_1.reload.position).to be 2
-      expect(page_2.reload.position).to be 0
-      expect(page_3.reload.position).to be 1
+      expect(page_1.reload.row_order).to be 2
+      expect(page_2.reload.row_order).to be 0
+      expect(page_3.reload.row_order).to be 1
       expect(response).to have_http_status 200
     end
   end

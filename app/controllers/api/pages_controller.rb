@@ -3,7 +3,7 @@ class Api::PagesController < ApplicationController
   def index
     book_id = params.require(:book_id)
 
-    pages = current_user.books.find(book_id).pages.order(position: :asc, created_at: :asc, id: :asc)
+    pages = current_user.books.find(book_id).pages.order(row_order: :asc, created_at: :asc, id: :asc)
 
     render json: pages
   end
