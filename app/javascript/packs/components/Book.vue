@@ -27,10 +27,10 @@ export default Vue.extend({
   computed: {
     editing: {
       get() {
-        return this.$store.state.book.editingBook;
+        return this.$store.state.book.editing;
       },
       set(value) {
-        this.$store.commit("book/setEditingBook", value);
+        this.$store.commit("book/setEditing", value);
       }
     },
     changed: {
@@ -47,7 +47,7 @@ export default Vue.extend({
       this.editing = this.book;
     },
     update() {
-      this.$store.dispatch("book/updateBook");
+      this.$store.dispatch("book/update");
     },
     cancel() {
       Object.assign(this.book, this._beforeEditingCache);
@@ -56,8 +56,8 @@ export default Vue.extend({
     destroy() {
       const confirmed = window.confirm("Are you sure ?");
       if (confirmed) {
-        this.$store.commit("book/setBookId", this.book.id);
-        this.$store.dispatch("book/destroyBook");
+        this.$store.commit("book/setId", this.book.id);
+        this.$store.dispatch("book/destroy");
       }
     }
   }

@@ -4,71 +4,66 @@ import mutator from "../mutator";
 export default {
   namespaced: true,
   state: {
-    pages: [],
-    pageId: null,
+    list: [],
+    id: null,
     newIndex: null,
-    newPage: {
+    newObject: {
       path: "",
       question: "",
       answer: ""
     },
-    editingPage: null
+    editing: null
   },
   mutations: {
-    setPages: mutator.set("pages"),
-    addPage: mutator.pushTo("pages"),
-    replacePage: mutator.replaceById("pages"),
-    setPageId: mutator.set("pageId"),
+    setList: mutator.set("list"),
+    add: mutator.pushTo("list"),
+    replace: mutator.replaceById("list"),
+    setId: mutator.set("id"),
     setNewIndex: mutator.set("newIndex"),
-    updateNewPage: mutator.assign("newPage"),
-    setEditingPage: mutator.set("editingPage"),
-    removePage: mutator.omitById("pages")
+    updateNewObject: mutator.assign("newObject"),
+    setEditing: mutator.set("editing"),
+    remove: mutator.omitById("list")
   },
   actions: {
-    createPage({ state, commit, rootState }) {
+    create({ state, commit, rootState }) {
       return axios
-        .post(`/api/books/${rootState.book.bookId}/pages`, {
-          path: state.newPage.path,
-          question: state.newPage.question,
-          answer: state.newPage.answer
+        .post(`/api/books/${rootState.book.id}/pages`, {
+          path: state.newObject.path,
+          question: state.newObject.question,
+          answer: state.newObject.answer
         })
         .then(res => {
-          commit("addPage", res.data);
-          commit("updateNewPage", { path: "", question: "", answer: "" });
+          commit("add", res.data);
+          commit("updateNewObject", { path: "", question: "", answer: "" });
         });
     },
-    updatePage({ state, commit, rootState }) {
+    update({ state, commit, rootState }) {
       return axios
-        .patch(
-          `/api/books/${rootState.book.bookId}/pages/${state.editingPage.id}`,
-          {
-            path: state.editingPage.path,
-            question: state.editingPage.question,
-            answer: state.editingPage.answer
-          }
-        )
+        .patch(`/api/books/${rootState.book.id}/pages/${state.editing.id}`, {
+          path: state.editing.path,
+          question: state.editing.question,
+          answer: state.editing.answer
+        })
         .then(res => {
-          commit("replacePage", res.data);
-          commit("setEditingPage", null);
+          commit("replace", res.data);
+          commit("setEditing", null);
         });
     },
-    fetchPages({ state, commit, rootState }) {
-      return axios
-        .get(`/api/books/${rootState.book.bookId}/pages`)
-        .then(res => {
-          commit("setPages", res.data);
-        });
+    fetch({ state, commit, rootState }) {
+      return axios.get(`/api/books/${rootState.book.id}/pages`).then(res => {
+        commit("setList", res.data);
+      });
     },
-    destroyPage({ state, commit, rootState }) {
+    destroy({ state, commit, rootState }) {
       return axios
-        .delete(`/api/books/${rootState.book.bookId}/pages/${state.pageId}`)
+        .delete(`/api/books/${rootState.book.id}/pages/${state.id}`)
         .then(res => {
-          commit("removePage", state.pageId);
+          commit("remove", state.id);
         });
     },
     sort({ state, commit, rootState }) {
       return axios.patch(
-        `/api/books/${rootState.book.bookId}/pages/${state.pageId}/sort`,
+        `/api/books/${rootState.book.id}/pages/${state.id}/sort`,
         { row_order_position: state.newIndex }
       );
     }

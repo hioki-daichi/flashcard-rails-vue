@@ -29,21 +29,21 @@ export default Vue.extend({
     draggable
   },
   created() {
-    this.$store.dispatch("book/fetchBooks");
+    this.$store.dispatch("book/fetch");
   },
   destroyed() {
-    this.$store.commit("book/setBooks", []);
+    this.$store.commit("book/setList", []);
   },
   computed: {
     books() {
-      return this.$store.state.book.books;
+      return this.$store.state.book.list;
     },
     newBookTitle: {
       get() {
-        return this.$store.state.book.newBook.title;
+        return this.$store.state.book.newObject.title;
       },
       set(value) {
-        this.$store.commit("book/updateNewBook", { title: value });
+        this.$store.commit("book/updateNewObject", { title: value });
       }
     },
     colSep: {
@@ -57,12 +57,12 @@ export default Vue.extend({
   },
   methods: {
     onEnd(e) {
-      this.$store.commit("book/setBookId", this.books[e.oldIndex].id);
+      this.$store.commit("book/setId", this.books[e.oldIndex].id);
       this.$store.commit("book/setNewIndex", e.newIndex);
       this.$store.dispatch("book/sort");
     },
     submit() {
-      this.$store.dispatch("book/createBook");
+      this.$store.dispatch("book/create");
     },
     fileSelected(e) {
       this.$store.commit("book/setSelectedFile", e.target.files[0]);

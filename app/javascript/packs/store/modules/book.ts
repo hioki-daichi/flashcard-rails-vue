@@ -4,59 +4,59 @@ import mutator from "../mutator";
 export default {
   namespaced: true,
   state: {
-    books: [],
-    bookId: null,
+    list: [],
+    id: null,
     newIndex: null,
-    newBook: {
+    newObject: {
       title: ""
     },
-    editingBook: null,
+    editing: null,
     selectedFile: null,
     colSep: "comma"
   },
   mutations: {
-    setBooks: mutator.set("books"),
-    addBook: mutator.unshiftTo("books"),
-    replaceBook: mutator.replaceById("books"),
-    setBookId: mutator.set("bookId"),
+    setList: mutator.set("list"),
+    add: mutator.unshiftTo("list"),
+    replace: mutator.replaceById("list"),
+    setId: mutator.set("id"),
     setNewIndex: mutator.set("newIndex"),
-    updateNewBook: mutator.assign("newBook"),
-    setEditingBook: mutator.set("editingBook"),
-    removeBook: mutator.omitById("books"),
+    updateNewObject: mutator.assign("newObject"),
+    setEditing: mutator.set("editing"),
+    remove: mutator.omitById("list"),
     setSelectedFile: mutator.set("selectedFile"),
     setColSep: mutator.set("colSep")
   },
   actions: {
-    createBook({ state, commit }) {
+    create({ state, commit }) {
       return axios
-        .post("/api/books", { title: state.newBook.title })
+        .post("/api/books", { title: state.newObject.title })
         .then(res => {
-          commit("addBook", res.data);
-          commit("updateNewBook", { title: "" });
+          commit("add", res.data);
+          commit("updateNewObject", { title: "" });
         });
     },
-    updateBook({ state, commit }) {
+    update({ state, commit }) {
       return axios
-        .patch(`/api/books/${state.editingBook.id}`, {
-          title: state.editingBook.title
+        .patch(`/api/books/${state.editing.id}`, {
+          title: state.editing.title
         })
         .then(res => {
-          commit("replaceBook", res.data);
-          commit("setEditingBook", null);
+          commit("replace", res.data);
+          commit("setEditing", null);
         });
     },
-    fetchBooks({ state, commit }) {
+    fetch({ state, commit }) {
       return axios.get("/api/books").then(res => {
-        commit("setBooks", res.data);
+        commit("setList", res.data);
       });
     },
-    destroyBook({ state, commit }) {
-      return axios.delete(`/api/books/${state.bookId}`).then(_ => {
-        commit("removeBook", state.bookId);
+    destroy({ state, commit }) {
+      return axios.delete(`/api/books/${state.id}`).then(_ => {
+        commit("remove", state.id);
       });
     },
     sort({ state, commit }) {
-      return axios.patch(`/api/books/${state.bookId}/sort`, {
+      return axios.patch(`/api/books/${state.id}/sort`, {
         row_order_position: state.newIndex
       });
     },
@@ -70,16 +70,16 @@ export default {
           }
         )
         .then(res => {
-          commit("addBook", res.data);
+          commit("add", res.data);
         });
     },
     exportBook({ state, commit }) {
       return axios
-        .get(`/api/books/${state.bookId}/export`, { responseType: "blob" })
+        .get(`/api/books/${state.id}/export`, { responseType: "blob" })
         .then(res => {
           const link = document.createElement("a");
           link.href = window.URL.createObjectURL(new Blob([res.data]));
-          link.download = `book${state.bookId}.csv`;
+          link.download = `book${state.id}.csv`;
           link.click();
         });
     }
