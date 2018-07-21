@@ -1,8 +1,10 @@
 <template>
-  <div id="app" :class="{ loading: this.$store.state.global.loading }">
+  <v-app :class="{ loading: this.$store.state.global.loading }">
     <Header />
-    <router-view />
-  </div>
+    <v-content>
+      <router-view />
+    </v-content>
+  </v-app>
 </template>
 
 <script lang="ts">
