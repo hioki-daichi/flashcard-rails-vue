@@ -1,21 +1,28 @@
 <template>
-  <div>
-    <h2>Books</h2>
-    <div>
-      <input type="text" placeholder="Title" v-model="newBookTitle" />
-      <button @click="submit">Submit</button>
-    </div>
-    <draggable :options="{ handle: '.handle' }" @end="onEnd">
-      <Book v-for="book in books" :book="book" :key="book.id"></Book>
-    </draggable>
-    <h3>Import</h3>
-    <input type="file" @change="fileSelected" ref="fileInput" />
-    <select v-model="colSep">
-      <option value="comma">,</option>
-      <option value="tab">\t</option>
-    </select>
-    <button @click="importBook">Upload</button>
-  </div>
+  <v-container>
+    <v-layout>
+      <v-flex>
+        <h2>Books</h2>
+        <v-form>
+          <v-text-field type="text" placeholder="Title" v-model="newBookTitle" />
+          <v-btn @click="submit">Submit</v-btn>
+          <draggable element="table" :options="{ handle: '.handle' }" @end="onEnd">
+            <Book v-for="book in books" :book="book" :key="book.id"></Book>
+          </draggable>
+        </v-form>
+      </v-flex>
+    </v-layout>
+    <v-layout>
+      <v-flex>
+        <h2>Import</h2>
+        <v-form>
+          <input type="file" @change="fileSelected" ref="fileInput" />
+          <v-select :items="colSepOptions" v-model="colSep"></v-select>
+          <v-btn @click="importBook">Upload</v-btn>
+        </v-form>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -54,6 +61,14 @@ export default Vue.extend({
         this.$store.commit("book/setColSep", value);
       }
     }
+  },
+  data() {
+    return {
+      colSepOptions: [
+        { text: ",", value: "comma" },
+        { text: "\\t", value: "tab" }
+      ]
+    };
   },
   methods: {
     onEnd(e) {

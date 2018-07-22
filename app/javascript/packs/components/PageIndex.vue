@@ -1,16 +1,20 @@
 <template>
-  <div>
-    <button @click="exportBook">Export</button>
-    <div>
-      <input type="text" placeholder="Path" v-model="path" />
-      <textarea placeholder="Question" v-model="question" />
-      <textarea placeholder="Answer" v-model="answer" />
-      <button @click="submit">Submit</button>
-    </div>
-    <draggable element="table" :options="{ handle: '.handle' }" @end="onEnd">
-      <Page v-for="page in pages" :page="page" :key="page.id"></Page>
-    </draggable>
-  </div>
+  <v-container>
+    <v-layout>
+      <v-flex>
+        <v-btn @click="exportBook">Export</v-btn>
+        <div>
+          <v-text-field type="text" placeholder="Path" v-model="path" />
+          <v-textarea placeholder="Question" v-model="question" />
+          <v-textarea placeholder="Answer" v-model="answer" />
+          <v-btn @click="submit">Submit</v-btn>
+        </div>
+        <draggable element="table" :options="{ handle: '.handle' }" @end="onEnd">
+          <Page v-for="page in pages" :page="page" :key="page.id"></Page>
+        </draggable>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script lang="ts">
