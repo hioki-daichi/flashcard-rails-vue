@@ -61,14 +61,13 @@ export default {
       });
     },
     importBook({ state, commit }) {
+      const data = new FormData();
+      data.append("file", state.selectedFile);
+      data.append("col_sep", state.colSep);
       return axios
-        .post(
-          "/api/books/import",
-          { file: state.selectedFile, col_sep: state.colSep },
-          {
-            headers: { "Content-Type": "multipart/form-data" }
-          }
-        )
+        .post("/api/books/import", data, {
+          headers: { "Content-Type": "multipart/form-data" }
+        })
         .then(res => {
           commit("add", res.data);
         });
