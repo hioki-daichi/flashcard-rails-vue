@@ -4,6 +4,7 @@
   "dependencies": {
     "@rails/webpacker": "^4.0.0-pre.2",
     "axios": "latest",
+    "material-design-icons": "^3.0.1",
     "ts-loader": "latest",
     "typescript": "latest",
     "vue": "latest",
@@ -11,6 +12,7 @@
     "vue-router": "latest",
     "vue-template-compiler": "latest",
     "vuedraggable": "latest",
+    "vuetify": "^1.1.6",
     "vuex": "latest"
   },
   "devDependencies": {

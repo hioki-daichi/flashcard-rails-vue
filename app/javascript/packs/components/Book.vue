@@ -1,17 +1,17 @@
 <template>
-  <div>
-    <span class="handle">=</span>
+  <tr>
+    <td><v-icon class="handle">drag_handle</v-icon></td>
     <template v-if="editing && this.book.id == editing.id">
-      <input type="text" v-model="book.title" />
-      <button @click="update" :disabled="!changed">Update</button>
-      <button @click="cancel">Cancel</button>
+      <td><v-text-field type="text" v-model="book.title" /></td>
+      <td><v-icon @click="update" :disabled="!changed">check</v-icon></td>
+      <td><v-icon @click="cancel">close</v-icon></td>
     </template>
     <template v-else>
-      <router-link :to="{ name: 'bookDetail', params: { bookId: book.id } }">{{ book.title }}</router-link>
-      <button @click="edit" :disabled="editing != null">Edit</button>
-      <button @click="destroy" :disabled="editing != null">Delete</button>
+      <td><router-link :to="{ name: 'bookDetail', params: { bookId: book.id } }">{{ book.title }}</router-link></td>
+      <td><v-icon @click="edit" :disabled="editing != null">edit</v-icon></td>
+      <td><v-icon @click="destroy" :disabled="editing != null">remove_circle</v-icon></td>
     </template>
-  </div>
+  </tr>
 </template>
 
 <script lang="ts">

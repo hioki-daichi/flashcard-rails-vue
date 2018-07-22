@@ -1,19 +1,19 @@
 <template>
   <tr>
     <template v-if="editing && this.page.id == editing.id">
-      <td><input type="text" placeholder="Path" v-model="page.path" /></td>
-      <td><textarea placeholder="Question" v-model="page.question" /></td>
-      <td><textarea placeholder="Answer" v-model="page.answer" /></td>
-      <td><button @click="update" :disabled="!changed">Update</button></td>
-      <td><button @click="cancel">Cancel</button></td>
+      <td><v-text-field type="text" placeholder="Path" v-model="page.path" /></td>
+      <td><v-textarea placeholder="Question" v-model="page.question" /></td>
+      <td><v-textarea placeholder="Answer" v-model="page.answer" /></td>
+      <td><v-icon @click="update" :disabled="!changed">check</v-icon></td>
+      <td><v-icon @click="cancel">close</v-icon></td>
     </template>
     <template v-else>
-      <td class="handle">=</td>
+      <td><v-icon class="handle">drag_handle</v-icon></td>
       <td>{{ page.path }}</td>
       <td>{{ page.question }}</td>
       <td>{{ page.answer }}</td>
-      <td><button @click="edit" :disabled="editing != null">Edit</button></td>
-      <td><button @click="destroy" :disabled="editing != null">Delete</button></td>
+      <td><v-icon @click="edit" :disabled="editing != null">edit</v-icon></td>
+      <td><v-icon @click="destroy" :disabled="editing != null">remove_circle</v-icon></td>
     </template>
   </tr>
 </template>

@@ -1,9 +1,21 @@
 <template>
-  <form v-if="!this.$store.state.auth.jwt">
-    <input type="text" placeholder="email" v-model="email" />
-    <input type="password" placeholder="password" v-model="password" />
-    <button @click="submit">Submit</button>
-  </form>
+  <v-container fluid>
+    <v-layout>
+      <v-flex offset-xs3 xs6>
+        <v-form v-if="!this.$store.state.auth.jwt">
+          <v-card flat>
+            <v-card-text>
+              <v-text-field type="text" placeholder="email" v-model="email" />
+              <v-text-field type="password" placeholder="password" v-model="password" />
+            </v-card-text>
+            <v-card-actions>
+              <v-btn large block @click="submit">Submit</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-form>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script lang="ts">
