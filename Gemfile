@@ -22,6 +22,8 @@ group :development, :test do
   gem 'byebug'
   gem 'rspec-rails'
   gem 'dotenv-rails'
+  gem 'factory_bot'
+  gem 'faker'
 end
 
 group :development do
@@ -34,8 +36,6 @@ group :test do
   gem 'capybara', '>= 2.15', '< 4.0'
   gem 'selenium-webdriver'
   gem 'chromedriver-helper'
-  gem 'factory_bot'
-  gem 'faker'
   gem 'shoulda-matchers'
   gem 'simplecov', require: false
   gem 'codecov', require: false
