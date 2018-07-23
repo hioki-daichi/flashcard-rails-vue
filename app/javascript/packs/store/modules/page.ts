@@ -50,9 +50,18 @@ export default {
         });
     },
     fetch({ state, commit, rootState }) {
-      return axios.get(`/api/books/${rootState.book.id}/pages`).then(res => {
-        commit("setList", res.data);
-      });
+      const f = (state, commit, sinceId) => {
+        const basePath = `/api/books/${rootState.book.id}/pages`;
+        const path = sinceId ? `${basePath}?since_id=${sinceId}` : basePath;
+        axios.get(path).then(res => {
+          commit("setList", state.list.concat(res.data.pages));
+          const nextId = res.data.meta.next_id;
+          if (nextId) {
+            f(state, commit, nextId);
+          }
+        });
+      };
+      f(state, commit, null);
     },
     destroy({ state, commit, rootState }) {
       return axios

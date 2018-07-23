@@ -1,5 +1,8 @@
 jwt:
   exp: 14400 # 4.hours.to_i
+
 rack_attack:
   limit: 180
   period: 60
+
+num_pages_per_request: 50

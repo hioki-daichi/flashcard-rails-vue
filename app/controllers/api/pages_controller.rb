@@ -1,11 +1,27 @@
 class Api::PagesController < ApplicationController
   # GET /api/books/:book_id/pages
   def index
-    book_id = params.require(:book_id)
+    book_id  = params.require(:book_id)
+    since_id = params[:since_id]
 
     pages = current_user.books.find(book_id).pages.rank(:row_order)
 
-    render json: pages
+    if since_id
+      pages.where!("row_order >= ?", pages.find(since_id).row_order)
+    end
+
+    pages.limit!(Settings.num_pages_per_request + 1)
+
+    xs         = pages.to_a
+    page_array = xs.shift(Settings.num_pages_per_request)
+    next_id    = xs[0]&.id
+
+    render json: {
+      pages: page_array,
+      meta: {
+        next_id: next_id
+      }
+    }
   end
 
   # POST /api/books/:book_id/pages
