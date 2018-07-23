@@ -1,2 +1,2 @@
 jwt:
-  exp: <%= 604800 %> # 1.week.to_i
+  exp: 604800 # 1.week.to_i
