@@ -34,7 +34,7 @@ RSpec.describe Api::PagesController, type: :request do
         it 'returns http status 200 and empty array' do
           get path, headers: headers
           expect(response).to have_http_status 200
-          expect(body).to eq []
+          expect(body).to eq('pages' => [], 'meta' => { 'next_id' => nil })
         end
       end
 
@@ -45,9 +45,9 @@ RSpec.describe Api::PagesController, type: :request do
 
         it 'returns row_order asc-ordered pages' do
           get path, headers: headers
-          expect(body[0]['id']).to be page_3.id
-          expect(body[1]['id']).to be page_1.id
-          expect(body[2]['id']).to be page_2.id
+          expect(body['pages'][0]['id']).to be page_3.id
+          expect(body['pages'][1]['id']).to be page_1.id
+          expect(body['pages'][2]['id']).to be page_2.id
         end
       end
     end
