@@ -2,13 +2,13 @@
   "name": "flashcard-rails-vue",
   "private": true,
   "dependencies": {
-    "@rails/webpacker": "^4.0.0-pre.2",
+    "@rails/webpacker": "^3.x",
     "axios": "latest",
     "material-design-icons": "^3.0.1",
-    "ts-loader": "latest",
+    "ts-loader": "3.x",
     "typescript": "latest",
     "vue": "latest",
-    "vue-loader": "latest",
+    "vue-loader": "14.x",
     "vue-router": "latest",
     "vue-template-compiler": "latest",
     "vuedraggable": "latest",
@@ -23,6 +23,6 @@
     "eslint-plugin-promise": "latest",
     "eslint-plugin-standard": "latest",
     "webpack-cli": "latest",
-    "webpack-dev-server": "latest"
+    "webpack-dev-server": "^2.x"
   }
 }
