@@ -3677,7 +3677,7 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-material-design-icons@^3.0.1:
+material-design-icons@latest:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/material-design-icons/-/material-design-icons-3.0.1.tgz#9a71c48747218ebca51e51a66da682038cdcb7bf"
 
@@ -6460,9 +6460,9 @@ vuedraggable@latest:
   dependencies:
     sortablejs "^1.7.0"
 
-vuetify@^1.1.6:
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-1.1.6.tgz#f949c2ee9b1addeb57d1026930be2951018054a1"
+vuetify@latest:
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-1.1.8.tgz#3aef842ddc9b7ec348e7ce273a24f2f8ebb1cea9"
 
 vuex@latest:
   version "3.0.1"
