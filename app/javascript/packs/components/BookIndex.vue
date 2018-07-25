@@ -1,24 +1,54 @@
 <template>
   <v-container>
     <v-layout>
-      <v-flex>
-        <h2>Books</h2>
-        <v-form>
-          <v-text-field type="text" placeholder="Title" v-model="newBookTitle" />
-          <v-btn @click="submit">Submit</v-btn>
-          <draggable element="table" :options="{ handle: '.handle' }" @end="onEnd">
-            <Book v-for="book in books" :book="book" :key="book.id"></Book>
-          </draggable>
-        </v-form>
-      </v-flex>
+      <v-dialog v-model="newDialog">
+        <v-btn slot="activator">New</v-btn>
+        <v-card>
+          <v-card-text>
+            <v-container>
+              <v-layout>
+                <v-flex xs8 offset-xs2>
+                  <v-text-field type="text" placeholder="Title" v-model="newBookTitle" />
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn @click.native="newDialog = false">Cancel</v-btn>
+            <v-btn color="primary" @click.native="submit">Create</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="importDialog">
+        <v-btn slot="activator">Import</v-btn>
+        <v-card>
+          <v-card-text>
+            <v-container>
+              <v-layout wrap>
+                <v-flex xs12>
+                  <input type="file" @change="fileSelected" ref="fileInput" />
+                </v-flex>
+                <v-flex xs1>
+                  <v-select :items="colSepOptions" v-model="colSep"></v-select>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn @click.native="importDialog = false">Cancel</v-btn>
+            <v-btn color="primary" @click.native="importBook">Upload</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-layout>
     <v-layout>
       <v-flex>
-        <h2>Import</h2>
         <v-form>
-          <input type="file" @change="fileSelected" ref="fileInput" />
-          <v-select :items="colSepOptions" v-model="colSep"></v-select>
-          <v-btn @click="importBook">Upload</v-btn>
+          <draggable element="table" :options="{ handle: '.handle' }" @end="onEnd">
+            <Book v-for="book in books" :book="book" :key="book.id"></Book>
+          </draggable>
         </v-form>
       </v-flex>
     </v-layout>
@@ -64,6 +94,8 @@ export default Vue.extend({
   },
   data() {
     return {
+      newDialog: false,
+      importDialog: false,
       colSepOptions: [
         { text: ",", value: "comma" },
         { text: "\\t", value: "tab" }
@@ -78,6 +110,7 @@ export default Vue.extend({
     },
     submit() {
       this.$store.dispatch("book/create");
+      this.newDialog = false;
     },
     fileSelected(e) {
       this.$store.commit("book/setSelectedFile", e.target.files[0]);
@@ -85,6 +118,7 @@ export default Vue.extend({
     importBook() {
       this.$store.dispatch("book/importBook").then(_ => {
         this.$refs.fileInput.value = "";
+        this.importDialog = false;
       });
     }
   }

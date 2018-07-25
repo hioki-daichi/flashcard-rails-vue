@@ -9,7 +9,7 @@
               <v-text-field type="password" placeholder="password" v-model="password" />
             </v-card-text>
             <v-card-actions>
-              <v-btn large block @click="submit">Submit</v-btn>
+              <v-btn large block color="primary" @click="submit">Login</v-btn>
             </v-card-actions>
           </v-card>
         </v-form>

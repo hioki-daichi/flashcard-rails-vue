@@ -1,14 +1,12 @@
 <template>
   <v-toolbar>
     <v-toolbar-title>
-      <router-link to="/" tabindex=-1>Flashcard</router-link>
+      <v-btn flat to="/">flashcard</v-btn>
     </v-toolbar-title>
     <v-spacer />
-    <v-toolbar-items>
-      <template v-if="this.$store.state.auth.jwt">
-        <v-btn flat @click.prevent="logout">logout</v-btn>
-      </template>
-    </v-toolbar-items>
+    <template v-if="this.$store.state.auth.jwt">
+      <v-btn icon @click="logout"><v-icon>directions_walk</v-icon></v-btn>
+    </template>
   </v-toolbar>
 </template>
 

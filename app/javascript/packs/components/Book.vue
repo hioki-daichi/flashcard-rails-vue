@@ -1,15 +1,15 @@
 <template>
   <tr>
-    <td><v-icon class="handle">drag_handle</v-icon></td>
+    <td><v-icon class="handle" :disabled="editing">drag_handle</v-icon></td>
     <template v-if="editing && this.book.id == editing.id">
-      <td><v-text-field type="text" v-model="book.title" /></td>
+      <td class="title"><v-text-field type="text" v-model="book.title" /></td>
       <td><v-icon @click="update" :disabled="!changed">check</v-icon></td>
       <td><v-icon @click="cancel">close</v-icon></td>
     </template>
     <template v-else>
-      <td><router-link :to="{ name: 'bookDetail', params: { bookId: book.id } }">{{ book.title }}</router-link></td>
+      <td class="title"><router-link :to="{ name: 'bookDetail', params: { bookId: book.id } }">{{ book.title }}</router-link></td>
       <td><v-icon @click="edit" :disabled="editing != null">edit</v-icon></td>
-      <td><v-icon @click="destroy" :disabled="editing != null">remove_circle</v-icon></td>
+      <td><v-icon @click="destroy" :disabled="editing != null">delete</v-icon></td>
     </template>
   </tr>
 </template>
@@ -67,5 +67,8 @@ export default Vue.extend({
 <style scoped>
 .handle {
   cursor: move;
+}
+td.title {
+  width: 100%;
 }
 </style>

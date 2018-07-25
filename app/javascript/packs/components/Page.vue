@@ -1,20 +1,19 @@
 <template>
   <tr>
+    <td><v-icon class="handle" :disabled="editing">drag_handle</v-icon></td>
     <template v-if="editing && this.page.id == editing.id">
-      <td class="icon"><v-icon disabled>drag_handle</v-icon></td>
       <td class="path"><v-text-field type="text" placeholder="Path" v-model="page.path" /></td>
       <td class="question"><v-textarea placeholder="Question" v-model="page.question" /></td>
       <td class="answer"><v-textarea placeholder="Answer" v-model="page.answer" /></td>
-      <td class="icon"><v-icon @click="update" :disabled="!changed">check</v-icon></td>
-      <td class="icon"><v-icon @click="cancel">close</v-icon></td>
+      <td><v-icon @click="update" :disabled="!changed">check</v-icon></td>
+      <td><v-icon @click="cancel">close</v-icon></td>
     </template>
     <template v-else>
-      <td class="icon"><v-icon class="handle">drag_handle</v-icon></td>
       <td class="path">{{ page.path }}</td>
       <td class="question">{{ page.question }}</td>
       <td class="answer">{{ page.answer }}</td>
-      <td class="icon"><v-icon @click="edit" :disabled="editing != null">edit</v-icon></td>
-      <td class="icon"><v-icon @click="destroy" :disabled="editing != null">remove_circle</v-icon></td>
+      <td><v-icon @click="edit" :disabled="editing != null">edit</v-icon></td>
+      <td><v-icon @click="destroy" :disabled="editing != null">delete</v-icon></td>
     </template>
   </tr>
 </template>
@@ -87,9 +86,6 @@ pre {
 }
 td {
   white-space: pre-line;
-}
-td.icon {
-  width: 20px;
 }
 td.path {
   width: 20%;

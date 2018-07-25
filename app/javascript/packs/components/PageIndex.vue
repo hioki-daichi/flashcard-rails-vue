@@ -1,14 +1,35 @@
 <template>
   <v-container>
     <v-layout>
+      <v-dialog v-model="dialog">
+        <v-btn slot="activator">New</v-btn>
+        <v-card>
+          <v-card-text>
+            <v-container>
+              <v-layout wrap>
+                <v-flex xs12>
+                  <v-text-field type="text" placeholder="Path" v-model="path" />
+                </v-flex>
+                <v-flex xs12>
+                  <v-textarea placeholder="Question" v-model="question" />
+                </v-flex>
+                <v-flex xs12>
+                  <v-textarea placeholder="Answer" v-model="answer" />
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn @click.native="dialog = false">Cancel</v-btn>
+            <v-btn color="primary" @click.native="submit">Submit</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-btn @click="exportBook">Export</v-btn>
+    </v-layout>
+    <v-layout>
       <v-flex>
-        <v-btn @click="exportBook">Export</v-btn>
-        <div>
-          <v-text-field type="text" placeholder="Path" v-model="path" />
-          <v-textarea placeholder="Question" v-model="question" />
-          <v-textarea placeholder="Answer" v-model="answer" />
-          <v-btn @click="submit">Submit</v-btn>
-        </div>
         <draggable element="table" :options="{ handle: '.handle' }" @end="onEnd">
           <Page v-for="page in pages" :page="page" :key="page.id"></Page>
         </draggable>
@@ -63,6 +84,11 @@ export default Vue.extend({
         this.$store.commit("page/updateNewObject", { answer: value });
       }
     }
+  },
+  data() {
+    return {
+      dialog: false
+    };
   },
   methods: {
     onEnd(e) {
