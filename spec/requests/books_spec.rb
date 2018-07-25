@@ -69,16 +69,6 @@ RSpec.describe Api::BooksController, type: :request do
         end
       end
 
-      context 'when title has already been taken' do
-        let(:title) { create(:book, user: user).title }
-
-        it 'returns already taken error' do
-          post path, params: params, headers: headers
-          expect(response).to have_http_status 400
-          expect(body['errors']).to eq ['Title has already been taken']
-        end
-      end
-
       context 'when title has 256 characters' do
         let(:title) { 'a' * 256 }
 
