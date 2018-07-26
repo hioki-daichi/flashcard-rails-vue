@@ -28,7 +28,9 @@ axios.interceptors.response.use(
         break;
       }
       case 401: {
-        alert("Authentication failed.");
+        store.commit("global/setAlertMessage", "Authentication failed.", {
+          root: true
+        });
         break;
       }
       case 404: {

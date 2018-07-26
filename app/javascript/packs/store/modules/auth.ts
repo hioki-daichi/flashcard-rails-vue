@@ -30,6 +30,7 @@ export default {
         })
         .then(res => {
           commit("setJWT", res.data.token);
+          commit("global/setAlertMessage", null, { root: true });
         });
     }
   }
