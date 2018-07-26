@@ -1,6 +1,6 @@
 <template>
   <tr>
-    <td><v-icon class="handle" :disabled="editing">drag_handle</v-icon></td>
+    <td><v-icon class="handle" :disabled="!!editing">drag_handle</v-icon></td>
     <template v-if="editing && this.book.id == editing.id">
       <td class="title"><v-text-field type="text" v-model="book.title" /></td>
       <td><v-icon @click="update" :disabled="!changed">check</v-icon></td>

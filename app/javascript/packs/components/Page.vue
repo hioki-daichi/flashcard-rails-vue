@@ -1,6 +1,6 @@
 <template>
   <tr>
-    <td><v-icon class="handle" :disabled="editing">drag_handle</v-icon></td>
+    <td><v-icon class="handle" :disabled="!!editing">drag_handle</v-icon></td>
     <template v-if="editing && this.page.id == editing.id">
       <td class="path"><v-text-field type="text" placeholder="Path" v-model="page.path" /></td>
       <td class="question"><v-textarea placeholder="Question" v-model="page.question" /></td>
