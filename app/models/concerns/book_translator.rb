@@ -19,6 +19,6 @@ class BookTranslator
   def self.from_csv(file, col_sep, book)
     text = file.read
     rows = CSV.parse(text, col_sep: COL_SEPS[col_sep])
-    rows.map { |row| book.pages.new(Hash[HEADER.zip(row)]) }
+    rows.map.with_index { |row, index| book.pages.new(Hash[HEADER.zip(row)].merge(row_order: index)) }
   end
 end
