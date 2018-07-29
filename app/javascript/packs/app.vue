@@ -27,4 +27,7 @@ export default {
 .loading {
   cursor: wait;
 }
+table {
+  border-collapse: collapse;
+}
 </style>

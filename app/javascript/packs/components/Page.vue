@@ -86,6 +86,9 @@ pre {
 }
 td {
   white-space: pre-line;
+  vertical-align: top;
+  border-top: 1px solid #eee;
+  padding: 8px;
 }
 td.path {
   width: 20%;
