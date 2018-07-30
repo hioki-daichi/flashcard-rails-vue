@@ -104,13 +104,13 @@ RSpec.describe Api::PagesController, type: :request do
         end
       end
 
-      context 'when question has 1001 characters' do
-        let(:question) { 'a' * 1001 }
+      context 'when question has 2049 characters' do
+        let(:question) { 'a' * 2049 }
 
         it 'returns maximum length error' do
           post path, params: { path: path_param, question: question, answer: answer }, headers: headers
           expect(response).to have_http_status 400
-          expect(body['errors']).to eq ['Question is too long (maximum is 1000 characters)']
+          expect(body['errors']).to eq ['Question is too long (maximum is 2048 characters)']
         end
       end
     end
@@ -126,13 +126,13 @@ RSpec.describe Api::PagesController, type: :request do
         end
       end
 
-      context 'when answer has 1001 characters' do
-        let(:answer) { 'a' * 1001 }
+      context 'when answer has 2049 characters' do
+        let(:answer) { 'a' * 2049 }
 
         it 'returns maximum length error' do
           post path, params: { path: path_param, question: question, answer: answer }, headers: headers
           expect(response).to have_http_status 400
-          expect(body['errors']).to eq ['Answer is too long (maximum is 1000 characters)']
+          expect(body['errors']).to eq ['Answer is too long (maximum is 2048 characters)']
         end
       end
     end
