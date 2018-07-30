@@ -68,6 +68,22 @@ export default Vue.extend({
 .handle {
   cursor: move;
 }
+tr {
+  border-top: 1px solid #eee;
+}
+tr:last-child {
+  border-bottom: 1px solid #eee;
+}
+td {
+  white-space: pre-line;
+  padding: 1px 8px 0;
+}
+td i {
+  vertical-align: middle;
+}
+td a {
+  vertical-align: 4px;
+}
 td.title {
   width: 100%;
 }

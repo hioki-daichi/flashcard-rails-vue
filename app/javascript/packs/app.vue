@@ -1,7 +1,7 @@
 <template>
   <v-app :class="{ loading: this.$store.state.global.loading }">
     <Header />
-    <v-content>
+    <v-content fluid style="margin-top: 48px">
       <v-alert :value="!!alertMessage" type="error">{{alertMessage}}</v-alert>
       <router-view />
     </v-content>
@@ -29,5 +29,11 @@ export default {
 }
 table {
   border-collapse: collapse;
+}
+.align-top {
+  vertical-align: top;
+}
+* {
+  font-size: 12px;
 }
 </style>

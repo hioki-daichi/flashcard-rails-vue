@@ -1,11 +1,11 @@
 <template>
-  <v-toolbar>
+  <v-toolbar dense fixed flat>
     <v-toolbar-title>
       <v-btn flat to="/">flashcard</v-btn>
     </v-toolbar-title>
     <v-spacer />
     <template v-if="this.$store.state.auth.jwt">
-      <v-btn icon @click="logout"><v-icon>directions_walk</v-icon></v-btn>
+      <v-btn flat @click="logout">Logout</v-btn>
     </template>
   </v-toolbar>
 </template>

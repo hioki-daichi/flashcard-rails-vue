@@ -69,10 +69,6 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-li {
-  display: inline-block;
-  vertical-align: middle;
-}
 textarea {
   resize: auto;
   min-width: 200px;
@@ -84,11 +80,18 @@ pre {
 .handle {
   cursor: move;
 }
+tr {
+  border-top: 1px solid #eee;
+}
+tr:last-child {
+  border-bottom: 1px solid #eee;
+}
 td {
   white-space: pre-line;
-  vertical-align: top;
-  border-top: 1px solid #eee;
-  padding: 8px;
+  padding: 1px 8px 0;
+}
+td i {
+  vertical-align: middle;
 }
 td.path {
   width: 20%;

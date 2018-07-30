@@ -1,8 +1,8 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-layout>
       <v-dialog v-model="dialog">
-        <v-btn slot="activator">New</v-btn>
+        <v-btn slot="activator" small>New</v-btn>
         <v-card>
           <v-card-text>
             <v-container>
@@ -26,9 +26,9 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <v-btn @click="exportBook">Export</v-btn>
+      <v-btn @click="exportBook" small>Export</v-btn>
     </v-layout>
-    <v-layout>
+    <v-layout style="margin-top: 24px;">
       <v-flex>
         <draggable element="table" :options="{ handle: '.handle' }" @end="onEnd">
           <Page v-for="page in pages" :page="page" :key="page.id"></Page>

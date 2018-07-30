@@ -1,8 +1,8 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-layout>
       <v-dialog v-model="newDialog">
-        <v-btn slot="activator">New</v-btn>
+        <v-btn slot="activator" small>New</v-btn>
         <v-card>
           <v-card-text>
             <v-container>
@@ -21,7 +21,7 @@
         </v-card>
       </v-dialog>
       <v-dialog v-model="importDialog">
-        <v-btn slot="activator">Import</v-btn>
+        <v-btn slot="activator" small>Import</v-btn>
         <v-card>
           <v-card-text>
             <v-container>
@@ -43,7 +43,7 @@
         </v-card>
       </v-dialog>
     </v-layout>
-    <v-layout>
+    <v-layout style="margin-top: 24px;">
       <v-flex>
         <v-form>
           <draggable element="table" :options="{ handle: '.handle' }" @end="onEnd">
