@@ -19,6 +19,9 @@ Rails.application.routes.draw do
         end
       end
     end
+
+    match '/',     via: :all, to: 'errors#routing_error'
+    match '*path', via: :all, to: 'errors#routing_error'
   end
 
   get '*path', to: 'homes#redirect_to_root'
