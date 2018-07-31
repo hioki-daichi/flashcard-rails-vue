@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_20_000049) do
+ActiveRecord::Schema.define(version: 2018_07_31_143633) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,7 +23,6 @@ ActiveRecord::Schema.define(version: 2018_07_20_000049) do
     t.integer "row_order"
     t.index ["title"], name: "index_books_on_title"
     t.index ["user_id", "row_order"], name: "index_books_on_user_id_and_row_order"
-    t.index ["user_id"], name: "index_books_on_user_id"
   end
 
   create_table "pages", force: :cascade do |t|
@@ -35,7 +34,6 @@ ActiveRecord::Schema.define(version: 2018_07_20_000049) do
     t.integer "row_order"
     t.string "path", default: ""
     t.index ["book_id", "row_order"], name: "index_pages_on_book_id_and_row_order"
-    t.index ["book_id"], name: "index_pages_on_book_id"
   end
 
   create_table "users", force: :cascade do |t|
