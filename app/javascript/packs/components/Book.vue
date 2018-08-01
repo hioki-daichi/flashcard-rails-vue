@@ -1,13 +1,13 @@
 <template>
   <tr>
     <td><v-icon class="handle" :disabled="!!editing">drag_handle</v-icon></td>
-    <template v-if="editing && this.book.id == editing.id">
+    <template v-if="editing && this.book.sub == editing.sub">
       <td class="title"><v-text-field type="text" v-model="book.title" /></td>
       <td><v-icon @click="update" :disabled="!changed">check</v-icon></td>
       <td><v-icon @click="cancel">close</v-icon></td>
     </template>
     <template v-else>
-      <td class="title"><router-link :to="{ name: 'bookDetail', params: { bookId: book.id } }">{{ book.title }}</router-link></td>
+      <td class="title"><router-link :to="{ name: 'bookDetail', params: { bookSub: book.sub } }">{{ book.title }}</router-link></td>
       <td><v-icon @click="edit" :disabled="editing != null">edit</v-icon></td>
       <td><v-icon @click="destroy" :disabled="editing != null">delete</v-icon></td>
     </template>
@@ -56,7 +56,7 @@ export default Vue.extend({
     destroy() {
       const confirmed = window.confirm("Are you sure ?");
       if (confirmed) {
-        this.$store.commit("book/setId", this.book.id);
+        this.$store.commit("book/setSub", this.book.sub);
         this.$store.dispatch("book/destroy");
       }
     }

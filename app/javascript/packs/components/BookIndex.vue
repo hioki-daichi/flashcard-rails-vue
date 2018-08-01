@@ -47,7 +47,7 @@
       <v-flex>
         <v-form>
           <draggable element="table" :options="{ handle: '.handle' }" @end="onEnd">
-            <Book v-for="book in books" :book="book" :key="book.id"></Book>
+            <Book v-for="book in books" :book="book" :key="book.sub"></Book>
           </draggable>
         </v-form>
       </v-flex>
@@ -104,7 +104,7 @@ export default Vue.extend({
   },
   methods: {
     onEnd(e) {
-      this.$store.commit("book/setId", this.books[e.oldIndex].id);
+      this.$store.commit("book/setSub", this.books[e.oldIndex].sub);
       this.$store.commit("book/setNewIndex", e.newIndex);
       this.$store.dispatch("book/sort");
     },

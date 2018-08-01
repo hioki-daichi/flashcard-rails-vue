@@ -5,7 +5,7 @@ export default {
   namespaced: true,
   state: {
     list: [],
-    id: null,
+    sub: null,
     newIndex: null,
     newObject: {
       title: ""
@@ -16,13 +16,13 @@ export default {
   },
   mutations: {
     setList: mutator.set("list"),
-    add: mutator.unshiftTo("list"),
-    replace: mutator.replaceById("list"),
-    setId: mutator.set("id"),
+    add: mutator.pushTo("list"),
+    replace: mutator.replaceBySub("list"),
+    setSub: mutator.set("sub"),
     setNewIndex: mutator.set("newIndex"),
     updateNewObject: mutator.assign("newObject"),
     setEditing: mutator.set("editing"),
-    remove: mutator.omitById("list"),
+    remove: mutator.omitBySub("list"),
     setSelectedFile: mutator.set("selectedFile"),
     setColSep: mutator.set("colSep")
   },
@@ -37,7 +37,7 @@ export default {
     },
     update({ state, commit }) {
       return axios
-        .patch(`/api/books/${state.editing.id}`, {
+        .patch(`/api/books/${state.editing.sub}`, {
           title: state.editing.title
         })
         .then(res => {
@@ -51,12 +51,12 @@ export default {
       });
     },
     destroy({ state, commit }) {
-      return axios.delete(`/api/books/${state.id}`).then(_ => {
-        commit("remove", state.id);
+      return axios.delete(`/api/books/${state.sub}`).then(_ => {
+        commit("remove", state.sub);
       });
     },
     sort({ state, commit }) {
-      return axios.patch(`/api/books/${state.id}/sort`, {
+      return axios.patch(`/api/books/${state.sub}/sort`, {
         row_order_position: state.newIndex
       });
     },
@@ -74,11 +74,11 @@ export default {
     },
     exportBook({ state, commit }) {
       return axios
-        .get(`/api/books/${state.id}/export`, { responseType: "blob" })
+        .get(`/api/books/${state.sub}/export`, { responseType: "blob" })
         .then(res => {
           const link = document.createElement("a");
           link.href = window.URL.createObjectURL(new Blob([res.data]));
-          link.download = `book${state.id}.csv`;
+          link.download = `book${state.sub}.csv`;
           link.click();
         });
     }

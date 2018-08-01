@@ -48,9 +48,9 @@ export default Vue.extend({
     Page,
     draggable
   },
-  props: ["bookId"],
+  props: ["bookSub"],
   created() {
-    this.$store.commit("book/setId", this.bookId);
+    this.$store.commit("book/setSub", this.bookSub);
     this.$store.dispatch("page/fetch");
   },
   destroyed() {
