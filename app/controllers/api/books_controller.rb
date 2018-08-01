@@ -15,9 +15,9 @@ class Api::BooksController < ApplicationController
     render json: book, status: 201
   end
 
-  # PATCH /api/books/:id
+  # PATCH /api/books/:book_id
   def update
-    book_id = params.require(:id)
+    book_id = params.require(:book_id)
 
     book = current_user.books.find(book_id)
 
@@ -30,9 +30,9 @@ class Api::BooksController < ApplicationController
     render json: book
   end
 
-  # DELETE /api/books/:id
+  # DELETE /api/books/:book_id
   def destroy
-    book_id = params.require(:id)
+    book_id = params.require(:book_id)
 
     current_user.books.find(book_id).destroy!
 
@@ -54,9 +54,9 @@ class Api::BooksController < ApplicationController
     render json: book
   end
 
-  # POST /api/books/:id/export
+  # POST /api/books/:book_id/export
   def export
-    book_id = params.require(:id)
+    book_id = params.require(:book_id)
 
     book = current_user.books.find(book_id)
 
@@ -65,9 +65,9 @@ class Api::BooksController < ApplicationController
     send_data csv_data, type: 'text/csv'
   end
 
-  # PATCH /api/books/:id/sort
+  # PATCH /api/books/:book_id/sort
   def sort
-    book_id            = params.require(:id)
+    book_id            = params.require(:book_id)
     row_order_position = params.require(:row_order_position)
 
     book = current_user.books.find(book_id)

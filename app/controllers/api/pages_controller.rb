@@ -36,10 +36,10 @@ class Api::PagesController < ApplicationController
     render json: page, status: 201
   end
 
-  # PATCH /api/books/:book_id/pages/:id
+  # PATCH /api/books/:book_id/pages/:page_id
   def update
     book_id = params.require(:book_id)
-    page_id = params.require(:id)
+    page_id = params.require(:page_id)
 
     page = current_user.books.find(book_id).pages.find(page_id)
 
@@ -54,20 +54,20 @@ class Api::PagesController < ApplicationController
     render json: page
   end
 
-  # DELETE /api/books/:book_id/pages/:id
+  # DELETE /api/books/:book_id/pages/:page_id
   def destroy
     book_id = params.require(:book_id)
-    page_id = params.require(:id)
+    page_id = params.require(:page_id)
 
     current_user.books.find(book_id).pages.find(page_id).destroy!
 
     head 204
   end
 
-  # PATCH /api/books/:book_id/pages/:id/sort
+  # PATCH /api/books/:book_id/pages/:page_id/sort
   def sort
     book_id            = params.require(:book_id)
-    page_id            = params.require(:id)
+    page_id            = params.require(:page_id)
     row_order_position = params.require(:row_order_position)
 
     page = current_user.books.find(book_id).pages.find(page_id)
