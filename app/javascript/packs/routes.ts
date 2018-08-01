@@ -25,7 +25,7 @@ const router = new VueRouter({
       component: BookIndex
     },
     {
-      path: "/books/:bookId",
+      path: "/books/:bookSub",
       name: "bookDetail",
       component: PageIndex,
       props: true

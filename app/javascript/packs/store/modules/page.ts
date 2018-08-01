@@ -27,7 +27,7 @@ export default {
   actions: {
     create({ state, commit, rootState }) {
       return axios
-        .post(`/api/books/${rootState.book.id}/pages`, {
+        .post(`/api/books/${rootState.book.sub}/pages`, {
           path: state.newObject.path,
           question: state.newObject.question,
           answer: state.newObject.answer
@@ -39,7 +39,7 @@ export default {
     },
     update({ state, commit, rootState }) {
       return axios
-        .patch(`/api/books/${rootState.book.id}/pages/${state.editing.id}`, {
+        .patch(`/api/books/${rootState.book.sub}/pages/${state.editing.id}`, {
           path: state.editing.path,
           question: state.editing.question,
           answer: state.editing.answer
@@ -51,7 +51,7 @@ export default {
     },
     fetch({ state, commit, rootState }) {
       const f = (state, commit, sinceId) => {
-        const basePath = `/api/books/${rootState.book.id}/pages`;
+        const basePath = `/api/books/${rootState.book.sub}/pages`;
         const path = sinceId ? `${basePath}?since_id=${sinceId}` : basePath;
         axios.get(path).then(res => {
           commit("setList", state.list.concat(res.data.pages));
@@ -65,14 +65,14 @@ export default {
     },
     destroy({ state, commit, rootState }) {
       return axios
-        .delete(`/api/books/${rootState.book.id}/pages/${state.id}`)
+        .delete(`/api/books/${rootState.book.sub}/pages/${state.id}`)
         .then(res => {
           commit("remove", state.id);
         });
     },
     sort({ state, commit, rootState }) {
       return axios.patch(
-        `/api/books/${rootState.book.id}/pages/${state.id}/sort`,
+        `/api/books/${rootState.book.sub}/pages/${state.id}/sort`,
         { row_order_position: state.newIndex }
       );
     }

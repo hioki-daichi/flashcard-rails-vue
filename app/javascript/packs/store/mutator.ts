@@ -16,14 +16,26 @@ const replaceById = propName => (state, value) => {
   });
 };
 
+const replaceBySub = propName => (state, value) => {
+  state[propName] = state[propName].map(obj => {
+    if (obj.sub == value.sub) {
+      return value;
+    } else {
+      return obj;
+    }
+  });
+};
+
 const omitById = propName => (state, value) => {
   state[propName] = state[propName].filter(obj => {
     return obj.id != value;
   });
 };
 
-const unshiftTo = propName => (state, value) => {
-  state[propName].unshift(value);
+const omitBySub = propName => (state, value) => {
+  state[propName] = state[propName].filter(obj => {
+    return obj.sub != value;
+  });
 };
 
 const pushTo = propName => (state, value) => {
@@ -34,7 +46,8 @@ export default {
   set,
   assign,
   replaceById,
+  replaceBySub,
   omitById,
-  unshiftTo,
+  omitBySub,
   pushTo
 };

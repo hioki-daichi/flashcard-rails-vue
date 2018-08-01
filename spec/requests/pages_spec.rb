@@ -8,8 +8,8 @@ RSpec.describe Api::PagesController, type: :request do
 
   subject(:body) { JSON.parse(response.body) }
 
-  describe 'GET /api/books/:book_id/pages' do
-    let(:path) { "/api/books/#{book.id}/pages" }
+  describe 'GET /api/books/:book_sub/pages' do
+    let(:path) { "/api/books/#{book.sub}/pages" }
 
     context 'when Authorization header is not specified' do
       it 'returns authorization header required error' do
@@ -53,8 +53,8 @@ RSpec.describe Api::PagesController, type: :request do
     end
   end
 
-  describe 'POST /api/books/:book_id/pages' do
-    let(:path) { "/api/books/#{book.id}/pages" }
+  describe 'POST /api/books/:book_sub/pages' do
+    let(:path) { "/api/books/#{book.sub}/pages" }
     let(:path_param) { 'Path 1' }
     let(:question) { 'Question 1' }
     let(:answer) { 'Answer 1' }
@@ -138,8 +138,8 @@ RSpec.describe Api::PagesController, type: :request do
     end
   end
 
-  describe 'PATCH /api/books/:book_id/pages/:id' do
-    let(:path) { "/api/books/#{book.id}/pages/#{page.id}" }
+  describe 'PATCH /api/books/:book_sub/pages/:id' do
+    let(:path) { "/api/books/#{book.sub}/pages/#{page.id}" }
     let!(:page) { create(:page, book: book, path: 'Path 1', question: 'Question 1', answer: 'Answer 1') }
 
     context 'when params are not specified' do
@@ -171,8 +171,8 @@ RSpec.describe Api::PagesController, type: :request do
     end
   end
 
-  describe 'DELETE /api/books/:book_id/pages/:id' do
-    let(:path) { "/api/books/#{book.id}/pages/#{page.id}" }
+  describe 'DELETE /api/books/:book_sub/pages/:id' do
+    let(:path) { "/api/books/#{book.sub}/pages/#{page.id}" }
     let!(:page) { create(:page, book: book) }
 
     it 'returns http status 204 and decreases number of pages' do
@@ -184,8 +184,8 @@ RSpec.describe Api::PagesController, type: :request do
     end
   end
 
-  describe 'PATCH /api/books/:book_id/pages/:id/sort' do
-    let(:path) { "/api/books/#{book.id}/pages/#{page_id}/sort" }
+  describe 'PATCH /api/books/:book_sub/pages/:id/sort' do
+    let(:path) { "/api/books/#{book.sub}/pages/#{page_id}/sort" }
 
     let!(:page_1) { create(:page, book: book, row_order: 0) }
     let!(:page_2) { create(:page, book: book, row_order: 1) }

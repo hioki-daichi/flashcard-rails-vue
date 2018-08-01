@@ -21,8 +21,10 @@ ActiveRecord::Schema.define(version: 2018_07_31_143633) do
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.integer "row_order"
+    t.string "sub"
     t.index ["title"], name: "index_books_on_title"
     t.index ["user_id", "row_order"], name: "index_books_on_user_id_and_row_order"
+    t.index ["user_id", "sub"], name: "index_books_on_user_id_and_sub"
   end
 
   create_table "pages", force: :cascade do |t|

@@ -1,10 +1,10 @@
 class Api::PagesController < ApplicationController
-  # GET /api/books/:book_id/pages
+  # GET /api/books/:book_sub/pages
   def index
-    book_id  = params.require(:book_id)
+    book_sub = params.require(:book_sub)
     since_id = params[:since_id]
 
-    pages = current_user.books.find(book_id).pages.rank(:row_order)
+    pages = current_user.books.find_by!(sub: book_sub).pages.rank(:row_order)
 
     if since_id
       pages.where!("row_order >= ?", pages.find(since_id).row_order)
@@ -24,24 +24,24 @@ class Api::PagesController < ApplicationController
     }
   end
 
-  # POST /api/books/:book_id/pages
+  # POST /api/books/:book_sub/pages
   def create
-    book_id  = params.require(:book_id)
+    book_sub = params.require(:book_sub)
     path     = params[:path]
     question = params.require(:question)
     answer   = params.require(:answer)
 
-    page = current_user.books.find(book_id).pages.create!(path: path, question: question, answer: answer)
+    page = current_user.books.find_by!(sub: book_sub).pages.create!(path: path, question: question, answer: answer)
 
     render json: page, status: 201
   end
 
-  # PATCH /api/books/:book_id/pages/:page_id
+  # PATCH /api/books/:book_sub/pages/:page_id
   def update
-    book_id = params.require(:book_id)
-    page_id = params.require(:page_id)
+    book_sub = params.require(:book_sub)
+    page_id  = params.require(:page_id)
 
-    page = current_user.books.find(book_id).pages.find(page_id)
+    page = current_user.books.find_by!(sub: book_sub).pages.find(page_id)
 
     attrs = {
       path:     params[:path],
@@ -54,23 +54,23 @@ class Api::PagesController < ApplicationController
     render json: page
   end
 
-  # DELETE /api/books/:book_id/pages/:page_id
+  # DELETE /api/books/:book_sub/pages/:page_id
   def destroy
-    book_id = params.require(:book_id)
-    page_id = params.require(:page_id)
+    book_sub = params.require(:book_sub)
+    page_id  = params.require(:page_id)
 
-    current_user.books.find(book_id).pages.find(page_id).destroy!
+    current_user.books.find_by!(sub: book_sub).pages.find(page_id).destroy!
 
     head 204
   end
 
-  # PATCH /api/books/:book_id/pages/:page_id/sort
+  # PATCH /api/books/:book_sub/pages/:page_id/sort
   def sort
-    book_id            = params.require(:book_id)
+    book_sub           = params.require(:book_sub)
     page_id            = params.require(:page_id)
     row_order_position = params.require(:row_order_position)
 
-    page = current_user.books.find(book_id).pages.find(page_id)
+    page = current_user.books.find_by!(sub: book_sub).pages.find(page_id)
 
     page.update!(row_order_position: row_order_position)
 

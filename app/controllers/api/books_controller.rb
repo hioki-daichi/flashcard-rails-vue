@@ -15,11 +15,11 @@ class Api::BooksController < ApplicationController
     render json: book, status: 201
   end
 
-  # PATCH /api/books/:book_id
+  # PATCH /api/books/:book_sub
   def update
-    book_id = params.require(:book_id)
+    book_sub = params.require(:book_sub)
 
-    book = current_user.books.find(book_id)
+    book = current_user.books.find_by!(sub: book_sub)
 
     attrs = {
       title: params[:title]
@@ -30,11 +30,11 @@ class Api::BooksController < ApplicationController
     render json: book
   end
 
-  # DELETE /api/books/:book_id
+  # DELETE /api/books/:book_sub
   def destroy
-    book_id = params.require(:book_id)
+    book_sub = params.require(:book_sub)
 
-    current_user.books.find(book_id).destroy!
+    current_user.books.find_by!(sub: book_sub).destroy!
 
     head 204
   end
@@ -54,23 +54,23 @@ class Api::BooksController < ApplicationController
     render json: book
   end
 
-  # POST /api/books/:book_id/export
+  # POST /api/books/:book_sub/export
   def export
-    book_id = params.require(:book_id)
+    book_sub = params.require(:book_sub)
 
-    book = current_user.books.find(book_id)
+    book = current_user.books.find_by!(sub: book_sub)
 
     csv_data = BookTranslator.to_csv(book)
 
     send_data csv_data, type: 'text/csv'
   end
 
-  # PATCH /api/books/:book_id/sort
+  # PATCH /api/books/:book_sub/sort
   def sort
-    book_id            = params.require(:book_id)
+    book_sub           = params.require(:book_sub)
     row_order_position = params.require(:row_order_position)
 
-    book = current_user.books.find(book_id)
+    book = current_user.books.find_by!(sub: book_sub)
 
     book.update!(row_order_position: row_order_position)
 

@@ -33,9 +33,9 @@ RSpec.describe Api::BooksController, type: :request do
 
         it 'returns row_order asc-ordered books' do
           get path, headers: headers
-          expect(body[0]['id']).to be book_3.id
-          expect(body[1]['id']).to be book_1.id
-          expect(body[2]['id']).to be book_2.id
+          expect(body[0]['sub']).to eq book_3.sub
+          expect(body[1]['sub']).to eq book_1.sub
+          expect(body[2]['sub']).to eq book_2.sub
         end
       end
     end
@@ -63,8 +63,8 @@ RSpec.describe Api::BooksController, type: :request do
             post path, params: params, headers: headers
           }.to change { user.books.count }.by(1)
           expect(response).to have_http_status 201
-          expect(body.keys).to contain_exactly('id', 'title')
-          expect(body['id']).to be_a Integer
+          expect(body.keys).to contain_exactly('sub', 'title')
+          expect(body['sub']).to be_a String
           expect(body['title']).to eq title
         end
       end
@@ -81,8 +81,8 @@ RSpec.describe Api::BooksController, type: :request do
     end
   end
 
-  describe 'PATCH /api/books/:id' do
-    let(:path) { "/api/books/#{book.id}" }
+  describe 'PATCH /api/books/:sub' do
+    let(:path) { "/api/books/#{book.sub}" }
     let!(:book) { create(:book, user: user) }
 
     context 'when params are not specified' do
@@ -91,15 +91,15 @@ RSpec.describe Api::BooksController, type: :request do
           patch path, headers: headers
         }.not_to change { user.books.count }
         expect(response).to have_http_status 200
-        expect(body.keys).to contain_exactly('id', 'title')
-        expect(body['id']).to be book.id
+        expect(body.keys).to contain_exactly('sub', 'title')
+        expect(body['sub']).to eq book.sub
         expect(body['title']).to eq book.title
       end
     end
   end
 
-  describe 'DELETE /api/books/:id' do
-    let(:path) { "/api/books/#{book.id}" }
+  describe 'DELETE /api/books/:sub' do
+    let(:path) { "/api/books/#{book.sub}" }
     let!(:book) { create(:book, user: user) }
 
     it 'returns http status 204 and decreases number of books' do
@@ -140,8 +140,8 @@ RSpec.describe Api::BooksController, type: :request do
           post path, params: { file: file, col_sep: col_sep }, headers: headers
         }.to change { user.books.count }.by(1)
         expect(response).to have_http_status 200
-        expect(body.keys).to contain_exactly('id', 'title')
-        expect(body['id']).to be_a Integer
+        expect(body.keys).to contain_exactly('sub', 'title')
+        expect(body['sub']).to be_a String
         expect(body['title']).to eq 'Book_20200724235959'
       end
     end
@@ -157,15 +157,15 @@ RSpec.describe Api::BooksController, type: :request do
           post path, params: { file: file, col_sep: col_sep }, headers: headers
         }.to change { user.books.count }.by(1)
         expect(response).to have_http_status 200
-        expect(body.keys).to contain_exactly('id', 'title')
-        expect(body['id']).to be_a Integer
+        expect(body.keys).to contain_exactly('sub', 'title')
+        expect(body['sub']).to be_a String
         expect(body['title']).to eq 'Book_20200724235959'
       end
     end
   end
 
-  describe 'GET /api/books/:id/export' do
-    let(:path) { "/api/books/#{book.id}/export" }
+  describe 'GET /api/books/:sub/export' do
+    let(:path) { "/api/books/#{book.sub}/export" }
     let!(:book) { create(:book, user: user) }
 
     before do
@@ -181,8 +181,8 @@ RSpec.describe Api::BooksController, type: :request do
     end
   end
 
-  describe 'PATCH /api/books/:id/sort' do
-    let(:path) { "/api/books/#{book_id}/sort" }
+  describe 'PATCH /api/books/:sub/sort' do
+    let(:path) { "/api/books/#{sub}/sort" }
 
     let!(:book_1) { create(:book, user: user, row_order: 0) }
     let!(:book_2) { create(:book, user: user, row_order: 1) }
@@ -195,7 +195,7 @@ RSpec.describe Api::BooksController, type: :request do
     let(:params) { { row_order_position: row_order_position } }
 
     context 'when 3rd item is dropped at the beginning' do
-      let(:book_id) { book_3.id }
+      let(:sub) { book_3.sub }
       let(:row_order_position) { 0 }
 
       it 'updates to 3 < 1 < 2' do
@@ -207,7 +207,7 @@ RSpec.describe Api::BooksController, type: :request do
     end
 
     context 'when 2nd item is dropped at the end' do
-      let(:book_id) { book_2.id }
+      let(:sub) { book_2.sub }
       let(:row_order_position) { 2 }
 
       it 'updates to 1 < 3 < 2' do
@@ -219,7 +219,7 @@ RSpec.describe Api::BooksController, type: :request do
     end
 
     context 'when first item is dropped at the end' do
-      let(:book_id) { book_1.id }
+      let(:sub) { book_1.sub }
       let(:row_order_position) { 2 }
 
       it 'updates to 2 < 3 < 1' do

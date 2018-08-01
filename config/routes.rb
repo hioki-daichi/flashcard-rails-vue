@@ -5,20 +5,20 @@ Rails.application.routes.draw do
   post '/api/auth', to: 'api/authentication#authenticate'
 
   # Books
-  get    '/api/books',                 to: 'api/books#index'
-  post   '/api/books',                 to: 'api/books#create'
-  patch  '/api/books/:book_id',        to: 'api/books#update'
-  delete '/api/books/:book_id',        to: 'api/books#destroy'
-  patch  '/api/books/:book_id/sort',   to: 'api/books#sort'
-  post   '/api/books/import',          to: 'api/books#import'
-  get    '/api/books/:book_id/export', to: 'api/books#export'
+  get    '/api/books',                  to: 'api/books#index'
+  post   '/api/books',                  to: 'api/books#create'
+  patch  '/api/books/:book_sub',        to: 'api/books#update'
+  delete '/api/books/:book_sub',        to: 'api/books#destroy'
+  patch  '/api/books/:book_sub/sort',   to: 'api/books#sort'
+  post   '/api/books/import',           to: 'api/books#import'
+  get    '/api/books/:book_sub/export', to: 'api/books#export'
 
   # Pages
-  get    '/api/books/:book_id/pages',               to: 'api/pages#index'
-  post   '/api/books/:book_id/pages',               to: 'api/pages#create'
-  patch  '/api/books/:book_id/pages/:page_id',      to: 'api/pages#update'
-  delete '/api/books/:book_id/pages/:page_id',      to: 'api/pages#destroy'
-  patch  '/api/books/:book_id/pages/:page_id/sort', to: 'api/pages#sort'
+  get    '/api/books/:book_sub/pages',               to: 'api/pages#index'
+  post   '/api/books/:book_sub/pages',               to: 'api/pages#create'
+  patch  '/api/books/:book_sub/pages/:page_id',      to: 'api/pages#update'
+  delete '/api/books/:book_sub/pages/:page_id',      to: 'api/pages#destroy'
+  patch  '/api/books/:book_sub/pages/:page_id/sort', to: 'api/pages#sort'
 
   match '/api/',      via: :all, to: 'api/errors#routing_error'
   match '/api/*path', via: :all, to: 'api/errors#routing_error'
