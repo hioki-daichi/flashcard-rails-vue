@@ -45,9 +45,21 @@ RSpec.describe Api::PagesController, type: :request do
 
         it 'returns row_order asc-ordered pages' do
           get path, headers: headers
+          expect(body['pages'].size).to be 3
           expect(body['pages'][0]['id']).to be page_3.id
           expect(body['pages'][1]['id']).to be page_1.id
           expect(body['pages'][2]['id']).to be page_2.id
+        end
+
+        context 'when query parameter :since_id is specified' do
+          let(:params) { { since_id: page_1.id } }
+
+          it 'returns books those row_order is greater than specified' do
+            get path, params: params, headers: headers
+            expect(body['pages'].size).to be 2
+            expect(body['pages'][0]['id']).to be page_1.id
+            expect(body['pages'][1]['id']).to be page_2.id
+          end
         end
       end
     end
