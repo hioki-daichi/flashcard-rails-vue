@@ -10,14 +10,18 @@ module HasSub
     private
 
     def set_sub
-      value = ::HasSub::SUB_LENGTH.times.map { ::HasSub::SEEDS.sample }.join
+      sub = generate_sub
 
-      unless self.class.where(sub: value).exists?
-        self.sub = value
+      unless self.class.where(sub: sub).exists?
+        self.sub = sub
         return
       end
 
       set_sub
+    end
+
+    def generate_sub
+      ::HasSub::SUB_LENGTH.times.map { ::HasSub::SEEDS.sample }.join
     end
   end
 end
