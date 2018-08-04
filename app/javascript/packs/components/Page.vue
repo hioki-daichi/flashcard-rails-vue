@@ -1,7 +1,7 @@
 <template>
   <tr>
     <td><v-icon class="handle" :disabled="!!editing">drag_handle</v-icon></td>
-    <template v-if="editing && this.page.id == editing.id">
+    <template v-if="editing && this.page.sub == editing.sub">
       <td class="path"><v-text-field type="text" placeholder="Path" v-model="page.path" /></td>
       <td class="question"><v-textarea placeholder="Question" v-model="page.question" /></td>
       <td class="answer"><v-textarea placeholder="Answer" v-model="page.answer" /></td>
@@ -60,7 +60,7 @@ export default Vue.extend({
     destroy() {
       const confirmed = window.confirm("Are you sure ?");
       if (confirmed) {
-        this.$store.commit("page/setId", this.page.id);
+        this.$store.commit("page/setSub", this.page.sub);
         this.$store.dispatch("page/destroy");
       }
     }
