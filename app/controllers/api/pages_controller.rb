@@ -17,7 +17,10 @@ class Api::PagesController < ApplicationController
     next_sub   = xs[0]&.sub
 
     render json: {
-      pages: page_array,
+      pages: ActiveModel::Serializer::CollectionSerializer.new(
+        page_array,
+        each_serializer: PageSerializer
+      ),
       meta: {
         next_sub: next_sub
       }

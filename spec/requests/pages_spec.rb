@@ -43,6 +43,11 @@ RSpec.describe Api::PagesController, type: :request do
         let!(:page_2) { create(:page, book: book, row_order: 2) }
         let!(:page_3) { create(:page, book: book, row_order: 0) }
 
+        it 'returns page params: [:sub, :path, :question, :answer]' do
+          get path, headers: headers
+          expect(body['pages'][0].keys).to match_array(%w(sub path question answer))
+        end
+
         it 'returns row_order asc-ordered pages' do
           get path, headers: headers
           expect(body['pages'].size).to be 3
