@@ -5,7 +5,7 @@ export default {
   namespaced: true,
   state: {
     list: [],
-    id: null,
+    sub: null,
     newIndex: null,
     newObject: {
       path: "",
@@ -17,12 +17,12 @@ export default {
   mutations: {
     setList: mutator.set("list"),
     add: mutator.pushTo("list"),
-    replace: mutator.replaceById("list"),
-    setId: mutator.set("id"),
+    replace: mutator.replaceBySub("list"),
+    setSub: mutator.set("sub"),
     setNewIndex: mutator.set("newIndex"),
     updateNewObject: mutator.assign("newObject"),
     setEditing: mutator.set("editing"),
-    remove: mutator.omitById("list")
+    remove: mutator.omitBySub("list")
   },
   actions: {
     create({ state, commit, rootState }) {
@@ -39,7 +39,7 @@ export default {
     },
     update({ state, commit, rootState }) {
       return axios
-        .patch(`/api/books/${rootState.book.sub}/pages/${state.editing.id}`, {
+        .patch(`/api/books/${rootState.book.sub}/pages/${state.editing.sub}`, {
           path: state.editing.path,
           question: state.editing.question,
           answer: state.editing.answer
@@ -50,14 +50,14 @@ export default {
         });
     },
     fetch({ state, commit, rootState }) {
-      const f = (state, commit, sinceId) => {
+      const f = (state, commit, sinceSub) => {
         const basePath = `/api/books/${rootState.book.sub}/pages`;
-        const path = sinceId ? `${basePath}?since_id=${sinceId}` : basePath;
+        const path = sinceSub ? `${basePath}?since_sub=${sinceSub}` : basePath;
         axios.get(path).then(res => {
           commit("setList", state.list.concat(res.data.pages));
-          const nextId = res.data.meta.next_id;
-          if (nextId) {
-            f(state, commit, nextId);
+          const nextSub = res.data.meta.next_sub;
+          if (nextSub) {
+            f(state, commit, nextSub);
           }
         });
       };
@@ -65,14 +65,14 @@ export default {
     },
     destroy({ state, commit, rootState }) {
       return axios
-        .delete(`/api/books/${rootState.book.sub}/pages/${state.id}`)
+        .delete(`/api/books/${rootState.book.sub}/pages/${state.sub}`)
         .then(res => {
-          commit("remove", state.id);
+          commit("remove", state.sub);
         });
     },
     sort({ state, commit, rootState }) {
       return axios.patch(
-        `/api/books/${rootState.book.sub}/pages/${state.id}/sort`,
+        `/api/books/${rootState.book.sub}/pages/${state.sub}/sort`,
         { row_order_position: state.newIndex }
       );
     }

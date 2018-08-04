@@ -31,7 +31,7 @@
     <v-layout style="margin-top: 24px;">
       <v-flex>
         <draggable element="table" :options="{ handle: '.handle' }" @end="onEnd">
-          <Page v-for="page in pages" :page="page" :key="page.id"></Page>
+          <Page v-for="page in pages" :page="page" :key="page.sub"></Page>
         </draggable>
       </v-flex>
     </v-layout>
@@ -92,7 +92,7 @@ export default Vue.extend({
   },
   methods: {
     onEnd(e) {
-      this.$store.commit("page/setId", this.pages[e.oldIndex].id);
+      this.$store.commit("page/setSub", this.pages[e.oldIndex].sub);
       this.$store.commit("page/setNewIndex", e.newIndex);
       this.$store.dispatch("page/sort");
     },
