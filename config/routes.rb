@@ -16,9 +16,9 @@ Rails.application.routes.draw do
   # Pages
   get    '/api/books/:book_sub/pages',               to: 'api/pages#index'
   post   '/api/books/:book_sub/pages',               to: 'api/pages#create'
-  patch  '/api/books/:book_sub/pages/:page_id',      to: 'api/pages#update'
-  delete '/api/books/:book_sub/pages/:page_id',      to: 'api/pages#destroy'
-  patch  '/api/books/:book_sub/pages/:page_id/sort', to: 'api/pages#sort'
+  patch  '/api/books/:book_sub/pages/:page_sub',      to: 'api/pages#update'
+  delete '/api/books/:book_sub/pages/:page_sub',      to: 'api/pages#destroy'
+  patch  '/api/books/:book_sub/pages/:page_sub/sort', to: 'api/pages#sort'
 
   match '/api/',      via: :all, to: 'api/errors#routing_error'
   match '/api/*path', via: :all, to: 'api/errors#routing_error'

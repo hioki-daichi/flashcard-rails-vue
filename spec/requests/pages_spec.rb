@@ -34,7 +34,7 @@ RSpec.describe Api::PagesController, type: :request do
         it 'returns http status 200 and empty array' do
           get path, headers: headers
           expect(response).to have_http_status 200
-          expect(body).to eq('pages' => [], 'meta' => { 'next_id' => nil })
+          expect(body).to eq('pages' => [], 'meta' => { 'next_sub' => nil })
         end
       end
 
@@ -46,19 +46,19 @@ RSpec.describe Api::PagesController, type: :request do
         it 'returns row_order asc-ordered pages' do
           get path, headers: headers
           expect(body['pages'].size).to be 3
-          expect(body['pages'][0]['id']).to be page_3.id
-          expect(body['pages'][1]['id']).to be page_1.id
-          expect(body['pages'][2]['id']).to be page_2.id
+          expect(body['pages'][0]['sub']).to eq page_3.sub
+          expect(body['pages'][1]['sub']).to eq page_1.sub
+          expect(body['pages'][2]['sub']).to eq page_2.sub
         end
 
-        context 'when query parameter :since_id is specified' do
-          let(:params) { { since_id: page_1.id } }
+        context 'when query parameter :since_sub is specified' do
+          let(:params) { { since_sub: page_1.sub } }
 
           it 'returns books those row_order is greater than specified' do
             get path, params: params, headers: headers
             expect(body['pages'].size).to be 2
-            expect(body['pages'][0]['id']).to be page_1.id
-            expect(body['pages'][1]['id']).to be page_2.id
+            expect(body['pages'][0]['sub']).to eq page_1.sub
+            expect(body['pages'][1]['sub']).to eq page_2.sub
           end
         end
       end
@@ -78,7 +78,8 @@ RSpec.describe Api::PagesController, type: :request do
             post path, params: { question: question, answer: answer }, headers: headers
           }.to change { book.pages.count }.by(1)
           expect(response).to have_http_status 201
-          expect(body.keys).to contain_exactly('id', 'path', 'question', 'answer')
+          expect(body.keys).to contain_exactly('sub', 'path', 'question', 'answer')
+          expect(body['sub']).to be_a String
           expect(body['path']).to be nil
           expect(body['question']).to eq 'Question 1'
           expect(body['answer']).to eq 'Answer 1'
@@ -150,8 +151,8 @@ RSpec.describe Api::PagesController, type: :request do
     end
   end
 
-  describe 'PATCH /api/books/:book_sub/pages/:id' do
-    let(:path) { "/api/books/#{book.sub}/pages/#{page.id}" }
+  describe 'PATCH /api/books/:book_sub/pages/:page_sub' do
+    let(:path) { "/api/books/#{book.sub}/pages/#{page.sub}" }
     let!(:page) { create(:page, book: book, path: 'Path 1', question: 'Question 1', answer: 'Answer 1') }
 
     context 'when params are not specified' do
@@ -160,8 +161,8 @@ RSpec.describe Api::PagesController, type: :request do
           patch path, headers: headers
         }.not_to change { book.pages.count }
         expect(response).to have_http_status 200
-        expect(body.keys).to contain_exactly('id', 'path', 'question', 'answer')
-        expect(body['id']).to be page.id
+        expect(body.keys).to contain_exactly('sub', 'path', 'question', 'answer')
+        expect(body['sub']).to eq page.sub
         expect(body['path']).to eq page.path
         expect(body['question']).to eq page.question
         expect(body['answer']).to eq page.answer
@@ -174,8 +175,8 @@ RSpec.describe Api::PagesController, type: :request do
           patch path, params: { path: 'Path 2', question: 'Question 2', answer: 'Answer 2' }, headers: headers
         }.not_to change { book.pages.count }
         expect(response).to have_http_status 200
-        expect(body.keys).to contain_exactly('id', 'path', 'question', 'answer')
-        expect(body['id']).to be page.id
+        expect(body.keys).to contain_exactly('sub', 'path', 'question', 'answer')
+        expect(body['sub']).to eq page.sub
         expect(body['path']).to eq 'Path 2'
         expect(body['question']).to eq 'Question 2'
         expect(body['answer']).to eq 'Answer 2'
@@ -183,8 +184,8 @@ RSpec.describe Api::PagesController, type: :request do
     end
   end
 
-  describe 'DELETE /api/books/:book_sub/pages/:id' do
-    let(:path) { "/api/books/#{book.sub}/pages/#{page.id}" }
+  describe 'DELETE /api/books/:book_sub/pages/:sub' do
+    let(:path) { "/api/books/#{book.sub}/pages/#{page.sub}" }
     let!(:page) { create(:page, book: book) }
 
     it 'returns http status 204 and decreases number of pages' do
@@ -196,8 +197,8 @@ RSpec.describe Api::PagesController, type: :request do
     end
   end
 
-  describe 'PATCH /api/books/:book_sub/pages/:id/sort' do
-    let(:path) { "/api/books/#{book.sub}/pages/#{page_id}/sort" }
+  describe 'PATCH /api/books/:book_sub/pages/:sub/sort' do
+    let(:path) { "/api/books/#{book.sub}/pages/#{page_sub}/sort" }
 
     let!(:page_1) { create(:page, book: book, row_order: 0) }
     let!(:page_2) { create(:page, book: book, row_order: 1) }
@@ -210,7 +211,7 @@ RSpec.describe Api::PagesController, type: :request do
     let(:params) { { row_order_position: row_order_position } }
 
     context 'when 3rd item is dropped at the beginning' do
-      let(:page_id) { page_3.id }
+      let(:page_sub) { page_3.sub }
       let(:row_order_position) { 0 }
 
       it 'updates to 3 < 1 < 2' do
@@ -222,7 +223,7 @@ RSpec.describe Api::PagesController, type: :request do
     end
 
     context 'when 2nd item is dropped at the end' do
-      let(:page_id) { page_2.id }
+      let(:page_sub) { page_2.sub }
       let(:row_order_position) { 2 }
 
       it 'updates to 1 < 3 < 2' do
@@ -234,7 +235,7 @@ RSpec.describe Api::PagesController, type: :request do
     end
 
     context 'when first item is dropped at the end' do
-      let(:page_id) { page_1.id }
+      let(:page_sub) { page_1.sub }
       let(:row_order_position) { 2 }
 
       it 'updates to 2 < 3 < 1' do
