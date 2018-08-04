@@ -2,6 +2,8 @@ class Page < ApplicationRecord
   include RankedModel
   ranks :row_order
 
+  include HasSub
+
   belongs_to :book
 
   validates :path, length: { maximum: 255 }
