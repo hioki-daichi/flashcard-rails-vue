@@ -17,6 +17,7 @@ gem 'activerecord-import'
 gem 'rack-attack'
 gem 'config'
 gem 'ranked-model'
+gem 'graphql'
 
 group :development, :test do
   gem 'byebug'
