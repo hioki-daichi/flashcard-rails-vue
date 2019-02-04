@@ -25,6 +25,7 @@ group :development, :test do
   gem 'dotenv-rails'
   gem 'factory_bot'
   gem 'faker'
+  gem 'rspec-json_matcher'
 end
 
 group :development do
