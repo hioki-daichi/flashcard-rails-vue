@@ -46,8 +46,8 @@ export default {
         });
     },
     fetch({ state, commit }) {
-      return axios.get("/api/books").then(res => {
-        commit("setList", res.data);
+      return axios.post("/graphql", { query: "{ books { sub title }}" }).then(res => {
+        commit("setList", res.data.data.books);
       });
     },
     destroy({ state, commit }) {

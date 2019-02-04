@@ -1,11 +1,4 @@
 class Api::BooksController < ApplicationController
-  # GET /api/books
-  def index
-    books = current_user.books.rank(:row_order)
-
-    render json: books
-  end
-
   # POST /api/books
   def create
     title = params.require(:title)

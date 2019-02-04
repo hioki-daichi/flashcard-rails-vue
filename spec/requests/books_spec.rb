@@ -6,12 +6,13 @@ RSpec.describe Api::BooksController, type: :request do
 
   subject(:body) { JSON.parse(response.body) }
 
-  describe 'GET /api/books' do
-    let(:path) { '/api/books' }
+  describe 'query: "{ books { sub title } }"' do
+    let(:path) { '/graphql' }
+    let(:query) { '{ books { sub title } }' }
 
     context 'when Authorization header is not specified' do
       it 'returns authorization header required error' do
-        get path
+        post path, params: { query: query }
         expect(response).to have_http_status 400
         expect(body['errors']).to eq ['Authorization header required']
       end
@@ -20,9 +21,9 @@ RSpec.describe Api::BooksController, type: :request do
     context 'when Authorization header is specified' do
       context 'when there is no book' do
         it 'returns http status 200 and empty array' do
-          get path, headers: headers
+          post path, params: { query: query }, headers: headers
           expect(response).to have_http_status 200
-          expect(body).to eq []
+          expect(response.body).to be_json(data: { books: [] })
         end
       end
 
@@ -32,10 +33,16 @@ RSpec.describe Api::BooksController, type: :request do
         let!(:book_3) { create(:book, user: user, row_order: 0) }
 
         it 'returns row_order asc-ordered books' do
-          get path, headers: headers
-          expect(body[0]['sub']).to eq book_3.sub
-          expect(body[1]['sub']).to eq book_1.sub
-          expect(body[2]['sub']).to eq book_2.sub
+          post path, params: { query: query }, headers: headers
+          expect(response.body).to be_json(
+            data: {
+              books: [
+                { sub: book_3.sub, title: String },
+                { sub: book_1.sub, title: String },
+                { sub: book_2.sub, title: String }
+              ]
+            }
+          )
         end
       end
     end
