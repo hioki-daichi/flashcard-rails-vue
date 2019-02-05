@@ -1,13 +1,4 @@
 class Api::BooksController < ApplicationController
-  # POST /api/books
-  def create
-    title = params.require(:title)
-
-    book = current_user.books.create!(title: title)
-
-    render json: book, status: 201
-  end
-
   # PATCH /api/books/:book_sub
   def update
     book_sub = params.require(:book_sub)

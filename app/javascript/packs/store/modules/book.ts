@@ -29,10 +29,15 @@ export default {
   actions: {
     create({ state, commit }) {
       return axios
-        .post("/api/books", { title: state.newObject.title })
+        .post("/graphql", { query: `mutation { createBook(input: { title: "${state.newObject.title}" }) { book { sub title } errors } }` })
         .then(res => {
-          commit("add", res.data);
-          commit("updateNewObject", { title: "" });
+          const { book, errors } = res.data.data.createBook;
+          if (errors.length === 0) {
+            commit("add", book);
+            commit("updateNewObject", { title: "" });
+          } else {
+            alert(errors);
+          }
         });
     },
     update({ state, commit }) {

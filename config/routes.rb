@@ -6,7 +6,6 @@ Rails.application.routes.draw do
   post '/api/auth', to: 'api/authentication#authenticate'
 
   # Books
-  post   '/api/books',                  to: 'api/books#create'
   patch  '/api/books/:book_sub',        to: 'api/books#update'
   delete '/api/books/:book_sub',        to: 'api/books#destroy'
   patch  '/api/books/:book_sub/sort',   to: 'api/books#sort'

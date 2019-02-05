@@ -48,42 +48,40 @@ RSpec.describe Api::BooksController, type: :request do
     end
   end
 
-  describe 'POST /api/books' do
-    let(:path) { '/api/books' }
+  describe 'mutation { createBook(input: { title: $title }) { book { sub title } errors } }' do
+    let(:path) { '/graphql' }
+    let(:query) { "mutation { createBook(input: { title: \"#{title}\" }) { book { sub title } errors } }" }
 
-    context 'when title param is not specified' do
-      it 'returns parameter missing error' do
-        post path, headers: headers
-        expect(response).to have_http_status 400
-        expect(body['errors']).to eq ["param is missing or the value is empty: title"]
+    context 'when title is ""' do
+      let(:title) { '' }
+
+      it "returns \"Title can't be blank\"" do
+        post path, params: { query: query }, headers: headers
+        expect(response).to have_http_status 200
+        expect(body.dig('data', 'createBook', 'errors')).to eq ["Title can't be blank"]
       end
     end
 
-    context 'when title param is specified' do
-      let(:params) { { title: title } }
+    context 'when title is "foo"' do
+      let(:title) { 'foo' }
 
-      context 'when title is "foo"' do
-        let(:title) { "foo" }
-
-        it 'returns http status 201 and created book and increases number of books' do
-          expect {
-            post path, params: params, headers: headers
-          }.to change { user.books.count }.by(1)
-          expect(response).to have_http_status 201
-          expect(body.keys).to contain_exactly('sub', 'title')
-          expect(body['sub']).to be_a String
-          expect(body['title']).to eq title
-        end
+      it 'returns created book and increases number of books' do
+        expect {
+          post path, params: { query: query }, headers: headers
+        }.to change { user.books.count }.by(1)
+        expect(response).to have_http_status 200
+        expect(body.dig('data', 'createBook', 'book', 'sub')).to be_a String
+        expect(body.dig('data', 'createBook', 'book', 'title')).to eq title
       end
+    end
 
-      context 'when title has 256 characters' do
-        let(:title) { 'a' * 256 }
+    context 'when title has 256 characters' do
+      let(:title) { 'a' * 256 }
 
-        it 'returns maximum length error' do
-          post path, params: params, headers: headers
-          expect(response).to have_http_status 400
-          expect(body['errors']).to eq ['Title is too long (maximum is 255 characters)']
-        end
+      it 'returns "Title is too long (maximum is 255 characters)"' do
+        post path, params: { query: query }, headers: headers
+        expect(response).to have_http_status 200
+        expect(body.dig('data', 'createBook', 'errors')).to eq ['Title is too long (maximum is 255 characters)']
       end
     end
   end
