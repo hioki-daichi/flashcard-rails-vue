@@ -6,9 +6,9 @@ RSpec.describe Api::BooksController, type: :request do
 
   subject(:body) { JSON.parse(response.body) }
 
-  describe 'query: "{ books { sub title } }"' do
+  describe 'query { books { sub title } }' do
     let(:path) { '/graphql' }
-    let(:query) { '{ books { sub title } }' }
+    let(:query) { 'query { books { sub title } }' }
 
     context 'when Authorization header is not specified' do
       it 'returns authorization header required error' do
