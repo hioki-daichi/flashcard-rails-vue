@@ -86,19 +86,41 @@ RSpec.describe Api::BooksController, type: :request do
     end
   end
 
-  describe 'PATCH /api/books/:sub' do
-    let(:path) { "/api/books/#{book.sub}" }
-    let!(:book) { create(:book, user: user) }
+  describe 'mutation { updateBook(input: { sub: $sub, title: $title }) { book { sub title } errors } }' do
+    let!(:book) { create(:book, user: user, title: 'Title A') }
+    let(:path) { '/graphql' }
+    let(:query) { "mutation { updateBook(input: { sub: \"#{book.sub}\", title: \"#{title}\" }) { book { sub title } errors } }" }
 
-    context 'when params are not specified' do
+    context 'when title is "Title B"' do
+      let(:title) { 'Title B' }
+
       it 'returns http status 200 and updated book' do
         expect {
-          patch path, headers: headers
+          post path, params: { query: query }, headers: headers
         }.not_to change { user.books.count }
         expect(response).to have_http_status 200
-        expect(body.keys).to contain_exactly('sub', 'title')
-        expect(body['sub']).to eq book.sub
-        expect(body['title']).to eq book.title
+        expect(body.dig('data', 'updateBook', 'book', 'sub')).to eq book.sub
+        expect(body.dig('data', 'updateBook', 'book', 'title')).to eq title
+      end
+    end
+
+    context 'when title is ""' do
+      let(:title) { '' }
+
+      it "returns \"Title can't be blank\"" do
+        post path, params: { query: query }, headers: headers
+        expect(response).to have_http_status 200
+        expect(body.dig('data', 'updateBook', 'errors')).to eq ["Title can't be blank"]
+      end
+    end
+
+    context 'when title has 256 characters' do
+      let(:title) { 'a' * 256 }
+
+      it 'returns "Title is too long (maximum is 255 characters)"' do
+        post path, params: { query: query }, headers: headers
+        expect(response).to have_http_status 200
+        expect(body.dig('data', 'updateBook', 'errors')).to eq ['Title is too long (maximum is 255 characters)']
       end
     end
   end

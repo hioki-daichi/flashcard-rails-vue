@@ -1,19 +1,4 @@
 class Api::BooksController < ApplicationController
-  # PATCH /api/books/:book_sub
-  def update
-    book_sub = params.require(:book_sub)
-
-    book = current_user.books.find_by!(sub: book_sub)
-
-    attrs = {
-      title: params[:title]
-    }.compact
-
-    book.update!(attrs) if attrs.present?
-
-    render json: book
-  end
-
   # DELETE /api/books/:book_sub
   def destroy
     book_sub = params.require(:book_sub)

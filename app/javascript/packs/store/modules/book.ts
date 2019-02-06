@@ -42,12 +42,15 @@ export default {
     },
     update({ state, commit }) {
       return axios
-        .patch(`/api/books/${state.editing.sub}`, {
-          title: state.editing.title
-        })
+        .post("/graphql", { query: `mutation { updateBook(input: { sub: "${state.editing.sub}", title: "${state.editing.title}" }) { book { sub title } errors } }` })
         .then(res => {
-          commit("replace", res.data);
-          commit("setEditing", null);
+          const { book, errors } = res.data.data.updateBook;
+          if (errors.length === 0) {
+            commit("replace", res.data);
+            commit("setEditing", null);
+          } else {
+            alert(errors);
+          }
         });
     },
     fetch({ state, commit }) {
