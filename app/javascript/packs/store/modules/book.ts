@@ -59,9 +59,16 @@ export default {
       });
     },
     destroy({ state, commit }) {
-      return axios.delete(`/api/books/${state.sub}`).then(_ => {
-        commit("remove", state.sub);
-      });
+      return axios
+        .post("/graphql", { query: `mutation { deleteBook(input: { sub: "${state.sub}" }) { book { sub } errors } }` })
+        .then(res => {
+          const { book, errors } = res.data.data.deleteBook;
+          if (errors.length === 0) {
+            commit("remove", book.sub);
+          } else {
+            alert(errors);
+          }
+        });
     },
     sort({ state, commit }) {
       return axios.patch(`/api/books/${state.sub}/sort`, {

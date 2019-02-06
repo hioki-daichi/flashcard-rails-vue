@@ -1,13 +1,4 @@
 class Api::BooksController < ApplicationController
-  # DELETE /api/books/:book_sub
-  def destroy
-    book_sub = params.require(:book_sub)
-
-    current_user.books.find_by!(sub: book_sub).destroy!
-
-    head 204
-  end
-
   # POST /api/books/import
   def import
     file    = params.require(:file)

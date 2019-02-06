@@ -125,16 +125,17 @@ RSpec.describe Api::BooksController, type: :request do
     end
   end
 
-  describe 'DELETE /api/books/:sub' do
-    let(:path) { "/api/books/#{book.sub}" }
+  describe 'mutation { deleteBook(input: { sub: $sub }) { book { sub } errors } }' do
     let!(:book) { create(:book, user: user) }
+    let(:path) { '/graphql' }
+    let(:query) { "mutation { deleteBook(input: { sub: \"#{book.sub}\" }) { book { sub } errors } }" }
 
-    it 'returns http status 204 and decreases number of books' do
+    it 'decreases number of books' do
       expect {
-        delete path, headers: headers
+        post path, params: { query: query }, headers: headers
       }.to change { user.books.count }.by(-1)
-      expect(response).to have_http_status 204
-      expect(response.body).to eq ''
+      expect(response).to have_http_status 200
+      expect(body.dig('data', 'deleteBook', 'book', 'sub')).to eq book.sub
     end
   end
 
