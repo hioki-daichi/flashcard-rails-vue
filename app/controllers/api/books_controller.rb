@@ -24,16 +24,4 @@ class Api::BooksController < ApplicationController
 
     send_data csv_data, type: "text/csv"
   end
-
-  # PATCH /api/books/:book_sub/sort
-  def sort
-    book_sub = params.require(:book_sub)
-    row_order_position = params.require(:row_order_position)
-
-    book = current_user.books.find_by!(sub: book_sub)
-
-    book.update!(row_order_position: row_order_position)
-
-    head 200
-  end
 end

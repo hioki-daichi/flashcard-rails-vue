@@ -6,7 +6,6 @@ Rails.application.routes.draw do
   post "/api/auth", to: "api/authentication#authenticate"
 
   # Books
-  patch "/api/books/:book_sub/sort", to: "api/books#sort"
   post "/api/books/import", to: "api/books#import"
   get "/api/books/:book_sub/export", to: "api/books#export"
 

@@ -209,8 +209,9 @@ RSpec.describe Api::BooksController, type: :request do
     end
   end
 
-  describe "PATCH /api/books/:sub/sort" do
-    let(:path) { "/api/books/#{sub}/sort" }
+  describe "mutation { sortBooks(input: { sub: $sub, rowOrderPosition: $rowOrderPosition }) { book { sub } errors } }" do
+    let(:path) { "/graphql" }
+    let(:query) { "mutation { sortBooks(input: { sub: \"#{sub}\", rowOrderPosition: #{row_order_position} }) { book { sub } errors } }" }
 
     let!(:book_1) { create(:book, user: user, row_order: 0) }
     let!(:book_2) { create(:book, user: user, row_order: 1) }
@@ -220,14 +221,12 @@ RSpec.describe Api::BooksController, type: :request do
     def book_2_order; book_2.reload.row_order end
     def book_3_order; book_3.reload.row_order end
 
-    let(:params) { { row_order_position: row_order_position } }
-
     context "when 3rd item is dropped at the beginning" do
       let(:sub) { book_3.sub }
       let(:row_order_position) { 0 }
 
       it "updates to 3 < 1 < 2" do
-        patch path, params: params, headers: headers
+        post path, params: { query: query }, headers: headers
         expect(response).to have_http_status 200
         expect(book_3_order).to be < book_1_order
         expect(book_1_order).to be < book_2_order
@@ -239,7 +238,7 @@ RSpec.describe Api::BooksController, type: :request do
       let(:row_order_position) { 2 }
 
       it "updates to 1 < 3 < 2" do
-        patch path, params: params, headers: headers
+        post path, params: { query: query }, headers: headers
         expect(response).to have_http_status 200
         expect(book_1_order).to be < book_3_order
         expect(book_3_order).to be < book_2_order
@@ -251,7 +250,7 @@ RSpec.describe Api::BooksController, type: :request do
       let(:row_order_position) { 2 }
 
       it "updates to 2 < 3 < 1" do
-        patch path, params: params, headers: headers
+        post path, params: { query: query }, headers: headers
         expect(response).to have_http_status 200
         expect(book_2_order).to be < book_3_order
         expect(book_3_order).to be < book_1_order

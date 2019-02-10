@@ -71,9 +71,14 @@ export default {
         });
     },
     sort({ state, commit }) {
-      return axios.patch(`/api/books/${state.sub}/sort`, {
-        row_order_position: state.newIndex
-      });
+      return axios
+        .post("/graphql", { query: `mutation { sortBooks(input: { sub: "${state.sub}", rowOrderPosition: ${state.newIndex} }) { book { sub } errors } }` })
+        .then(res => {
+          const { book, errors } = res.data.data.sortBooks;
+          if (errors.length !== 0) {
+            alert(errors);
+          }
+        });
     },
     importBook({ state, commit }) {
       const data = new FormData();
