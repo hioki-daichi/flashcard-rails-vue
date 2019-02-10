@@ -1,64 +1,64 @@
-require 'rails_helper'
+require "rails_helper"
 
-RSpec.describe 'Auth', type: :request do
+RSpec.describe "Auth", type: :request do
   subject(:body) { JSON.parse(response.body) }
 
   let!(:user) { create(:user, email: email, password: password) }
-  let(:email) { 'valid@example.com' }
-  let(:password) { 'valid' }
+  let(:email) { "valid@example.com" }
+  let(:password) { "valid" }
 
-  describe 'POST /api/auth' do
-    let(:path) { '/api/auth' }
+  describe "POST /api/auth" do
+    let(:path) { "/api/auth" }
 
-    shared_examples_for 'unauthorized' do
-      it 'returns http status 401' do
+    shared_examples_for "unauthorized" do
+      it "returns http status 401" do
         post path, params: params
         expect(response).to have_http_status 401
       end
 
-      it 'returns nothing' do
+      it "returns nothing" do
         post path, params: params
-        expect(response.body).to eq ''
+        expect(response.body).to eq ""
       end
     end
 
-    context 'when valid parameters passed' do
+    context "when valid parameters passed" do
       let(:params) { { email: email, password: password } }
 
-      it 'returns http status 200' do
+      it "returns http status 200" do
         post path, params: params
         expect(response).to have_http_status 200
       end
 
-      it 'returns token key' do
+      it "returns token key" do
         post path, params: params
-        expect(body.keys).to contain_exactly('token')
+        expect(body.keys).to contain_exactly("token")
       end
 
-      it 'returns token string' do
+      it "returns token string" do
         post path, params: params
-        expect(body['token']).to be_a String
+        expect(body["token"]).to be_a String
       end
     end
 
-    context 'when invalid password passed' do
-      let(:params) { { email: email, password: 'invalid' } }
-      it_behaves_like 'unauthorized'
+    context "when invalid password passed" do
+      let(:params) { { email: email, password: "invalid" } }
+      it_behaves_like "unauthorized"
     end
 
-    context 'when invalid email and password passed' do
-      let(:params) { { email: 'invalid@example.com', password: 'invalid' } }
-      it_behaves_like 'unauthorized'
+    context "when invalid email and password passed" do
+      let(:params) { { email: "invalid@example.com", password: "invalid" } }
+      it_behaves_like "unauthorized"
     end
 
-    context 'when only email passed' do
+    context "when only email passed" do
       let(:params) { { email: email } }
-      it_behaves_like 'unauthorized'
+      it_behaves_like "unauthorized"
     end
 
-    context 'when only password passed' do
+    context "when only password passed" do
       let(:params) { { password: password } }
-      it_behaves_like 'unauthorized'
+      it_behaves_like "unauthorized"
     end
   end
 end

@@ -1,2 +1,2 @@
-require 'rspec/json_matcher'
+require "rspec/json_matcher"
 RSpec.configuration.include RSpec::JsonMatcher

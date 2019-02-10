@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 module JsonWebToken
-  ALG = 'HS256'
+  ALG = "HS256"
 
   module_function
 

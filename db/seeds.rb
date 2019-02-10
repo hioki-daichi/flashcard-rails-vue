@@ -1,8 +1,8 @@
-user = User.create(email: 'a', password: 'b')
+user = User.create(email: "a", password: "b")
 
 books = user.books.create([
-  { title: 'Title 1' },
-  { title: 'Title 2' },
+  { title: "Title 1" },
+  { title: "Title 2" },
 ])
 
 books.each do |book|

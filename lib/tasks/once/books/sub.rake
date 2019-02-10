@@ -1,6 +1,6 @@
 namespace :once do
   namespace :books do
-    desc 'Set sub to Book'
+    desc "Set sub to Book"
     task set_sub: :environment do
       ActiveRecord::Base.transaction do
         Book.find_each do |book|

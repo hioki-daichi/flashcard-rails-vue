@@ -1,10 +1,10 @@
 # frozen_string_literal: true
-require 'csv'
+require "csv"
 
 class BookTranslator
   HEADER = %w(path question answer)
 
-  COL_SEPS = { comma: ',', tab: "\t" }.with_indifferent_access
+  COL_SEPS = { comma: ",", tab: "\t" }.with_indifferent_access
 
   def self.to_csv(book)
     rows = book.pages.order(id: :asc).map { |page| page.attributes.values_at(*HEADER) }

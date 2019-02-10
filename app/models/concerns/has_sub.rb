@@ -1,5 +1,5 @@
 module HasSub
-  SEEDS      = '0123456789abcdef'.chars.freeze
+  SEEDS = "0123456789abcdef".chars.freeze
   SUB_LENGTH = 7
 
   extend ActiveSupport::Concern
