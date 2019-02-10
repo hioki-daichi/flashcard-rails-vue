@@ -1,6 +1,9 @@
 {
   "name": "flashcard-rails-vue",
   "private": true,
+  "scripts": {
+    "server": "bin/webpack-dev-server"
+  },
   "dependencies": {
     "@rails/webpacker": "^3.x",
     "axios": "latest",
