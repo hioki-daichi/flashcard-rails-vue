@@ -11,7 +11,7 @@ module Types
     end
 
     def book(sub:)
-      current_user.books.rank(:row_order).find_by(sub: sub)
+      current_user.books.find_by(sub: sub)
     end
 
     private
