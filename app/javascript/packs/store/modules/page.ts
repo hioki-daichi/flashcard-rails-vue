@@ -67,9 +67,14 @@ export default {
     },
     destroy({ state, commit, rootState }) {
       return axios
-        .delete(`/api/books/${rootState.book.sub}/pages/${state.sub}`)
+        .post("/graphql", { query: `mutation { deletePage(input: { bookSub: "${rootState.book.sub}", pageSub: "${state.sub}" }) { page { sub } errors } }` })
         .then(res => {
-          commit("remove", state.sub);
+          const { page, errors } = res.data.data.deletePage;
+          if (errors.length === 0) {
+            commit("remove", page.sub);
+          } else {
+            alert(errors);
+          }
         });
     },
     sort({ state, commit, rootState }) {

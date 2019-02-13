@@ -27,16 +27,6 @@ class Api::PagesController < ApplicationController
     }
   end
 
-  # DELETE /api/books/:book_sub/pages/:page_sub
-  def destroy
-    book_sub = params.require(:book_sub)
-    page_sub = params.require(:page_sub)
-
-    current_user.books.find_by!(sub: book_sub).pages.find_by!(sub: page_sub).destroy!
-
-    head 204
-  end
-
   # PATCH /api/books/:book_sub/pages/:page_sub/sort
   def sort
     book_sub = params.require(:book_sub)

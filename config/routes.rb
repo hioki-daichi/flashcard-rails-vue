@@ -11,7 +11,6 @@ Rails.application.routes.draw do
 
   # Pages
   get "/api/books/:book_sub/pages", to: "api/pages#index"
-  delete "/api/books/:book_sub/pages/:page_sub", to: "api/pages#destroy"
   patch "/api/books/:book_sub/pages/:page_sub/sort", to: "api/pages#sort"
 
   match "/api/", via: :all, to: "api/errors#routing_error"
