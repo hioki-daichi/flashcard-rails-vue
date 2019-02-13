@@ -78,10 +78,14 @@ export default {
         });
     },
     sort({ state, commit, rootState }) {
-      return axios.patch(
-        `/api/books/${rootState.book.sub}/pages/${state.sub}/sort`,
-        { row_order_position: state.newIndex }
-      );
-    }
+      return axios
+        .post("/graphql", { query: `mutation { sortPages(input: { bookSub: "${rootState.book.sub}", pageSub: "${state.sub}", rowOrderPosition: ${state.newIndex} }) { page { sub } errors } }` })
+        .then(res => {
+          const { page, errors } = res.data.data.sortPages;
+          if (errors.length !== 0) {
+            alert(errors);
+          }
+        });
+    },
   }
 };

@@ -211,8 +211,9 @@ RSpec.describe Api::PagesController, type: :request do
     end
   end
 
-  describe "PATCH /api/books/:book_sub/pages/:sub/sort" do
-    let(:path) { "/api/books/#{book.sub}/pages/#{page_sub}/sort" }
+  describe "mutation { sortPages(input: { bookSub: $bookSub, pageSub: $pageSub, rowOrderPosition: $rowOrderPosition }) { page { sub } errors } }" do
+    let(:path) { "/graphql" }
+    let(:query) { "mutation { sortPages(input: { bookSub: \"#{book.sub}\", pageSub: \"#{sub}\", rowOrderPosition: #{row_order_position} }) { page { sub } errors } }" }
 
     let!(:page_1) { create(:page, book: book, row_order: 0) }
     let!(:page_2) { create(:page, book: book, row_order: 1) }
@@ -222,14 +223,12 @@ RSpec.describe Api::PagesController, type: :request do
     def page_2_order; page_2.reload.row_order end
     def page_3_order; page_3.reload.row_order end
 
-    let(:params) { { row_order_position: row_order_position } }
-
     context "when 3rd item is dropped at the beginning" do
-      let(:page_sub) { page_3.sub }
+      let(:sub) { page_3.sub }
       let(:row_order_position) { 0 }
 
       it "updates to 3 < 1 < 2" do
-        patch path, params: params, headers: headers
+        post path, params: { query: query }, headers: headers
         expect(response).to have_http_status 200
         expect(page_3_order).to be < page_1_order
         expect(page_1_order).to be < page_2_order
@@ -237,11 +236,11 @@ RSpec.describe Api::PagesController, type: :request do
     end
 
     context "when 2nd item is dropped at the end" do
-      let(:page_sub) { page_2.sub }
+      let(:sub) { page_2.sub }
       let(:row_order_position) { 2 }
 
       it "updates to 1 < 3 < 2" do
-        patch path, params: params, headers: headers
+        post path, params: { query: query }, headers: headers
         expect(response).to have_http_status 200
         expect(page_1_order).to be < page_3_order
         expect(page_3_order).to be < page_2_order
@@ -249,11 +248,11 @@ RSpec.describe Api::PagesController, type: :request do
     end
 
     context "when first item is dropped at the end" do
-      let(:page_sub) { page_1.sub }
+      let(:sub) { page_1.sub }
       let(:row_order_position) { 2 }
 
       it "updates to 2 < 3 < 1" do
-        patch path, params: params, headers: headers
+        post path, params: { query: query }, headers: headers
         expect(response).to have_http_status 200
         expect(page_2_order).to be < page_3_order
         expect(page_3_order).to be < page_1_order

@@ -26,17 +26,4 @@ class Api::PagesController < ApplicationController
       },
     }
   end
-
-  # PATCH /api/books/:book_sub/pages/:page_sub/sort
-  def sort
-    book_sub = params.require(:book_sub)
-    page_sub = params.require(:page_sub)
-    row_order_position = params.require(:row_order_position)
-
-    page = current_user.books.find_by!(sub: book_sub).pages.find_by!(sub: page_sub)
-
-    page.update!(row_order_position: row_order_position)
-
-    head 200
-  end
 end
