@@ -40,14 +40,15 @@ export default {
     },
     update({ state, commit, rootState }) {
       return axios
-        .patch(`/api/books/${rootState.book.sub}/pages/${state.editing.sub}`, {
-          path: state.editing.path,
-          question: state.editing.question,
-          answer: state.editing.answer
-        })
+        .post("/graphql", { query: `mutation { updatePage(input: { bookSub: "${rootState.book.sub}", pageSub: "${state.editing.sub}", path: "${state.editing.path}", question: "${state.editing.question}", answer: ${state.editing.answer} }) { page { sub path question answer } errors } }` })
         .then(res => {
-          commit("replace", res.data);
-          commit("setEditing", null);
+          const { page, errors } = res.data.data.updatePage;
+          if (errors.length === 0) {
+            commit("replace", page);
+            commit("setEditing", null);
+          } else {
+            alert(errors);
+          }
         });
     },
     fetch({ state, commit, rootState }) {

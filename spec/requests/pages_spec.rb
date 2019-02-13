@@ -161,35 +161,38 @@ RSpec.describe Api::PagesController, type: :request do
     end
   end
 
-  describe "PATCH /api/books/:book_sub/pages/:page_sub" do
-    let(:path) { "/api/books/#{book.sub}/pages/#{page.sub}" }
+  describe "mutation { updatePage(input: { bookSub: $bookSub, pageSub: $pageSub, path: $path, question: $question, answer: $answer }) { page { sub path question answer } errors } }" do
     let!(:page) { create(:page, book: book, path: "Path 1", question: "Question 1", answer: "Answer 1") }
 
+    let(:path) { "/graphql" }
+
     context "when params are not specified" do
+      let(:query) { "mutation { updatePage(input: { bookSub: \"#{book.sub}\", pageSub: \"#{page.sub}\" }) { page { sub path question answer } errors } }" }
+
       it "returns http status 200 and existing page" do
         expect {
-          patch path, headers: headers
+          post path, params: { query: query }, headers: headers
         }.not_to change { book.pages.count }
-        expect(response).to have_http_status 200
-        expect(body.keys).to contain_exactly("sub", "path", "question", "answer")
-        expect(body["sub"]).to eq page.sub
-        expect(body["path"]).to eq page.path
-        expect(body["question"]).to eq page.question
-        expect(body["answer"]).to eq page.answer
+        expect(body.dig("data", "updatePage", "page").keys).to contain_exactly("sub", "path", "question", "answer")
+        expect(body.dig("data", "updatePage", "page", "sub")).to eq page.sub
+        expect(body.dig("data", "updatePage", "page", "path")).to eq page.path
+        expect(body.dig("data", "updatePage", "page", "question")).to eq page.question
+        expect(body.dig("data", "updatePage", "page", "answer")).to eq page.answer
       end
     end
 
     context "when params are specified" do
+      let(:query) { "mutation { updatePage(input: { bookSub: \"#{book.sub}\", pageSub: \"#{page.sub}\", path: \"Path 2\", question: \"Question 2\", answer: \"Answer 2\" }) { page { sub path question answer } errors } }" }
+
       it "returns http status 200 and updated page" do
         expect {
-          patch path, params: { path: "Path 2", question: "Question 2", answer: "Answer 2" }, headers: headers
+          post path, params: { query: query }, headers: headers
         }.not_to change { book.pages.count }
-        expect(response).to have_http_status 200
-        expect(body.keys).to contain_exactly("sub", "path", "question", "answer")
-        expect(body["sub"]).to eq page.sub
-        expect(body["path"]).to eq "Path 2"
-        expect(body["question"]).to eq "Question 2"
-        expect(body["answer"]).to eq "Answer 2"
+        expect(body.dig("data", "updatePage", "page").keys).to contain_exactly("sub", "path", "question", "answer")
+        expect(body.dig("data", "updatePage", "page", "sub")).to eq page.sub
+        expect(body.dig("data", "updatePage", "page", "path")).to eq "Path 2"
+        expect(body.dig("data", "updatePage", "page", "question")).to eq "Question 2"
+        expect(body.dig("data", "updatePage", "page", "answer")).to eq "Answer 2"
       end
     end
   end

@@ -27,24 +27,6 @@ class Api::PagesController < ApplicationController
     }
   end
 
-  # PATCH /api/books/:book_sub/pages/:page_sub
-  def update
-    book_sub = params.require(:book_sub)
-    page_sub = params.require(:page_sub)
-
-    page = current_user.books.find_by!(sub: book_sub).pages.find_by!(sub: page_sub)
-
-    attrs = {
-      path: params[:path],
-      question: params[:question],
-      answer: params[:answer],
-    }.compact
-
-    page.update!(attrs) if attrs.present?
-
-    render json: page
-  end
-
   # DELETE /api/books/:book_sub/pages/:page_sub
   def destroy
     book_sub = params.require(:book_sub)
