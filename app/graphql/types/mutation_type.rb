@@ -1,5 +1,6 @@
 module Types
   class MutationType < Types::BaseObject
+    field :createPage, mutation: Mutations::CreatePage
     field :sortBooks, mutation: Mutations::SortBooks
     field :deleteBook, mutation: Mutations::DeleteBook
     field :updateBook, mutation: Mutations::UpdateBook

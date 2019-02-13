@@ -27,14 +27,15 @@ export default {
   actions: {
     create({ state, commit, rootState }) {
       return axios
-        .post(`/api/books/${rootState.book.sub}/pages`, {
-          path: state.newObject.path,
-          question: state.newObject.question,
-          answer: state.newObject.answer
-        })
+        .post("/graphql", { query: `mutation { createPage(input: { bookSub: "${rootState.book.sub}", path: "${state.newObject.path}", question: "${state.newObject.question}", answer: ${state.newObject.answer} }) { page { sub path question answer } errors } }` })
         .then(res => {
-          commit("add", res.data);
-          commit("updateNewObject", { path: "", question: "", answer: "" });
+          const { page, errors } = res.data.data.createPage;
+          if (errors.length === 0) {
+            commit("add", page);
+            commit("updateNewObject", { path: "", question: "", answer: "" });
+          } else {
+            alert(errors);
+          }
         });
     },
     update({ state, commit, rootState }) {

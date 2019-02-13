@@ -27,18 +27,6 @@ class Api::PagesController < ApplicationController
     }
   end
 
-  # POST /api/books/:book_sub/pages
-  def create
-    book_sub = params.require(:book_sub)
-    path = params[:path]
-    question = params.require(:question)
-    answer = params.require(:answer)
-
-    page = current_user.books.find_by!(sub: book_sub).pages.create!(path: path, question: question, answer: answer)
-
-    render json: page, status: 201
-  end
-
   # PATCH /api/books/:book_sub/pages/:page_sub
   def update
     book_sub = params.require(:book_sub)

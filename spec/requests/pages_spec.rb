@@ -70,55 +70,57 @@ RSpec.describe Api::PagesController, type: :request do
     end
   end
 
-  describe "POST /api/books/:book_sub/pages" do
-    let(:path) { "/api/books/#{book.sub}/pages" }
+  describe "mutation { createPage(input: { bookSub: $bookSub, path: $path, question: $question, answer: $answer }) { page { sub path question answer } errors } }" do
+    let(:path) { "/graphql" }
+    let(:query) { "mutation { createPage(input: { bookSub: \"#{book.sub}\", path: \"#{path_param}\", question: \"#{question}\", answer: \"#{answer}\" }) { page { sub path question answer } errors } }" }
     let(:path_param) { "Path 1" }
     let(:question) { "Question 1" }
     let(:answer) { "Answer 1" }
 
     describe "path" do
       context "when path param is not specified" do
-        it "returns http status 201 and created page and increases number of pages" do
+        let(:path_param) { nil }
+
+        it "creates a page" do
           expect {
-            post path, params: { question: question, answer: answer }, headers: headers
+            post path, params: { query: query }, headers: headers
           }.to change { book.pages.count }.by(1)
-          expect(response).to have_http_status 201
-          expect(body.keys).to contain_exactly("sub", "path", "question", "answer")
-          expect(body["sub"]).to be_a String
-          expect(body["path"]).to be nil
-          expect(body["question"]).to eq "Question 1"
-          expect(body["answer"]).to eq "Answer 1"
+          expect(body.dig("data", "createPage", "page").keys).to contain_exactly("sub", "path", "question", "answer")
+          expect(body.dig("data", "createPage", "page", "sub")).to be_a String
+          expect(body.dig("data", "createPage", "page", "path")).to eq ""
+          expect(body.dig("data", "createPage", "page", "question")).to eq "Question 1"
+          expect(body.dig("data", "createPage", "page", "answer")).to eq "Answer 1"
         end
       end
 
       context "when path param is specified" do
-        let(:params) { { path: path_param, question: question, answer: answer } }
+        let(:path_param) { "Path 1" }
 
         it "returns path set page" do
-          post path, params: params, headers: headers
-          expect(body["path"]).to eq "Path 1"
+          post path, params: { query: query }, headers: headers
+          expect(body.dig("data", "createPage", "page", "path")).to eq "Path 1"
         end
+      end
 
-        context "when path has 256 characters" do
-          let(:path_param) { "a" * 256 }
+      context "when path has 256 characters" do
+        let(:path_param) { "a" * 256 }
 
-          it "returns maximum length error" do
-            post path, params: params, headers: headers
-            expect(response).to have_http_status 400
-            expect(body["errors"]).to eq ["Path is too long (maximum is 255 characters)"]
-          end
+        it "returns maximum length error" do
+          post path, params: { query: query }, headers: headers
+          expect(body.dig("data", "createPage", "errors")).to eq ["Path is too long (maximum is 255 characters)"]
         end
       end
     end
 
     describe "question" do
       context "when question param is not specified" do
-        it "returns parameter missing error" do
+        let(:question) { "" }
+
+        it "returns \"Question can't be blank\"" do
           expect {
-            post path, params: { path: path_param, answer: answer }, headers: headers
+            post path, params: { query: query }, headers: headers
           }.not_to change { book.pages.count }
-          expect(response).to have_http_status 400
-          expect(body["errors"]).to eq ["param is missing or the value is empty: question"]
+          expect(body.dig("data", "createPage", "errors")).to eq ["Question can't be blank"]
         end
       end
 
@@ -126,21 +128,23 @@ RSpec.describe Api::PagesController, type: :request do
         let(:question) { "a" * 2049 }
 
         it "returns maximum length error" do
-          post path, params: { path: path_param, question: question, answer: answer }, headers: headers
-          expect(response).to have_http_status 400
-          expect(body["errors"]).to eq ["Question is too long (maximum is 2048 characters)"]
+          expect {
+            post path, params: { query: query }, headers: headers
+          }.not_to change { book.pages.count }
+          expect(body.dig("data", "createPage", "errors")).to eq ["Question is too long (maximum is 2048 characters)"]
         end
       end
     end
 
     describe "answer" do
       context "when answer param is not specified" do
-        it "returns parameter missing error" do
+        let(:answer) { "" }
+
+        it "returns \"Answer can't be blank\"" do
           expect {
-            post path, params: { path: path_param, question: question }, headers: headers
+            post path, params: { query: query }, headers: headers
           }.not_to change { book.pages.count }
-          expect(response).to have_http_status 400
-          expect(body["errors"]).to eq ["param is missing or the value is empty: answer"]
+          expect(body.dig("data", "createPage", "errors")).to eq ["Answer can't be blank"]
         end
       end
 
@@ -148,9 +152,10 @@ RSpec.describe Api::PagesController, type: :request do
         let(:answer) { "a" * 2049 }
 
         it "returns maximum length error" do
-          post path, params: { path: path_param, question: question, answer: answer }, headers: headers
-          expect(response).to have_http_status 400
-          expect(body["errors"]).to eq ["Answer is too long (maximum is 2048 characters)"]
+          expect {
+            post path, params: { query: query }, headers: headers
+          }.not_to change { book.pages.count }
+          expect(body.dig("data", "createPage", "errors")).to eq ["Answer is too long (maximum is 2048 characters)"]
         end
       end
     end
