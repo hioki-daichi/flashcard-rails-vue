@@ -8,13 +8,13 @@
             <v-container>
               <v-layout wrap>
                 <v-flex xs12>
-                  <v-text-field type="text" placeholder="Path" v-model="path" />
+                  <v-text-field type="text" placeholder="Path" v-model="path"/>
                 </v-flex>
                 <v-flex xs12>
-                  <v-textarea placeholder="Question" v-model="question" />
+                  <v-textarea placeholder="Question" v-model="question"/>
                 </v-flex>
                 <v-flex xs12>
-                  <v-textarea placeholder="Answer" v-model="answer" />
+                  <v-textarea placeholder="Answer" v-model="answer"/>
                 </v-flex>
               </v-layout>
             </v-container>
