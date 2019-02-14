@@ -8,7 +8,7 @@
             <v-container>
               <v-layout>
                 <v-flex xs8 offset-xs2>
-                  <v-text-field type="text" placeholder="Title" v-model="newBookTitle" />
+                  <v-text-field type="text" placeholder="Title" v-model="newBookTitle"/>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -27,7 +27,7 @@
             <v-container>
               <v-layout wrap>
                 <v-flex xs12>
-                  <input type="file" @change="fileSelected" ref="fileInput" />
+                  <input type="file" @change="fileSelected" ref="fileInput">
                 </v-flex>
                 <v-flex xs1>
                   <v-select :items="colSepOptions" v-model="colSep"></v-select>
