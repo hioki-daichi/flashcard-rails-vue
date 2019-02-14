@@ -46,7 +46,7 @@ export default {
         .then(res => {
           const { book, errors } = res.data.data.updateBook;
           if (errors.length === 0) {
-            commit("replace", res.data);
+            commit("replace", book);
             commit("setEditing", null);
           } else {
             alert(errors);
