@@ -58,7 +58,7 @@ export default Vue.extend({
   },
   computed: {
     pages() {
-      return this.$store.state.page.list;
+      return this.$store.state.page.list.sort((a, b) => { return a.rowOrder - b.rowOrder });
     },
     path: {
       get() {

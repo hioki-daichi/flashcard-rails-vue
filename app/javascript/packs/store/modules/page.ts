@@ -27,7 +27,7 @@ export default {
   actions: {
     create({ state, commit, rootState }) {
       return axios
-        .post("/graphql", { query: `mutation { createPage(input: { bookSub: "${rootState.book.sub}", path: "${state.newObject.path}", question: "${state.newObject.question}", answer: ${state.newObject.answer} }) { page { sub path question answer } errors } }` })
+        .post("/graphql", { query: `mutation { createPage(input: { bookSub: "${rootState.book.sub}", path: "${state.newObject.path}", question: "${state.newObject.question}", answer: ${state.newObject.answer} }) { page { sub path question answer rowOrder } errors } }` })
         .then(res => {
           const { page, errors } = res.data.data.createPage;
           if (errors.length === 0) {
@@ -40,7 +40,7 @@ export default {
     },
     update({ state, commit, rootState }) {
       return axios
-        .post("/graphql", { query: `mutation { updatePage(input: { bookSub: "${rootState.book.sub}", pageSub: "${state.editing.sub}", path: "${state.editing.path}", question: "${state.editing.question}", answer: ${state.editing.answer} }) { page { sub path question answer } errors } }` })
+        .post("/graphql", { query: `mutation { updatePage(input: { bookSub: "${rootState.book.sub}", pageSub: "${state.editing.sub}", path: "${state.editing.path}", question: "${state.editing.question}", answer: ${state.editing.answer} }) { page { sub path question answer rowOrder } errors } }` })
         .then(res => {
           const { page, errors } = res.data.data.updatePage;
           if (errors.length === 0) {
@@ -79,10 +79,12 @@ export default {
     },
     sort({ state, commit, rootState }) {
       return axios
-        .post("/graphql", { query: `mutation { sortPages(input: { bookSub: "${rootState.book.sub}", pageSub: "${state.sub}", rowOrderPosition: ${state.newIndex} }) { page { sub } errors } }` })
+        .post("/graphql", { query: `mutation { sortPages(input: { bookSub: "${rootState.book.sub}", pageSub: "${state.sub}", rowOrderPosition: ${state.newIndex} }) { page { sub path question answer rowOrder } errors } }` })
         .then(res => {
           const { page, errors } = res.data.data.sortPages;
-          if (errors.length !== 0) {
+          if (errors.length == 0) {
+            commit("replace", page);
+          } else {
             alert(errors);
           }
         });
