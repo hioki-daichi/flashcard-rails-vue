@@ -73,7 +73,7 @@ export default Vue.extend({
   },
   computed: {
     books() {
-      return this.$store.state.book.list;
+      return this.$store.state.book.list.sort((a, b) => { return a.rowOrder - b.rowOrder });
     },
     newBookTitle: {
       get() {

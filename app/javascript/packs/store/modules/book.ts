@@ -29,7 +29,7 @@ export default {
   actions: {
     create({ state, commit }) {
       return axios
-        .post("/graphql", { query: `mutation { createBook(input: { title: "${state.newObject.title}" }) { book { sub title } errors } }` })
+        .post("/graphql", { query: `mutation { createBook(input: { title: "${state.newObject.title}" }) { book { sub title rowOrder } errors } }` })
         .then(res => {
           const { book, errors } = res.data.data.createBook;
           if (errors.length === 0) {
@@ -42,7 +42,7 @@ export default {
     },
     update({ state, commit }) {
       return axios
-        .post("/graphql", { query: `mutation { updateBook(input: { sub: "${state.editing.sub}", title: "${state.editing.title}" }) { book { sub title } errors } }` })
+        .post("/graphql", { query: `mutation { updateBook(input: { sub: "${state.editing.sub}", title: "${state.editing.title}" }) { book { sub title rowOrder } errors } }` })
         .then(res => {
           const { book, errors } = res.data.data.updateBook;
           if (errors.length === 0) {
@@ -54,7 +54,7 @@ export default {
         });
     },
     fetch({ state, commit }) {
-      return axios.post("/graphql", { query: "query { books { sub title }}" }).then(res => {
+      return axios.post("/graphql", { query: "query { books { sub title rowOrder }}" }).then(res => {
         commit("setList", res.data.data.books);
       });
     },
@@ -72,10 +72,12 @@ export default {
     },
     sort({ state, commit }) {
       return axios
-        .post("/graphql", { query: `mutation { sortBooks(input: { sub: "${state.sub}", rowOrderPosition: ${state.newIndex} }) { book { sub } errors } }` })
+        .post("/graphql", { query: `mutation { sortBooks(input: { sub: "${state.sub}", rowOrderPosition: ${state.newIndex} }) { book { sub title rowOrder } errors } }` })
         .then(res => {
           const { book, errors } = res.data.data.sortBooks;
-          if (errors.length !== 0) {
+          if (errors.length == 0) {
+            commit("replace", book);
+          } else {
             alert(errors);
           }
         });
