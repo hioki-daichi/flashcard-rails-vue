@@ -9,6 +9,9 @@ def system!(*args)
 end
 
 chdir APP_ROOT do
+  puts "\n== Installing postgresql =="
+  system "brew install postgresql"
+
   puts "\n== Installing node =="
   system "brew install nodenv && nodenv init && nodenv install -s"
 
